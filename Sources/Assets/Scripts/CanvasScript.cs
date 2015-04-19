@@ -10,6 +10,7 @@ public class CanvasScript : MonoBehaviour {
     public RectTransform m_RootPos;
     public RectTransform m_RightPos;
     public RectTransform m_LeftPos;
+    public RectTransform m_LeftFar;
     public float m_MoveDuration = 1.0f;
 
     RectTransform rt;
@@ -21,6 +22,10 @@ public class CanvasScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         rt = gameObject.GetComponent<RectTransform>();
+        m_RootPos = GameObject.Find("RootPos").GetComponent<RectTransform>();
+        m_RightPos = GameObject.Find("RightPos").GetComponent<RectTransform>();
+        m_LeftPos = GameObject.Find("LeftPos").GetComponent<RectTransform>();
+        m_LeftFar = GameObject.Find("LeftFar").GetComponent<RectTransform>();
 	}
 	
 	// Update is called once per frame
@@ -63,9 +68,21 @@ public class CanvasScript : MonoBehaviour {
         Move(m_LeftPos.position, m_RootPos.position, m_MoveDuration);
     }
 
+
+    public void MoveInFromLeftFar()
+    {
+        Move(m_LeftFar.position, m_RootPos.position, m_MoveDuration);
+    }
+
+
     public void MoveOutToLeft()
     {
         Move(m_RootPos.position, m_LeftPos.position, m_MoveDuration);
+    }
+
+    public void MoveOutToLeftFar()
+    {
+        Move(m_RootPos.position, m_LeftFar.position, m_MoveDuration);
     }
 
     public void Move(Vector3 _startPos, Vector3 _endPos, float time)

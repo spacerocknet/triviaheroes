@@ -19,12 +19,15 @@ public class UIGotPuzzle : MonoBehaviour {
     {
         CanvasScript cv = gameObject.GetComponent<CanvasScript>();
         cv.MoveOutToRight();
-
         UIGameMain gm = m_GameMainCanvas.GetComponent<UIGameMain>();
         gm.Spin();
     }
 
     public void OnPlay()
     {
+        CanvasScript cv = gameObject.GetComponent<CanvasScript>();
+        cv.MoveOutToRight();
+        cv = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
+        cv.MoveInFromRight();
     }
 }

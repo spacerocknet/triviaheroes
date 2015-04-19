@@ -51,13 +51,21 @@
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GameModeTab.cs" />
      <Compile Include="Assets\Scripts\GameTab.cs" />
+     <Compile Include="Assets\Scripts\LoadingScene.cs" />
      <Compile Include="Assets\Scripts\Pivot.cs" />
+     <Compile Include="Assets\Scripts\ProfileTab.cs" />
      <Compile Include="Assets\Scripts\PuzzleRolling.cs" />
      <Compile Include="Assets\Scripts\SceneManager.cs" />
      <Compile Include="Assets\Scripts\StartButton.cs" />
      <Compile Include="Assets\Scripts\UIGameMain.cs" />
      <Compile Include="Assets\Scripts\UIGotPuzzle.cs" />
+     <Compile Include="Assets\Scripts\UIGotTrophy.cs" />
+     <Compile Include="Assets\Scripts\UIMain.cs" />
      <Compile Include="Assets\Scripts\UINewGame.cs" />
+     <Compile Include="Assets\Scripts\UIProfile.cs" />
+     <Compile Include="Assets\Scripts\UIQuestion.cs" />
+     <Compile Include="Assets\Scripts\UIRegister.cs" />
+     <Compile Include="Assets\Scripts\UISettingSlider.cs" />
      <None Include="Assets\Assets50\font\readme.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
