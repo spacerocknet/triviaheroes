@@ -6,6 +6,9 @@ using Image = UnityEngine.UI.Image;
 public class ProfileTab : MonoBehaviour {
 
     public Sprite[] m_SpriteList;
+    public GameObject m_AchievementTab;
+    public GameObject m_HistoryTab;
+    public GameObject m_CustomizeTab;
     
 
 	// Use this for initialization
@@ -23,7 +26,9 @@ public class ProfileTab : MonoBehaviour {
         Image img = gameObject.GetComponent<Image>();
         img.sprite = m_SpriteList[1];
 
-        
+        m_AchievementTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(-2000, m_AchievementTab.GetComponent<RectTransform>().anchoredPosition.y);
+        m_CustomizeTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(-2000, m_CustomizeTab.GetComponent<RectTransform>().anchoredPosition.y);
+        m_HistoryTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, m_HistoryTab.GetComponent<RectTransform>().anchoredPosition.y);
     }
 
     public void OnYourTurn()
@@ -31,7 +36,9 @@ public class ProfileTab : MonoBehaviour {
         Image img = gameObject.GetComponent<Image>();
         img.sprite = m_SpriteList[0];
 
-        
+        m_AchievementTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, m_AchievementTab.GetComponent<RectTransform>().anchoredPosition.y);
+        m_CustomizeTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(-2000, m_CustomizeTab.GetComponent<RectTransform>().anchoredPosition.y);
+        m_HistoryTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(-2000, m_HistoryTab.GetComponent<RectTransform>().anchoredPosition.y);
     }
 
     public void OnPastGame()
@@ -39,6 +46,8 @@ public class ProfileTab : MonoBehaviour {
         Image img = gameObject.GetComponent<Image>();
         img.sprite = m_SpriteList[2];
 
-        
+        m_AchievementTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(-2000, m_AchievementTab.GetComponent<RectTransform>().anchoredPosition.y);
+        m_CustomizeTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, m_CustomizeTab.GetComponent<RectTransform>().anchoredPosition.y);
+        m_HistoryTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(-2000, m_HistoryTab.GetComponent<RectTransform>().anchoredPosition.y);
     }
 }
