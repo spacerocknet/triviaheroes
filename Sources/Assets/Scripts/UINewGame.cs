@@ -34,4 +34,5 @@ public class UINewGame : MonoBehaviour {
         cs = m_GameMainCanvas.GetComponent<CanvasScript>();
         cs.MoveInFromRight();
     }
+    
 }

@@ -53,11 +53,13 @@
      <Compile Include="Assets\Scripts\GameModeTab.cs" />
      <Compile Include="Assets\Scripts\GameTab.cs" />
      <Compile Include="Assets\Scripts\LoadingScene.cs" />
+     <Compile Include="Assets\Scripts\NewGameTab.cs" />
      <Compile Include="Assets\Scripts\PageViewItem.cs" />
      <Compile Include="Assets\Scripts\Pivot.cs" />
      <Compile Include="Assets\Scripts\ProfileTab.cs" />
      <Compile Include="Assets\Scripts\PuzzleRolling.cs" />
      <Compile Include="Assets\Scripts\SceneManager.cs" />
+     <Compile Include="Assets\Scripts\SingleState.cs" />
      <Compile Include="Assets\Scripts\StartButton.cs" />
      <Compile Include="Assets\Scripts\UIGameMain.cs" />
      <Compile Include="Assets\Scripts\UIGotPuzzle.cs" />
