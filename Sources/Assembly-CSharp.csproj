@@ -49,9 +49,13 @@
      <Compile Include="Assets\Scripts\CanvasScript.cs" />
      <Compile Include="Assets\Scripts\CustomizePage.cs" />
      <Compile Include="Assets\Scripts\GameInfoScript.cs" />
+     <Compile Include="Assets\Scripts\GameLogic.cs" />
+     <Compile Include="Assets\Scripts\GameLogic\PlayerProfile.cs" />
+     <Compile Include="Assets\Scripts\GameLogic\Question.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GameModeTab.cs" />
      <Compile Include="Assets\Scripts\GameTab.cs" />
+     <Compile Include="Assets\Scripts\HorizontalScrollSnap.cs" />
      <Compile Include="Assets\Scripts\LoadingScene.cs" />
      <Compile Include="Assets\Scripts\NewGameTab.cs" />
      <Compile Include="Assets\Scripts\PageViewItem.cs" />
@@ -72,6 +76,7 @@
      <Compile Include="Assets\Scripts\UIQuestion.cs" />
      <Compile Include="Assets\Scripts\UIRegister.cs" />
      <Compile Include="Assets\Scripts\UISettingSlider.cs" />
+     <Compile Include="Assets\Scripts\UIStore.cs" />
      <None Include="Assets\Assets50\font\readme.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

@@ -30,4 +30,10 @@ public class UIProfile : MonoBehaviour {
     {
 	
 	}
+
+    public void OnBack()
+    {
+        CanvasScript cv = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PROFILE);
+        cv.MoveOutToRight();
+    }
 }

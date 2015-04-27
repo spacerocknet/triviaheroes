@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+
 public class UINewGame : MonoBehaviour {
 
     public GameObject m_MainCanvas;
     public GameObject m_NewGameCanvas;
     public GameObject m_GameMainCanvas;
+
+    private GameMode m_SelecteMode;
 
 	// Use this for initialization
 	void Start () {
@@ -28,11 +32,23 @@ public class UINewGame : MonoBehaviour {
 
     public void StartGame()
     {
+        
         CanvasScript cs = m_NewGameCanvas.GetComponent<CanvasScript>();
         cs.MoveOutToLeft();
 
-        cs = m_GameMainCanvas.GetComponent<CanvasScript>();
-        cs.MoveInFromRight();
+        if (m_SelecteMode == GameMode.GAMEMODE_PVE)
+        {
+            GameLogic.Instance.OnStartPVEGame();
+        }
+        else if (m_SelecteMode == GameMode.GAMEMODE_PVP)
+        {
+        }
+    }
+
+    public void SetSelectedMode(GameMode mode)
+    {
+        m_SelecteMode = mode;
+        GameLogic.Instance.SetSelectedMode(mode); 
     }
     
 }

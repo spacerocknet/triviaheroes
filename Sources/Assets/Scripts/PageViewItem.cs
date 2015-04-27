@@ -6,10 +6,12 @@ using UnityEngine.EventSystems;
 public class PageViewItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
 
-    private ScrollRect scrollRect;
+    private ScrollRect m_ParentScrollRect;
+    private ScrollRect m_ScrollRect;
 	// Use this for initialization
 	void Start () {
-        scrollRect = transform.parent.parent.GetComponent<ScrollRect>();
+        m_ParentScrollRect = transform.parent.parent.GetComponent<ScrollRect>();
+        m_ScrollRect = GetComponent<ScrollRect>();
 	}
 	
 	// Update is called once per frame
@@ -19,12 +21,12 @@ public class PageViewItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        scrollRect.OnBeginDrag(eventData);
+        m_ParentScrollRect.OnBeginDrag(eventData);
     }
 
     public void OnDrag(PointerEventData data)
     {
-        scrollRect.OnDrag(data);
+        m_ParentScrollRect.OnDrag(data);
     }
 
     private void SetDraggedPosition(PointerEventData data)
@@ -34,6 +36,7 @@ public class PageViewItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        scrollRect.OnEndDrag(eventData);
+        m_ParentScrollRect.OnEndDrag(eventData);
+        Debug.Log(m_ScrollRect.horizontalNormalizedPosition);
     }
 }

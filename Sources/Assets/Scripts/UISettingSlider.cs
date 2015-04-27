@@ -19,4 +19,20 @@ public class UISettingSlider : MonoBehaviour {
         CanvasScript cv = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SETTING_SLIDER);
         cv.MoveOutToLeftFar();
     }
+
+    public void OnStore()
+    {
+        CanvasScript cv = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SETTING_SLIDER);
+        cv.MoveOutToLeft();
+        cv = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_STORE);
+        cv.MoveInFromRight();
+    }
+
+    public void OnProfile() 
+    {
+        CanvasScript cv = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SETTING_SLIDER);
+        cv.MoveOutToLeft();
+        cv = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PROFILE);
+        cv.MoveInFromRight();
+    }
 }

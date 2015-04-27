@@ -33,8 +33,10 @@ public class CustomizePage : MonoBehaviour {
                 GameObject go1 = (GameObject)GameObject.Instantiate(m_ItemPrefab);
                 go1.transform.parent = panel1.transform;
                 go1.transform.localScale = new Vector3(1, 1, 1);
-                go1.GetComponent<RectTransform>().anchoredPosition = new Vector3(200 + 0 + j * 200, 0, 0);
+                go1.GetComponent<RectTransform>().anchoredPosition = new Vector3(100 + j * 200, 0, 0);
             }
+
+            go.transform.FindChild("Panel").gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(10 * 200, 150);
         }
         panel.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, m_NumberOfOption * 200);
     }
