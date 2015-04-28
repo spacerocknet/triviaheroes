@@ -47,10 +47,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\JSON Tests\CSharp\Test_CSharp.cs" />
     <Compile Include="Assets\Scripts\CanvasScript.cs" />
     <Compile Include="Assets\Scripts\CustomizePage.cs" />
     <Compile Include="Assets\Scripts\GameInfoScript.cs" />
     <Compile Include="Assets\Scripts\GameLogic.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\NetworkManager.cs" />
+    <Compile Include="Assets\Scripts\GameLogic\PlayerProfile.cs" />
     <Compile Include="Assets\Scripts\GameLogic\Question.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GameModeTab.cs" />
@@ -63,6 +66,7 @@
     <Compile Include="Assets\Scripts\ProfileTab.cs" />
     <Compile Include="Assets\Scripts\PuzzleRolling.cs" />
     <Compile Include="Assets\Scripts\SceneManager.cs" />
+    <Compile Include="Assets\Scripts\SimpleJSON.cs" />
     <Compile Include="Assets\Scripts\SingleState.cs" />
     <Compile Include="Assets\Scripts\StartButton.cs" />
     <Compile Include="Assets\Scripts\StoreCustomizePage.cs" />
@@ -78,8 +82,12 @@
     <Compile Include="Assets\Scripts\UISettingSlider.cs" />
     <Compile Include="Assets\Scripts\UIStore.cs" />
     <None Include="Assets\Assets50\font\readme.txt" />
+    <None Include="Assets\JSON Tests\TroubleShoot.txt" />
     <Reference Include="UnityEngine.UI">
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>D:/DevSpace/TriviaHeroes/triviaheroes/Sources/Assets/plugins/ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

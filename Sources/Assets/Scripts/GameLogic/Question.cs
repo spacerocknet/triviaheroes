@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-class Question
+public class Question
 {
     public int m_Category;
     public String m_Question;

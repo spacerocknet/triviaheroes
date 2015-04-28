@@ -6,10 +6,12 @@ public class UIRegister : MonoBehaviour {
 
     public Image m_LadyTickImage;
     public Image m_GentlemenTickImage;
+    public Text m_InputText;
+    int m_Sex;
 
 	// Use this for initialization
 	void Start () {
-	
+        m_Sex = 1;
 	}
 	
 	// Update is called once per frame
@@ -25,22 +27,26 @@ public class UIRegister : MonoBehaviour {
     {
         m_LadyTickImage.enabled = true;
         m_GentlemenTickImage.enabled = false;
+        m_Sex = 1;
     }
 
     public void OnGentlemenSelect()
     {
         m_LadyTickImage.enabled = false;
         m_GentlemenTickImage.enabled = true;
+        m_Sex = 0;
     }
 
     public void OnDone()
     {
-        StartCoroutine("LoadNextScene");
+        //StartCoroutine("LoadNextScene");
+        NetworkManager.Instance.DoRegister(m_InputText.text, m_Sex);
     }
 
     public void OnConnectFB()
     {
-        StartCoroutine("LoadNextScene");
+        NetworkManager.Instance.DoRegister("FBPlayer", 0);
+        //StartCoroutine("LoadNextScene");
     }
 
 

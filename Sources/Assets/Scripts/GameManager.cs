@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using SimpleJSON;
 
 public class GameManager : MonoBehaviour {
 
@@ -9,13 +10,36 @@ public class GameManager : MonoBehaviour {
 
     public List<GameObject> m_GameInfoList;
 
-    public GameObject m_MainCanvas;
-    public GameObject m_NewGameCanvas;
-    public GameObject m_PvPCanvs;
+    private PlayerProfile m_PlayerProfile;
+
+    private static GameManager m_sInstance = null;
+
+    public void Awake()
+    {
+        m_sInstance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private GameManager()
+    {
+        m_sInstance = this;
+    }
+
+    public static GameManager Instance
+    {
+        get
+        {
+            if (m_sInstance == null)
+            {
+                m_sInstance = new GameManager();
+            }
+            return m_sInstance;
+        }
+    }
 
 	// Use this for initialization
 	void Start () {
-	
+        LoadPlayerProfile();
 	}
 	
 	// Update is called once per frame
@@ -23,23 +47,9 @@ public class GameManager : MonoBehaviour {
 	
 	}
 
-    public void OnNewGame()
-    {
-        Debug.Log("On New Game");
-        CanvasScript cs = m_NewGameCanvas.GetComponent<CanvasScript>();
-        cs.MoveInFromRight();
-
-        cs = m_MainCanvas.GetComponent<CanvasScript>();
-        cs.MoveOutToLeft();
-    }
-
     public void OnContinueGame(string gameid)
     {
         Debug.Log("On Continue Game");
-        CanvasScript cs = m_PvPCanvs.GetComponent<CanvasScript>();
-        cs.MoveInFromRight();
-        cs = m_MainCanvas.GetComponent<CanvasScript>();
-        cs.MoveOutToLeft();
     }
 
     public void OnMultiPlayer()
@@ -64,58 +74,41 @@ public class GameManager : MonoBehaviour {
     {
     }
 
-    public void DeleteGameList()
+    public void LoadPlayerProfile()
     {
-        for (int i = 0; i < m_GameInfoList.Count; i++)
+        if (System.IO.File.Exists("TriviaPlayerProfile.xml"))
         {
-            GameObject.Destroy(m_GameInfoList[i]);
+            m_PlayerProfile = PlayerProfile.Load();
+            GameObject go = GameObject.Find("GameLoading");
+            go.GetComponent<LoadingScene>().SwitchToMainScene();
+            Debug.Log(m_PlayerProfile.m_PlayerName);
+        }
+        else
+        {
+            GameObject go = GameObject.Find("GameLoading");
+            go.GetComponent<LoadingScene>().SwitchToRegisterScene();
+            Debug.Log("2");
         }
     }
 
-    public void ReloadYourTurnList()
+    public void OnRegisterResult(string result)
     {
-        DeleteGameList();
-        int num = 10;
-        for (int i = 0; i < num; i++)
+        var ret = JSONNode.Parse(result);
+        if (ret["result"].AsBool)
         {
-            GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
-            go.transform.parent = m_MainPanel.gameObject.transform;
-            RectTransform rt = go.GetComponent<RectTransform>();
-            rt.localPosition = new Vector3(0, -1200 - i * 200, 0);
-            rt.localScale = new Vector3(1, 1, 1);
-            m_GameInfoList.Add(go);
+            Debug.Log("Register Successful");
+            m_PlayerProfile = new PlayerProfile(ret["name"], ret["sex"].AsInt);
+            Application.LoadLevel("MainScene");
+            m_PlayerProfile.Save();
         }
-        m_MainPanel.sizeDelta = new Vector2(1440, 1200 + num * 200);
+        else
+        {
+            Debug.Log("Register Unsuccessful");
+        }        
     }
 
-    public void ReloadTheirTurnList()
+    public PlayerProfile GetPlayerProfile()
     {
-        DeleteGameList();
-        int num = 20;
-        for (int i = 0; i < num; i++)
-        {
-            GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
-            go.transform.parent = m_MainPanel.gameObject.transform;
-            RectTransform rt = go.GetComponent<RectTransform>();
-            rt.localPosition = new Vector3(0, -1200 - i * 200, 0);
-            rt.localScale = new Vector3(1, 1, 1);
-            m_GameInfoList.Add(go);
-        }
-        m_MainPanel.sizeDelta = new Vector2(1440, 1200 + num * 200);
-    }
-
-    public void ReloadPassGameList() {
-        DeleteGameList();
-        int num = 1;
-        for (int i = 0; i < num; i++)
-        {
-            GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
-            go.transform.parent = m_MainPanel.gameObject.transform;
-            RectTransform rt = go.GetComponent<RectTransform>();
-            rt.localPosition = new Vector3(0, -1200 - i * 200, 0);
-            rt.localScale = new Vector3(1, 1, 1);
-            m_GameInfoList.Add(go);
-        }
-        m_MainPanel.sizeDelta = new Vector2(1440, 1200 + num * 200);
+        return m_PlayerProfile;
     }
 }
