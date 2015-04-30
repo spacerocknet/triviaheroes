@@ -24,24 +24,18 @@ public class StoreTab : MonoBehaviour {
     public void OnCurrency()
     {
         Image img = gameObject.GetComponent<Image>();
-        img.sprite = m_SpriteList[0];
-
-        
+        img.sprite = m_SpriteList[0];        
     }
 
     public void OnUpgrade()
     {
         Image img = gameObject.GetComponent<Image>();
-        img.sprite = m_SpriteList[1];
-
-        
+        img.sprite = m_SpriteList[1];        
     }
 
     public void OnCustomize()
     {
         Image img = gameObject.GetComponent<Image>();
-        img.sprite = m_SpriteList[2];
-
-        
+        img.sprite = m_SpriteList[2]; 
     }
 }

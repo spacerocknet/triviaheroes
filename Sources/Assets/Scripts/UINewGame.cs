@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 
 
@@ -10,11 +11,19 @@ public class UINewGame : MonoBehaviour {
     public GameObject m_NewGameCanvas;
     public GameObject m_GameMainCanvas;
 
+    public GameObject m_FriendPrefab;
+    public GameObject m_SingleStatePrefab;
+
+    public GameObject m_MultiPanel;
+    public GameObject m_SinglePanel;
+
     private GameMode m_SelecteMode;
+
+    List<GameObject> m_FriendObjectList = new List<GameObject>();
 
 	// Use this for initialization
 	void Start () {
-	
+        OnMultiPlayer();
 	}
 	
 	// Update is called once per frame
@@ -52,29 +61,27 @@ public class UINewGame : MonoBehaviour {
         GameLogic.Instance.SetSelectedMode(mode); 
     }
 
-    public void OnMultiplayer()
+    public void OnMultiPlayer()
     {
         RefreshMultiTab();
-        Vector2 v = m_MultiPanel.transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
-        m_MultiPanel.transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, v.y);
-        v = m_SinglePanel.transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
-        m_SinglePanel.transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-2000, v.y);
         SetSelectedMode(GameMode.GAMEMODE_PVP);
     }
 
-    public void OnSingle()
+    public void OnSinglePlayer()
     {
-        RefreshSingleTab();
-        Vector3 v = m_MultiPanel.transform.parent.gameObject.GetComponent<RectTransform>().localPosition;
-        m_MultiPanel.transform.parent.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(-2000, v.y, v.z);
-        v = m_SinglePanel.transform.parent.gameObject.GetComponent<RectTransform>().localPosition;
-        m_SinglePanel.transform.parent.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(0, v.y, v.z);        
+        RefreshSingleTab();       
         SetSelectedMode(GameMode.GAMEMODE_PVE);
     }
 
     public void RefreshMultiTab()
     {
-        int num = 20;
+        FriendList fl = GameManager.Instance.GetPlayerProfile().m_FriendList;
+        for (int i = 0; i < m_FriendObjectList.Count; i++)
+        {
+            GameObject.Destroy(m_FriendObjectList[i]);
+        }
+        m_FriendObjectList.Clear();
+        int num = fl.m_FriendList.Count + 1;
         for (int i = num - 1; i >= 0; i--)
         {
             GameObject go = (GameObject)GameObject.Instantiate(m_FriendPrefab);
@@ -82,6 +89,18 @@ public class UINewGame : MonoBehaviour {
             RectTransform rt = go.GetComponent<RectTransform>();
             rt.anchoredPosition = new Vector3(0, -90 - i * 180, 0);
             rt.localScale = new Vector3(1, 1, 1);
+            m_FriendObjectList.Add(go);
+
+            if (i == 0)
+            {
+                go.GetComponent<FriendPrefab>().SetInfo("Random");
+                go.GetComponent<FriendPrefab>().ShowSelected(true);
+            }
+            else
+            {
+                go.GetComponent<FriendPrefab>().SetInfo(fl.m_FriendList[i - 1]);
+                go.GetComponent<FriendPrefab>().ShowSelected(false);
+            }
         }
         m_MultiPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, num * 180);
     }
@@ -102,5 +121,15 @@ public class UINewGame : MonoBehaviour {
         }
         m_SinglePanel.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, num * 180);
     }
-    
+
+    public void OnFriendSelected(GameObject friend)
+    {
+        for (int i = 0; i < m_FriendObjectList.Count; i++)
+        {
+            if (m_FriendObjectList[i] != friend)
+            {
+                m_FriendObjectList[i].GetComponent<FriendPrefab>().ShowSelected(false);
+            }
+        }
+    }
 }

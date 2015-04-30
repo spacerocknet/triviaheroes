@@ -30,12 +30,10 @@ public class GameModeTab : MonoBehaviour {
         Image img = gameObject.GetComponent<Image>();
         img.sprite = m_SpriteList[1];
         m_UINewGame.OnMultiPlayer();
-        RefreshMultiTab();
-        Vector2 v = m_MultiPanel.transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
-        m_MultiPanel.transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, v.y);
-        v = m_SinglePanel.transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
-        m_SinglePanel.transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-2000, v.y);
-        m_UINewGame.SetSelectedMode(GameMode.GAMEMODE_PVP);
+        Vector2 v = m_MultiPanel.transform.parent.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
+        m_MultiPanel.transform.parent.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, v.y);
+        v = m_SinglePanel.transform.parent.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
+        m_SinglePanel.transform.parent.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-2000, v.y);
     }
 
     public void OnSingle()
@@ -43,12 +41,11 @@ public class GameModeTab : MonoBehaviour {
         Image img = gameObject.GetComponent<Image>();
         img.sprite = m_SpriteList[0];
         m_UINewGame.OnSinglePlayer();
-        Vector3 v = m_MultiPanel.transform.parent.gameObject.GetComponent<RectTransform>().localPosition;
-        m_MultiPanel.transform.parent.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(-2000, v.y, v.z);
-        v = m_SinglePanel.transform.parent.gameObject.GetComponent<RectTransform>().localPosition;
-        m_SinglePanel.transform.parent.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(0, v.y, v.z);
-        RefreshSingleTab();
-        m_UINewGame.SetSelectedMode(GameMode.GAMEMODE_PVE);
+        Vector3 v = m_MultiPanel.transform.parent.parent.gameObject.GetComponent<RectTransform>().localPosition;
+        m_MultiPanel.transform.parent.parent.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(-2000, v.y, v.z);
+        v = m_SinglePanel.transform.parent.parent.gameObject.GetComponent<RectTransform>().localPosition;
+        m_SinglePanel.transform.parent.parent.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(0, v.y, v.z);
+
     }
 
 }

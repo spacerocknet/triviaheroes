@@ -16,6 +16,7 @@ public class PlayerProfile{
     public int m_Diamond;
     public int m_Sex; //0 - male, 1 - female, 2 - unisex
     public DateTime m_LastTimeAddLive;
+    public FriendList m_FriendList;
 
     public PlayerProfile()
     {
@@ -28,6 +29,8 @@ public class PlayerProfile{
         m_Diamond = 0;
         m_LastTimeAddLive = DateTime.Now;
         m_ExpToLevelUP = 100;
+
+        m_FriendList = FriendList.CreateRandomFriendList();
     }
 
     public PlayerProfile(string name, int sex)
@@ -42,6 +45,8 @@ public class PlayerProfile{
         m_Sex = sex;
         m_LastTimeAddLive = DateTime.Now;
         m_ExpToLevelUP = 100;
+
+        m_FriendList = FriendList.CreateRandomFriendList();
     }
 
     public void Save(string path = "TriviaPlayerProfile.xml")

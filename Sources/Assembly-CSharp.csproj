@@ -49,8 +49,11 @@
      <Compile Include="Assets\JSON Tests\CSharp\Test_CSharp.cs" />
      <Compile Include="Assets\Scripts\CanvasScript.cs" />
      <Compile Include="Assets\Scripts\CustomizePage.cs" />
+     <Compile Include="Assets\Scripts\FriendPrefab.cs" />
      <Compile Include="Assets\Scripts\GameInfoScript.cs" />
      <Compile Include="Assets\Scripts\GameLogic.cs" />
+     <Compile Include="Assets\Scripts\GameLogic\FriendList.cs" />
+     <Compile Include="Assets\Scripts\GameLogic\GameList.cs" />
      <Compile Include="Assets\Scripts\GameLogic\NetworkManager.cs" />
      <Compile Include="Assets\Scripts\GameLogic\PlayerProfile.cs" />
      <Compile Include="Assets\Scripts\GameLogic\Question.cs" />
