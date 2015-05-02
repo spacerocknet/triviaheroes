@@ -96,4 +96,14 @@ public class CanvasScript : MonoBehaviour {
 
         m_MoveTime = 0;
     }
+
+    public void Show()
+    {
+        rt.position = m_RootPos.position;
+    }
+
+    public void Hide()
+    {
+        rt.position = m_LeftFar.position;
+    }
 }

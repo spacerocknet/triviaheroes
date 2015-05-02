@@ -21,9 +21,12 @@ public class UINewGame : MonoBehaviour {
 
     List<GameObject> m_FriendObjectList = new List<GameObject>();
 
+    string m_SelectedFriend;
+
 	// Use this for initialization
 	void Start () {
         OnMultiPlayer();
+        m_SelectedFriend = "Random";
 	}
 	
 	// Update is called once per frame
@@ -42,16 +45,16 @@ public class UINewGame : MonoBehaviour {
 
     public void StartGame()
     {
-        
-        CanvasScript cs = m_NewGameCanvas.GetComponent<CanvasScript>();
-        cs.MoveOutToLeft();
 
         if (m_SelecteMode == GameMode.GAMEMODE_PVE)
         {
+            CanvasScript cs = m_NewGameCanvas.GetComponent<CanvasScript>();
+            cs.MoveOutToLeft();
             GameLogic.Instance.OnStartPVEGame();
         }
         else if (m_SelecteMode == GameMode.GAMEMODE_PVP)
         {
+            GameManager.Instance.OnStartPVPGame(m_SelectedFriend);
         }
     }
 
@@ -129,6 +132,18 @@ public class UINewGame : MonoBehaviour {
             if (m_FriendObjectList[i] != friend)
             {
                 m_FriendObjectList[i].GetComponent<FriendPrefab>().ShowSelected(false);
+            }
+            else
+            {
+                if (i == 0)
+                {
+                    m_SelectedFriend = "Random";
+                }
+                else
+                {
+                     FriendList fl = GameManager.Instance.GetPlayerProfile().m_FriendList;
+                     m_SelectedFriend = fl.m_FriendList[i - 1];
+                }
             }
         }
     }

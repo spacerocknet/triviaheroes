@@ -39,12 +39,54 @@ public class NetworkManager : MonoBehaviour {
         GameManager.Instance.OnRegisterResult(ret.ToString());
     }
 
+    IEnumerator ActuallyDoStartNewGame(string friend)
+    {
+        yield return new WaitForSeconds(Random.Range(0.2f, 1.0f));
+        var ret = new JSONClass();
+        if (friend == "Random")
+        {
+            ret["opponent"] = "RandomOpponent";
+        }
+        else
+        {
+            ret["opponent"] = friend;
+        }
+        Debug.Log("HIHI");
+        GameManager.Instance.OnStartNewGameResult(ret.ToString());
+    }
+
     public void DoRegister(string name, int sex)
     {
         StartCoroutine(ActuallyDoRegister(name, sex));
     }
 
+    public void DoStartNewGame(string friend)
+    {
+        StartCoroutine(ActuallyDoStartNewGame(friend));
+    }
+
+    IEnumerator ActuallyDoCategoryConfirmToPlay(Category cat)
+    {
+        yield return new WaitForSeconds(Random.Range(0.2f, 1.0f));
+        var ret = new JSONClass();
+        ret["category"].AsInt = (int)cat;
+        ret["question"] = "Which is odd number?";
+        ret["answer1"] = "1";
+        ret["answer2"] = "2";
+        ret["answer3"] = "4";
+        ret["answer4"] = "6";
+        ret["correct"].AsInt = 0;
+        GameManager.Instance.OnCategoryConfirmToPlayResult(ret.ToString());
+    }
+
+    public void DoCategoryConfirmToPlay(Category cat)
+    {
+        StartCoroutine(ActuallyDoCategoryConfirmToPlay(cat));
+    }
+
     public void OnRegisterResult()
     {
     }
+
+
 }

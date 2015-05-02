@@ -49,9 +49,11 @@ public class GameLogic : MonoBehaviour
     }
 
 
+
+
     Question GetRandomQuestion()
     {
-        Question q = new Question();
+        Question q = new Question("");
         q.m_Question = "Blah blah blah";
         q.m_Answer0 = "Answer 1";
         q.m_Answer1 = "Answer 2";

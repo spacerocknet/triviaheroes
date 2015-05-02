@@ -6,15 +6,15 @@ public class Pivot : MonoBehaviour {
     Vector3 m_TargetRotation;
     RectTransform m_Rect;
 
-    UIGameMain m_UIGameMain;
+    UIPvP m_UIPvP;
     public GameObject m_UIMainGameCanvas;
 
 	// Use this for initialization
     void Awake()
     {
         GameObject go = GameObject.Find("CanvasPvP"); 
-        m_UIGameMain = go.GetComponent<UIGameMain>();
-        Debug.Log(m_UIGameMain);
+        m_UIPvP = go.GetComponent<UIPvP>();
+        Debug.Log(m_UIPvP);
     }
 
 	void Start () {
@@ -43,7 +43,7 @@ public class Pivot : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D trig)
     {
-        if (m_UIGameMain.m_IsSpinning)
+        if (m_UIPvP.m_IsSpinning)
         {
             m_TargetRotation = m_Rect.transform.localEulerAngles + new Vector3(0, 0, -15);
             if (m_TargetRotation.z < -30 || (m_TargetRotation.z > 0 && m_TargetRotation.z < 330))
