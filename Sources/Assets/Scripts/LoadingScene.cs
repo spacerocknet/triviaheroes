@@ -10,19 +10,19 @@ public class LoadingScene : MonoBehaviour {
 	void Start () {
         //GET("http://54.163.250.79:9000/v1/cat/game/1");
 
-        //Dictionary<string, string> dict = new Dictionary<string,string>();
-        //dict.Add("platform", "IOS");
-        //dict.Add("os", "4.3");
-        //dict.Add("model", "Note1");
-        //dict.Add("phone", "14042309331");
-        //dict.Add("device_uuid", "test_udid");
-        //dict.Add("type", "mobile");
-        //POST("http://54.163.250.79:9000/v1/user/addnoinfo", dict);
-
         Dictionary<string, string> dict = new Dictionary<string, string>();
-        dict.Add("category", "Sports");
-        dict.Add("num", "1");        
-        POST("http://54.163.250.79:9000/v1/quiz/request", dict);
+        dict.Add("platform", "IOS");
+        dict.Add("os", "4.3");
+        dict.Add("model", "Note1");
+        dict.Add("phone", "14042309331");
+        dict.Add("device_uuid", "test_udid");
+        dict.Add("type", "mobile");
+        POST("http://54.163.250.79:9000/v1/user/addnoinfo", dict);
+
+        //Dictionary<string, string> dict = new Dictionary<string, string>();
+        //dict.Add("category", "Sports");
+        //dict.Add("num", "1");        
+        //POST("http://54.163.250.79:9000/v1/quiz/request", dict);
 	}
 
     public WWW GET(string url)
@@ -34,20 +34,30 @@ public class LoadingScene : MonoBehaviour {
 
     public WWW POST(string url, Dictionary<string, string> post)
     {
-        //var encoding = new System.Text.UTF8Encoding();
-        //var postHeader = new Hashtable();
-        //string jsonString = "{\"category\": \"Sports\", \"num\": \"2\"}";
-        //Dictionary<string, string> header = new Dictionary<string, string>();
-        //header.Add("Content-Type", "text/json");
-        //header.Add("Content-Length", jsonString.Length.ToString());
-        //WWW www = new WWW(url, encoding.GetBytes(jsonString), header);
+        var encoding = new System.Text.UTF8Encoding();
+        var postHeader = new Hashtable();
+        
+        
+        string jsonString = "{" ;
 
-        WWWForm form = new WWWForm();
-        foreach (KeyValuePair<string, string> post_arg in post)
+        foreach (KeyValuePair<string, string> kvp in post)
         {
-            form.AddField(post_arg.Key, post_arg.Value);
+            jsonString = jsonString + "\"" + kvp.Key + "\":" + "\"" + kvp.Value + "\",";
         }
-        WWW www = new WWW(url, form);
+
+        jsonString = jsonString.Substring(0, jsonString.Length - 1);
+        jsonString = jsonString + "}";
+
+        Dictionary<string, string> header = new Dictionary<string, string>();
+        header.Add("Content-Type", "Application/json");
+        header.Add("Content-Length", jsonString.Length.ToString());
+        WWW www = new WWW(url, encoding.GetBytes(jsonString), header);        
+        //WWWForm form = new WWWForm();
+        //foreach (KeyValuePair<string, string> post_arg in post)
+        //{
+        //    form.AddField(post_arg.Key, post_arg.Value);
+        //}
+        //WWW www = new WWW(url, form);
 
         StartCoroutine(WaitForRequest(www));
         return www;
@@ -55,6 +65,7 @@ public class LoadingScene : MonoBehaviour {
 
     private IEnumerator WaitForRequest(WWW www)
     {
+        Debug.Log(www.progress);
         yield return www;
 
         // check for errors
@@ -86,11 +97,11 @@ public class LoadingScene : MonoBehaviour {
 
     public void SwitchToMainScene()
     {
-        StartCoroutine(LoadNextScene("MainScene"));
+        //StartCoroutine(LoadNextScene("MainScene"));
     }
 
     public void SwitchToRegisterScene()
     {
-        StartCoroutine(LoadNextScene("RegisterScene"));
+        //StartCoroutine(LoadNextScene("RegisterScene"));
     }
 }
