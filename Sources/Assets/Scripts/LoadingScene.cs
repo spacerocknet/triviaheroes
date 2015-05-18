@@ -1,19 +1,77 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LoadingScene : MonoBehaviour {
 
     float m_Timer;
-    AsyncOperation m_LoadLevelAsync;
+    AsyncOperation m_LoadLevelAsync = null;
 	// Use this for initialization
 	void Start () {
+        //GET("http://54.163.250.79:9000/v1/cat/game/1");
 
+        //Dictionary<string, string> dict = new Dictionary<string,string>();
+        //dict.Add("platform", "IOS");
+        //dict.Add("os", "4.3");
+        //dict.Add("model", "Note1");
+        //dict.Add("phone", "14042309331");
+        //dict.Add("device_uuid", "test_udid");
+        //dict.Add("type", "mobile");
+        //POST("http://54.163.250.79:9000/v1/user/addnoinfo", dict);
+
+        Dictionary<string, string> dict = new Dictionary<string, string>();
+        dict.Add("category", "Sports");
+        dict.Add("num", "1");        
+        POST("http://54.163.250.79:9000/v1/quiz/request", dict);
 	}
+
+    public WWW GET(string url)
+    {
+        WWW www = new WWW(url);
+        StartCoroutine(WaitForRequest(www));
+        return www;
+    }
+
+    public WWW POST(string url, Dictionary<string, string> post)
+    {
+        //var encoding = new System.Text.UTF8Encoding();
+        //var postHeader = new Hashtable();
+        //string jsonString = "{\"category\": \"Sports\", \"num\": \"2\"}";
+        //Dictionary<string, string> header = new Dictionary<string, string>();
+        //header.Add("Content-Type", "text/json");
+        //header.Add("Content-Length", jsonString.Length.ToString());
+        //WWW www = new WWW(url, encoding.GetBytes(jsonString), header);
+
+        WWWForm form = new WWWForm();
+        foreach (KeyValuePair<string, string> post_arg in post)
+        {
+            form.AddField(post_arg.Key, post_arg.Value);
+        }
+        WWW www = new WWW(url, form);
+
+        StartCoroutine(WaitForRequest(www));
+        return www;
+    }
+
+    private IEnumerator WaitForRequest(WWW www)
+    {
+        yield return www;
+
+        // check for errors
+        if (www.error == null)
+        {
+            Debug.Log("WWW Ok!: " + www.text);
+        }
+        else
+        {
+            Debug.Log("WWW Error: " + www.error);
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
         m_Timer += Time.deltaTime;        
-        if (m_Timer > 1 && m_LoadLevelAsync.progress >= 0.9f)
+        if (m_Timer > 1 && m_LoadLevelAsync != null && m_LoadLevelAsync.progress >= 0.9f)
         {
             m_LoadLevelAsync.allowSceneActivation = true;
         }

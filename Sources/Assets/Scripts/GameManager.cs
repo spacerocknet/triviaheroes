@@ -5,6 +5,7 @@ using SimpleJSON;
 
 public enum Category {CAT_GEOGRAPHY = 0, CAT_SCIENCE, CAT_ART, CAT_HISTORY, CAT_SPORT, CAT_ENTERTAINMENT, CAT_CROWN};
 
+
 public class GameManager : MonoBehaviour {
 
     public RectTransform m_MainPanel;
@@ -26,16 +27,20 @@ public class GameManager : MonoBehaviour {
 
     private bool m_IsLastAnswerCorrect;
 
+    private PVPState m_PVPState = new PVPState();
+
+
     public void Awake()
     {
         m_sInstance = this;
         DontDestroyOnLoad(gameObject);
-        LoadPlayerProfile();
+        
     }
 
     private GameManager()
     {
         m_sInstance = this;
+        
     }
 
     public static GameManager Instance
@@ -52,6 +57,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        LoadPlayerProfile();
         
 	}
 	
@@ -60,9 +66,13 @@ public class GameManager : MonoBehaviour {
 	
 	}
 
-    public void OnContinueGame(string gameid)
+    public void OnContinueGame(int gameid)
     {
-        Debug.Log("On Continue Game");
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
+        cs.MoveInFromRight();
+        m_CurrentGame = GameManager.Instance.GetGameIndexByID(gameid);
+        GameInfo gi = GameManager.Instance.m_GameList.m_GameList[m_CurrentGame];
+        cs.gameObject.GetComponent<UIPvP>().SetGameInfo(gi);        
     }
 
     public void OnMultiPlayer()
@@ -89,11 +99,12 @@ public class GameManager : MonoBehaviour {
 
     public void LoadPlayerProfile()
     {
+        Debug.Log("LoadPlayerProfile");
         if (System.IO.File.Exists("TriviaPlayerProfile.xml"))
         {
             m_PlayerProfile = PlayerProfile.Load();
             GameObject go = GameObject.Find("GameLoading");
-            m_GameList = GameList.CreateEmptyGameList();
+            m_GameList = GameList.Load();
             go.GetComponent<LoadingScene>().SwitchToMainScene();
             Debug.Log(m_PlayerProfile.m_PlayerName);            
         }
@@ -141,6 +152,18 @@ public class GameManager : MonoBehaviour {
         Question q = new Question(result);
         cs.gameObject.GetComponent<UIQuestion>().SetQuestion(q);
         SetCurrentQuestion(q);
+        SetPVPState(PVPStateType.NORMAL, Category.CAT_ART, Category.CAT_ART);
+    }
+
+    public void OnTrophyClaimSelectedResult(string result)
+    {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
+        cs.Hide();
+        cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
+        cs.MoveInFromRight();
+        Question q = new Question(result);
+        cs.gameObject.GetComponent<UIQuestion>().SetQuestion(q);
+        SetCurrentQuestion(q);
     }
 
     public PlayerProfile GetPlayerProfile()
@@ -166,17 +189,20 @@ public class GameManager : MonoBehaviour {
 
     public void AddProgress()
     {
-        m_GameList.m_GameList[m_CurrentGame].m_SpinProgress++;
+        m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA++;
+        SaveSessionList();
     }
 
     public void FulfillProgress()
     {
-        m_GameList.m_GameList[m_CurrentGame].m_SpinProgress = 3;
+        m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA = 3;
+        SaveSessionList();
     }
 
     public void ClearProgress()
     {
-        m_GameList.m_GameList[m_CurrentGame].m_SpinProgress = 0;
+        m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA = 0;
+        SaveSessionList();
     }
 
     public void SetCurrentQuestion(Question q)
@@ -209,9 +235,16 @@ public class GameManager : MonoBehaviour {
 
         if (m_IsLastAnswerCorrect)
         {
-            AddProgress();
-            cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
-            cs.gameObject.GetComponent<UIPvP>().UpdateProgress(m_GameList.m_GameList[m_CurrentGame].m_SpinProgress);
+            if (m_PVPState.m_Type == PVPStateType.NORMAL)
+            {
+                AddProgress();
+                cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
+                cs.gameObject.GetComponent<UIPvP>().UpdateProgress(m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA);
+            }
+            else if (m_PVPState.m_Type == PVPStateType.TROPHY)
+            {
+                TrophyAcquired(m_PVPState.m_TargetTrophy);
+            }
         }
         else
         {
@@ -220,7 +253,8 @@ public class GameManager : MonoBehaviour {
 
     public void OnFullProgress()
     {
-        m_GameList.m_GameList[m_CurrentGame].m_SpinProgress = 0;
+        m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA = 0;
+        SaveSessionList();
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_CROWNSELECT);
         cs.MoveInFromRight();
     }
@@ -237,15 +271,71 @@ public class GameManager : MonoBehaviour {
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECHALLENGE);
         cs.MoveInFromRight();
+
+        cs.gameObject.GetComponent<UISelectPieceChallenge>().SetTrophyState(GetMyTrophy(), GetOpponentTrophy());
     }
 
-    public int[] GetCurrentTrophyState()
+    public List<int> GetCurrentTrophyState()
     {
-        return m_GameList.m_GameList[m_CurrentGame].m_Piece1;
+        return m_GameList.m_GameList[m_CurrentGame].m_PieceA;
     }
 
     public void OnTrophyClaimSelected(int trophy)
     {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
+        cs.Show();
 
+        NetworkManager.Instance.DoTrophyClaimSelected(trophy);
+        SetPVPState(PVPStateType.TROPHY, (Category)trophy, Category.CAT_ART);
+    }
+
+    public void OnTrophyChallengeSelected(int mytrophy, int theirtrophy)
+    {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
+        cs.Show();
+
+        //NetworkManager.Instance.DoTrophyClaimSelected(trophy);
+        SetPVPState(PVPStateType.CHALLENGE, (Category)mytrophy, (Category)theirtrophy);
+    }
+
+    public void SetPVPState(PVPStateType type, Category targetTrophy, Category betTrophy)
+    {
+        m_PVPState.m_Type = type;
+        m_PVPState.m_TargetTrophy = targetTrophy;
+        m_PVPState.m_BetTrophy = betTrophy;
+        m_PVPState.m_CurrentQuestion = 0;
+    }
+
+    public void TrophyAcquired(Category m_Trophy)
+    {
+        m_GameList.m_GameList[m_CurrentGame].m_PieceA[(int)m_Trophy] = 1;
+        m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA = 0;
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(m_GameList.m_GameList[m_CurrentGame]);
+        SaveSessionList();
+    }
+
+    public int GetGameIndexByID(int gameid) {
+        for (int i = 0; i < m_GameList.m_GameList.Count; i++)
+        {
+            if (m_GameList.m_GameList[i].m_GameID == gameid) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void SaveSessionList()
+    {
+        m_GameList.Save();
+    }
+
+    public List<int> GetMyTrophy()
+    {
+        return m_GameList.m_GameList[m_CurrentGame].m_PieceA;
+    }
+
+    public List<int> GetOpponentTrophy()
+    {
+        return m_GameList.m_GameList[m_CurrentGame].m_PieceB;
     }
 }

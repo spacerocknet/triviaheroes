@@ -84,6 +84,44 @@ public class NetworkManager : MonoBehaviour {
         StartCoroutine(ActuallyDoCategoryConfirmToPlay(cat));
     }
 
+    IEnumerator ActuallyDoTrophyClaimSelected(int trophy)
+    {
+        yield return new WaitForSeconds(Random.Range(0.2f, 1.0f));
+        var ret = new JSONClass();
+        ret["category"].AsInt = (int)trophy;
+        ret["question"] = "Which is odd number?";
+        ret["answer1"] = "1";
+        ret["answer2"] = "2";
+        ret["answer3"] = "4";
+        ret["answer4"] = "6";
+        ret["correct"].AsInt = 0;
+        GameManager.Instance.OnTrophyClaimSelectedResult(ret.ToString());
+    }
+
+    IEnumerator ActuallyDoTrophyChallengeSelected()
+    {
+        yield return new WaitForSeconds(Random.Range(0.2f, 1.0f));
+        var ret = new JSONClass();
+        ret["category"].AsInt = (int)0;
+        ret["question"] = "Which is odd number?";
+        ret["answer1"] = "1";
+        ret["answer2"] = "2";
+        ret["answer3"] = "4";
+        ret["answer4"] = "6";
+        ret["correct"].AsInt = 0;
+        GameManager.Instance.OnTrophyClaimSelectedResult(ret.ToString());
+    }
+
+    public void DoTrophyClaimSelected(int trophy)
+    {
+        StartCoroutine(ActuallyDoTrophyClaimSelected(trophy));
+    }
+
+    public void DoTrophyChallengeSelected()
+    {
+        StartCoroutine(ActuallyDoTrophyChallengeSelected());
+    }
+
     public void OnRegisterResult()
     {
     }

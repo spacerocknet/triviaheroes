@@ -41,6 +41,8 @@ public class UINewGame : MonoBehaviour {
 
         cs = m_MainCanvas.GetComponent<CanvasScript>();
         cs.MoveInFromLeft();
+
+        
     }
 
     public void StartGame()
@@ -85,7 +87,7 @@ public class UINewGame : MonoBehaviour {
         }
         m_FriendObjectList.Clear();
         int num = fl.m_FriendList.Count + 1;
-        for (int i = num - 1; i >= 0; i--)
+        for (int i = 0; i < num; i++)
         {
             GameObject go = (GameObject)GameObject.Instantiate(m_FriendPrefab);
             go.transform.parent = m_MultiPanel.transform;
@@ -127,6 +129,7 @@ public class UINewGame : MonoBehaviour {
 
     public void OnFriendSelected(GameObject friend)
     {
+        
         for (int i = 0; i < m_FriendObjectList.Count; i++)
         {
             if (m_FriendObjectList[i] != friend)
@@ -143,6 +146,7 @@ public class UINewGame : MonoBehaviour {
                 {
                      FriendList fl = GameManager.Instance.GetPlayerProfile().m_FriendList;
                      m_SelectedFriend = fl.m_FriendList[i - 1];
+                     Debug.Log(friend.name + " " + i + " " + m_SelectedFriend);
                 }
             }
         }

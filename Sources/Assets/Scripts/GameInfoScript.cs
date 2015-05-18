@@ -1,10 +1,20 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GameInfoScript : MonoBehaviour {
 
     public int m_GameID;
     public GameObject m_GameManager;
+
+    public Text m_NameText;
+    public Text m_RoundText;
+    public Text m_TimerText;
+    public Text m_ScoreAText;
+    public Text m_ScoreBText;
+    public Image m_ScoreImage;
+    public RectTransform m_LeftPos;
+    public RectTransform m_RightPos;
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +30,30 @@ public class GameInfoScript : MonoBehaviour {
     {
         Debug.Log("Game selected");
         GameManager gm = m_GameManager.GetComponent<GameManager>();
-        gm.OnContinueGame("gameid");
+        gm.OnContinueGame(m_GameID);
     }
+
+    public void SetGameInfo(GameInfo gi)
+    {
+        m_NameText.text = gi.m_PlayerB;
+        m_RoundText.text = gi.m_Round.ToString();
+        int sa = gi.GetScoreA();
+        int sb = gi.GetScoreB();
+        int sum = sa + sb;
+        float percent;
+        if (sb == 0)
+        {
+            percent = 0.5f;
+        }
+        else
+        {
+            percent = (float)sa / sum;
+        }
+        m_ScoreAText.text = gi.GetScoreA().ToString();
+        m_ScoreBText.text = gi.GetScoreB().ToString();
+        m_ScoreImage.rectTransform.anchoredPosition = m_LeftPos.anchoredPosition + (m_RightPos.anchoredPosition - m_LeftPos.anchoredPosition) * percent;
+        m_GameID = gi.m_GameID;
+    }
+
+    
 }

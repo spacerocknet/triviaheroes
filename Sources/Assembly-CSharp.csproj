@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\GameLogic\FriendList.cs" />
      <Compile Include="Assets\Scripts\GameLogic\GameList.cs" />
      <Compile Include="Assets\Scripts\GameLogic\NetworkManager.cs" />
+     <Compile Include="Assets\Scripts\GameLogic\PVPState.cs" />
      <Compile Include="Assets\Scripts\GameLogic\PlayerProfile.cs" />
      <Compile Include="Assets\Scripts\GameLogic\Question.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
@@ -83,6 +84,7 @@
      <Compile Include="Assets\Scripts\UIPvP.cs" />
      <Compile Include="Assets\Scripts\UIQuestion.cs" />
      <Compile Include="Assets\Scripts\UIRegister.cs" />
+     <Compile Include="Assets\Scripts\UISelectPieceChallenge.cs" />
      <Compile Include="Assets\Scripts\UISelectPieceClaim.cs" />
      <Compile Include="Assets\Scripts\UISettingSlider.cs" />
      <Compile Include="Assets\Scripts\UIStore.cs" />

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class UISelectPieceClaim : MonoBehaviour {
 
@@ -21,7 +22,7 @@ public class UISelectPieceClaim : MonoBehaviour {
 
     public void UpdateTrophyState()
     {
-        int[] trophy = GameManager.Instance.GetCurrentTrophyState();
+        List<int> trophy = GameManager.Instance.GetCurrentTrophyState();
         for (int i = 0; i < 6; i++)
         {
             if (trophy[i] == 0)
@@ -87,7 +88,10 @@ public class UISelectPieceClaim : MonoBehaviour {
     {
         if (m_CurrentSelected != -1)
         {
+            SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM).MoveOutToRight();
             GameManager.Instance.OnTrophyClaimSelected(m_CurrentSelected);
         }
     }
+
+    
 }

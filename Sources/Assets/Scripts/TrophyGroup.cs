@@ -21,9 +21,9 @@ public class TrophyGroup : MonoBehaviour {
 	
 	}
 
-    public void SetTrophyState(int[] state)
+    public void SetTrophyState(List<int> state)
     {
-        for (int i = 0; i < state.Length; i++)
+        for (int i = 0; i < state.Count; i++)
         {
             if (state[i] == 0)
             {

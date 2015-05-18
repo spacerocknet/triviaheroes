@@ -55,6 +55,8 @@ public class UIPvP : MonoBehaviour {
 
                 int cat = Mathf.FloorToInt(m_Rect.localEulerAngles.z / (360f / 7));
 
+                cat = 1;
+
                 if (m_CategoryMap[cat] == Category.CAT_CROWN)
                 {
                     GameManager.Instance.FulfillProgress();
@@ -93,9 +95,10 @@ public class UIPvP : MonoBehaviour {
     {
         m_RoundText.text = "Round " + game.m_Round.ToString();
         m_MyAvatarName.text = GameManager.Instance.GetPlayerProfile().m_PlayerName;
-        m_OpponentAvatarName.text = game.m_Opponent;
-        m_TrophyGroup1.SetTrophyState(game.m_Piece1);
-        m_TrophyGroup2.SetTrophyState(game.m_Piece2);
+        m_OpponentAvatarName.text = game.m_PlayerB;
+        m_TrophyGroup1.SetTrophyState(game.m_PieceA);
+        m_TrophyGroup2.SetTrophyState(game.m_PieceB);
+        UpdateProgress(game.m_SpinProgressA);
     }
 
     public void FullFillProgressBar()

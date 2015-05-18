@@ -19,8 +19,8 @@ public class UIMain : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         RefreshInfo();
-        ReloadYourTurnList();
         m_GameInfoList = new List<GameObject>();
+        ReloadYourTurnList();        
 	}
 	
 	// Update is called once per frame
@@ -79,36 +79,51 @@ public class UIMain : MonoBehaviour {
         {
             GameObject.Destroy(m_GameInfoList[i]);
         }
+        m_GameInfoList.Clear();
     }
 
     public void ReloadYourTurnList()
     {
         DeleteGameList();
-        int num = 10;
-        for (int i = 0; i < num; i++)
+        int num = 0;
+        GameList gl = GameManager.Instance.m_GameList;
+        for (int i = 0; i < gl.m_GameList.Count; i++)
         {
-            GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
-            go.transform.parent = m_MainPanel.gameObject.transform;
-            RectTransform rt = go.GetComponent<RectTransform>();
-            rt.localPosition = new Vector3(0, -1200 - i * 200, 0);
-            rt.localScale = new Vector3(1, 1, 1);
-            m_GameInfoList.Add(go);
+            if (gl.m_GameList[i].m_CurrentTurn == 1 && !gl.m_GameList[i].m_IsCompleted)
+            {
+                GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
+                go.transform.parent = m_MainPanel.gameObject.transform;
+                RectTransform rt = go.GetComponent<RectTransform>();
+                rt.localPosition = new Vector3(0, -1200 - num * 200, 0);
+                rt.localScale = new Vector3(1, 1, 1);
+                m_GameInfoList.Add(go);
+                go.GetComponent<GameInfoScript>().SetGameInfo(gl.m_GameList[i]);
+                num++;
+            }
         }
         m_MainPanel.sizeDelta = new Vector2(1440, 1200 + num * 200);
     }
 
     public void ReloadTheirTurnList()
-    {
+    {        
         DeleteGameList();
-        int num = 20;
-        for (int i = 0; i < num; i++)
+        int num = 0;
+        GameList gl = GameManager.Instance.m_GameList;
+        Debug.Log("reload");
+        for (int i = 0; i < gl.m_GameList.Count; i++)
         {
-            GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
-            go.transform.parent = m_MainPanel.gameObject.transform;
-            RectTransform rt = go.GetComponent<RectTransform>();
-            rt.localPosition = new Vector3(0, -1200 - i * 200, 0);
-            rt.localScale = new Vector3(1, 1, 1);
-            m_GameInfoList.Add(go);
+            if (gl.m_GameList[i].m_CurrentTurn == 2 && !gl.m_GameList[i].m_IsCompleted)
+            {
+                Debug.Break();
+                GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
+                go.transform.parent = m_MainPanel.gameObject.transform;
+                RectTransform rt = go.GetComponent<RectTransform>();
+                rt.localPosition = new Vector3(0, -1200 - num * 200, 0);
+                rt.localScale = new Vector3(1, 1, 1);
+                m_GameInfoList.Add(go);
+                go.GetComponent<GameInfoScript>().SetGameInfo(gl.m_GameList[i]);
+                num++;
+            }
         }
         m_MainPanel.sizeDelta = new Vector2(1440, 1200 + num * 200);
     }
@@ -116,15 +131,22 @@ public class UIMain : MonoBehaviour {
     public void ReloadPassGameList()
     {
         DeleteGameList();
-        int num = 1;
-        for (int i = 0; i < num; i++)
+        int num = 0;
+        GameList gl = GameManager.Instance.m_GameList;
+        for (int i = 0; i < gl.m_GameList.Count; i++)
         {
-            GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
-            go.transform.parent = m_MainPanel.gameObject.transform;
-            RectTransform rt = go.GetComponent<RectTransform>();
-            rt.localPosition = new Vector3(0, -1200 - i * 200, 0);
-            rt.localScale = new Vector3(1, 1, 1);
-            m_GameInfoList.Add(go);
+            if (gl.m_GameList[i].m_IsCompleted)
+            {
+                Debug.Break();
+                GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
+                go.transform.parent = m_MainPanel.gameObject.transform;
+                RectTransform rt = go.GetComponent<RectTransform>();
+                rt.localPosition = new Vector3(0, -1200 - num * 200, 0);
+                rt.localScale = new Vector3(1, 1, 1);
+                m_GameInfoList.Add(go);
+                go.GetComponent<GameInfoScript>().SetGameInfo(gl.m_GameList[i]);
+                num++;
+            }
         }
         m_MainPanel.sizeDelta = new Vector2(1440, 1200 + num * 200);
     }
