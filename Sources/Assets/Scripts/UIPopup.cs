@@ -17,14 +17,11 @@ public class UIPopup : MonoBehaviour {
 	}
 
     public void OnAccept() {
-        
+        gameObject.GetComponent<CanvasScript>().Hide();
     }
 
     public void SetText(string text)
     {
-        m_MessageText.text = text;
-
-        
-        
+        m_MessageText.text = text;              
     }
 }
