@@ -6,6 +6,7 @@ using System.IO;
 
 [XmlRoot("PlayerProfile")]
 public class PlayerProfile{
+    public string m_PlayerID;
     public string m_PlayerName;
     public int m_Level;
     public int m_LevelEXP;
@@ -21,6 +22,7 @@ public class PlayerProfile{
     public PlayerProfile()
     {
         m_PlayerName = "NULL";
+        m_PlayerID = "NULL";
         m_Level = 0;
         m_LevelEXP = 0;
         m_TotalEXP = 0;
@@ -36,6 +38,7 @@ public class PlayerProfile{
     public PlayerProfile(string name, int sex)
     {
         m_PlayerName = name;
+        m_PlayerID = name;
         m_Level = 0;
         m_LevelEXP = 0;
         m_TotalEXP = 0;

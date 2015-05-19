@@ -11,7 +11,7 @@ public class CanvasScript : MonoBehaviour {
     public RectTransform m_RightPos;
     public RectTransform m_LeftPos;
     public RectTransform m_LeftFar;
-    public float m_MoveDuration = 1.0f;
+    private float m_MoveDuration = 0.7f;
 
     RectTransform rt;
     float m_MoveTime;

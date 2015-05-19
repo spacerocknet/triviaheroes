@@ -23,6 +23,7 @@ public class UISelectPieceChallenge : MonoBehaviour {
 
     public void OnPlay()
     {
+
         if (m_MyTrophy != -1 && m_TheirTrophy != -1)
         {
             SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECHALLENGE).MoveOutToRight();

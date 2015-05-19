@@ -36,7 +36,7 @@ public class GameInfoScript : MonoBehaviour {
     public void SetGameInfo(GameInfo gi)
     {
         m_NameText.text = gi.m_PlayerB;
-        m_RoundText.text = gi.m_Round.ToString();
+        m_RoundText.text = "Round: " + gi.m_Round.ToString();
         int sa = gi.GetScoreA();
         int sb = gi.GetScoreB();
         int sum = sa + sb;

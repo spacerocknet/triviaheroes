@@ -21,9 +21,15 @@ public class GameInfo
     public int m_CurrentTurn = 1;
     public int m_TurnType = 1;
 
+    public string m_Challenger; //1 - playerA is the challenger; 2 - playerB is the challenger
+    public int m_ChallengeScoreA = 0;
+    public int m_ChallengeScoreB = 0;
+    public int m_BetTrophyA = 0;
+    public int m_BetTrophyB = 0;
     public List<int> m_ChallengeQuestion = new List<int>();// = { 0, 0, 0, 0, 0, 0 };
-
     public List<int> m_ChallengeAnswer = new List<int>();// = { 0, 0, 0, 0, 0, 0 };
+    public int m_ChallengeState = 0;
+
     public int m_CurrentRound = 0;
     //public DateTime m_LastPlayedTime = DateTime.Now;
     public bool m_IsCompleted = false;
@@ -120,3 +126,5 @@ public class GameList
         }
     }
 }
+
+

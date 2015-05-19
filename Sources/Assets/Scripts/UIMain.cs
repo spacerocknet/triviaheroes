@@ -114,7 +114,7 @@ public class UIMain : MonoBehaviour {
         {
             if (gl.m_GameList[i].m_CurrentTurn == 2 && !gl.m_GameList[i].m_IsCompleted)
             {
-                Debug.Break();
+                
                 GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
                 go.transform.parent = m_MainPanel.gameObject.transform;
                 RectTransform rt = go.GetComponent<RectTransform>();
@@ -137,7 +137,7 @@ public class UIMain : MonoBehaviour {
         {
             if (gl.m_GameList[i].m_IsCompleted)
             {
-                Debug.Break();
+                
                 GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
                 go.transform.parent = m_MainPanel.gameObject.transform;
                 RectTransform rt = go.GetComponent<RectTransform>();

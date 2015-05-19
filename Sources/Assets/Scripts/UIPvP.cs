@@ -21,6 +21,8 @@ public class UIPvP : MonoBehaviour {
 
     public Sprite[] m_PivotSprite;
     public Image m_PivotImage;
+
+    public Button m_SpinButton;
     private int m_Progress;
 
     private Category[] m_CategoryMap;
@@ -55,7 +57,7 @@ public class UIPvP : MonoBehaviour {
 
                 int cat = Mathf.FloorToInt(m_Rect.localEulerAngles.z / (360f / 7));
 
-                cat = 1;
+                //cat = 1;
 
                 if (m_CategoryMap[cat] == Category.CAT_CROWN)
                 {
@@ -99,6 +101,16 @@ public class UIPvP : MonoBehaviour {
         m_TrophyGroup1.SetTrophyState(game.m_PieceA);
         m_TrophyGroup2.SetTrophyState(game.m_PieceB);
         UpdateProgress(game.m_SpinProgressA);
+        if (game.m_CurrentTurn == 1)
+        {
+            //Myturn
+            m_SpinButton.interactable = true;
+        }
+        else
+        {
+            //Their turn
+            m_SpinButton.interactable = false;
+        }
     }
 
     public void FullFillProgressBar()
@@ -108,6 +120,7 @@ public class UIPvP : MonoBehaviour {
 
     public void UpdateProgress(int prog)
     {
+        Debug.Log(prog);
         m_PivotImage.sprite = m_PivotSprite[prog];
 
         if (prog == 3)

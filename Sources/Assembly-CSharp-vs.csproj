@@ -58,6 +58,7 @@
      <Compile Include="Assets\Scripts\GameLogic\PVPState.cs" />
      <Compile Include="Assets\Scripts\GameLogic\PlayerProfile.cs" />
      <Compile Include="Assets\Scripts\GameLogic\Question.cs" />
+     <Compile Include="Assets\Scripts\GameLogic\Utils.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GameModeTab.cs" />
      <Compile Include="Assets\Scripts\GameTab.cs" />
@@ -80,6 +81,7 @@
      <Compile Include="Assets\Scripts\UIGotTrophy.cs" />
      <Compile Include="Assets\Scripts\UIMain.cs" />
      <Compile Include="Assets\Scripts\UINewGame.cs" />
+     <Compile Include="Assets\Scripts\UIPopup.cs" />
      <Compile Include="Assets\Scripts\UIProfile.cs" />
      <Compile Include="Assets\Scripts\UIPvP.cs" />
      <Compile Include="Assets\Scripts\UIQuestion.cs" />

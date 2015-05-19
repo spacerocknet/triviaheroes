@@ -97,11 +97,11 @@ public class LoadingScene : MonoBehaviour {
 
     public void SwitchToMainScene()
     {
-        //StartCoroutine(LoadNextScene("MainScene"));
+        StartCoroutine(LoadNextScene("MainScene"));
     }
 
     public void SwitchToRegisterScene()
     {
-        //StartCoroutine(LoadNextScene("RegisterScene"));
+        StartCoroutine(LoadNextScene("RegisterScene"));
     }
 }
