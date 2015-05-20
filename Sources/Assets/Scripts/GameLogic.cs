@@ -45,7 +45,7 @@ public class GameLogic : MonoBehaviour
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
         cs.MoveInFromRight();
-        cs.gameObject.GetComponent<UIQuestion>().SetQuestion(GetRandomQuestion());
+        //cs.gameObject.GetComponent<UIQuestion>().SetPVEQuestion();
     }
 
 

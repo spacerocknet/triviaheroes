@@ -29,6 +29,9 @@ public class GameManager : MonoBehaviour {
     private bool m_IsLastAnswerCorrect;
     private int m_LastAnswerChoice;
 
+    private bool m_IsPVE = false;
+    private int m_PVEQuestion = 0;
+
     private PVPState m_PVPState = new PVPState();
 
 
@@ -193,6 +196,21 @@ public class GameManager : MonoBehaviour {
         m_PVPState.m_CurrentQuestion++;
     }
 
+    public void DoDoGetPVEQuestionQuestionResult(string result)
+    {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
+        cs.Hide();        
+        cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
+        if (m_PVEQuestion == 0)
+        {
+            cs.MoveInFromRight();
+        }        
+        m_PVEQuestion++;
+        Question q = new Question(result);
+        cs.gameObject.GetComponent<UIQuestion>().SetPVEQuestion(q, m_PVEQuestion);
+        SetCurrentQuestion(q);
+    }
+
     public PlayerProfile GetPlayerProfile()
     {
         return m_PlayerProfile;
@@ -218,7 +236,17 @@ public class GameManager : MonoBehaviour {
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
         cs.Show();
+        m_IsPVE = false;
         NetworkManager.Instance.DoStartNewGame(friend);
+    }
+
+    public void OnStartPVEGame()
+    {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
+        cs.Show();
+        m_PVEQuestion = 0;
+        m_IsPVE = true;
+        NetworkManager.Instance.DoGetPVEQuestion();
     }
 
     public void OnCategoryConfirmToPlay(Category cat)
@@ -231,6 +259,10 @@ public class GameManager : MonoBehaviour {
     public void SetCurrentQuestion(Question q)
     {
         m_CurrentQuestion = q;
+    }
+
+    public void OnEndPvEGame()
+    {
     }
 
     public void OnAnswerSelect(int select)
@@ -255,24 +287,31 @@ public class GameManager : MonoBehaviour {
 
     public void OnShowAnswerEnded()
     {
-        if (m_PVPState.m_Type != PVPStateType.CHALLENGE || m_PVPState.m_CurrentQuestion == 5)
+        if (m_IsPVE)
         {
-            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
-            cs.MoveOutToRight((int)CanvasID.CANVAS_PVP);
+            NetworkManager.Instance.DoGetPVEQuestion();
         }
+        else
+        {
+            if (m_PVPState.m_Type != PVPStateType.CHALLENGE || m_PVPState.m_CurrentQuestion == 5)
+            {
+                CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
+                cs.MoveOutToRight((int)CanvasID.CANVAS_PVP);
+            }
 
 
-        if (m_PVPState.m_Type == PVPStateType.NORMAL)
-        {
-            HandleNormalAnswerEnded();                
-        }
-        else if (m_PVPState.m_Type == PVPStateType.TROPHY)
-        {
-            HandleTrophyAnswerEnded();            
-        }
-        else if (m_PVPState.m_Type == PVPStateType.CHALLENGE)
-        {
-            HandleChallengeAnswerEnded();
+            if (m_PVPState.m_Type == PVPStateType.NORMAL)
+            {
+                HandleNormalAnswerEnded();
+            }
+            else if (m_PVPState.m_Type == PVPStateType.TROPHY)
+            {
+                HandleTrophyAnswerEnded();
+            }
+            else if (m_PVPState.m_Type == PVPStateType.CHALLENGE)
+            {
+                HandleChallengeAnswerEnded();
+            }
         }
 
     }

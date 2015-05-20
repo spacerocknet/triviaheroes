@@ -50,9 +50,9 @@ public class UINewGame : MonoBehaviour {
 
         if (m_SelecteMode == GameMode.GAMEMODE_PVE)
         {
-            CanvasScript cs = m_NewGameCanvas.GetComponent<CanvasScript>();
-            cs.MoveOutToLeft();
-            GameLogic.Instance.OnStartPVEGame();
+            //CanvasScript cs = m_NewGameCanvas.GetComponent<CanvasScript>();
+            //cs.MoveOutToLeft();
+            GameManager.Instance.OnStartPVEGame();
         }
         else if (m_SelecteMode == GameMode.GAMEMODE_PVP)
         {

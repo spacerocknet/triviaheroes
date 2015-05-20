@@ -69,6 +69,11 @@ public class UIQuestion : MonoBehaviour {
         GameManager.Instance.OnAnswerSelect(3);        
     }
 
+    public void OnEndGame()
+    {
+        GameManager.Instance.OnEndPvEGame();
+    }
+
     public void SetQuestion(Question question)
     {
         m_QuestionText.text = question.m_Question;
@@ -91,6 +96,36 @@ public class UIQuestion : MonoBehaviour {
         }
 
         m_Question = question;
+
+        m_IsShowAnswer = false;
+    }
+
+    public void SetPVEQuestion(Question question, int number)
+    {
+        m_QuestionText.text = question.m_Question;
+        m_Answer0.text = question.m_Answer0;
+        m_Answer1.text = question.m_Answer1;
+        m_Answer2.text = question.m_Answer2;
+        m_Answer3.text = question.m_Answer3;
+        m_Timer = 60;
+
+        for (int i = 0; i < 4; i++)
+        {
+            m_CheckImage[i].enabled = false;
+            m_AnswerImage[i].sprite = m_AnswerSprite[i];
+            m_AnswerImage[i].GetComponent<Button>().interactable = true;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            m_HelpButtons[i].interactable = true;
+        }
+
+        m_Question = question;
+
+        m_QuestionTitle.text = "Question " + number.ToString() + ";";
+
+        m_IsShowAnswer = false;
     }
 
     public void ShowAnswer(int select, int answer)

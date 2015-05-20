@@ -72,7 +72,7 @@
         <int>0</int>
         <int>0</int>
       </m_PieceB>
-      <m_SpinProgressA>0</m_SpinProgressA>
+      <m_SpinProgressA>1</m_SpinProgressA>
       <m_SpinProgressB>0</m_SpinProgressB>
       <m_CurrentTurn>1</m_CurrentTurn>
       <m_TurnType>1</m_TurnType>

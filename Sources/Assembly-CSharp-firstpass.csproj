@@ -53,7 +53,7 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
- <HintPath>D:/DevSpace/TriviaHeroes/triviaheroes/Sources/Assets/plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+ <HintPath>D:/YOLO/TriviaHeroes/triviaheroes/Sources/Assets/plugins/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

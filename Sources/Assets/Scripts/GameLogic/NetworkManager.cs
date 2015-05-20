@@ -108,6 +108,14 @@ public class NetworkManager : MonoBehaviour {
         POST("http://54.163.250.79:9000/v1/quiz/request", dict, GameManager.Instance.DoTrophyChallangeNextQuestionResult);        
     }
 
+    public void DoGetPVEQuestion()
+    {
+        Dictionary<string, string> dict = new Dictionary<string, string>();
+        dict.Add("category", "Sports");
+        dict.Add("num", "1");
+        POST("http://54.163.250.79:9000/v1/quiz/request", dict, GameManager.Instance.DoDoGetPVEQuestionQuestionResult);   
+    }
+
     public void OnRegisterResult()
     {
     }
