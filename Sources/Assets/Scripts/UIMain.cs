@@ -16,11 +16,14 @@ public class UIMain : MonoBehaviour {
 
     public RectTransform m_MainPanel;
 
+    private int m_CurrentTab;
+
 	// Use this for initialization
 	void Start () {
         RefreshInfo();
         m_GameInfoList = new List<GameObject>();
-        ReloadYourTurnList();        
+        ReloadYourTurnList();
+        m_CurrentTab = 1;
 	}
 	
 	// Update is called once per frame
@@ -51,16 +54,19 @@ public class UIMain : MonoBehaviour {
     public void OnYourTurn()
     {
         ReloadYourTurnList();
+        m_CurrentTab = 1;
     }
 
     public void OnTheirTurn()
     {
         ReloadTheirTurnList();
+        m_CurrentTab = 2;
     }
 
     public void OnPastGame()
     {
         ReloadPassGameList();
+        m_CurrentTab = 3;
     }
 
     public void RefreshInfo()
@@ -149,5 +155,23 @@ public class UIMain : MonoBehaviour {
             }
         }
         m_MainPanel.sizeDelta = new Vector2(1440, 1200 + num * 200);
+    }
+
+    public void Refresh()
+    {
+        switch (m_CurrentTab)
+        {
+            case 1:
+                ReloadYourTurnList();
+                break;
+            case 2:
+                ReloadTheirTurnList();
+                break;
+            case 3:
+                ReloadYourTurnList();
+                break;
+            default:
+                break;
+        }
     }
 }

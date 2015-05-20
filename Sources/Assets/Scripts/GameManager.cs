@@ -198,6 +198,22 @@ public class GameManager : MonoBehaviour {
         return m_PlayerProfile;
     }
 
+    public void SkipQuestion()
+    {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
+        cs.Show();
+        NetworkManager.Instance.SkipQuestion((Category)m_CurrentQuestion.m_Category);
+    }
+
+    public void OnSkipQuestionResult(string result)
+    {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
+        cs.Hide();
+        Question q = new Question(result);
+        cs.gameObject.GetComponent<UIQuestion>().SetQuestion(q);
+        SetCurrentQuestion(q);
+    }
+
     public void OnStartPVPGame(string friend)
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
@@ -242,7 +258,7 @@ public class GameManager : MonoBehaviour {
         if (m_PVPState.m_Type != PVPStateType.CHALLENGE || m_PVPState.m_CurrentQuestion == 5)
         {
             CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
-            cs.MoveOutToRight();
+            cs.MoveOutToRight((int)CanvasID.CANVAS_PVP);
         }
 
 
@@ -301,17 +317,18 @@ public class GameManager : MonoBehaviour {
 
         if (m_IsLastAnswerCorrect)
         {
-            AddMyChallengeScore();            
+            AddMyChallengeScore();      
         }
 
         if (m_PVPState.m_CurrentQuestion == 5)
         {
+            EndTurn();    
         }
         else
         {
             NetworkManager.Instance.DoTrophyChallangeNextQuestion();
         }
-        EndTurn();
+        
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
         cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
     }
@@ -334,10 +351,17 @@ public class GameManager : MonoBehaviour {
 
     public void OnSelectChallenge()
     {
-        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECHALLENGE);
-        cs.MoveInFromRight();
+        if (CanChallenge())
+        {
+            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECHALLENGE);
+            cs.MoveInFromRight();
+            cs.gameObject.GetComponent<UISelectPieceChallenge>().SetTrophyState(GetMyTrophy(), GetOpponentTrophy());            
+        }
 
-        cs.gameObject.GetComponent<UISelectPieceChallenge>().SetTrophyState(GetMyTrophy(), GetOpponentTrophy());
+        else
+        {
+            
+        }
     }
 
     public void OnTrophyClaimSelected(int trophy)
@@ -358,6 +382,7 @@ public class GameManager : MonoBehaviour {
         SetPVPState(PVPStateType.CHALLENGE, (Category)mytrophy, (Category)theirtrophy);
 
         m_GameList.m_GameList[m_CurrentGame].m_Challenger = m_PlayerProfile.m_PlayerID;
+        m_GameList.m_GameList[m_CurrentGame].m_ChallengeState = 0;
 
         SetMyBetTrophy(mytrophy);
         SetOpponentBetTrophy(theirtrophy);
@@ -366,17 +391,27 @@ public class GameManager : MonoBehaviour {
     public void SetPVPState(PVPStateType type, Category targetTrophy, Category betTrophy)
     {
         m_PVPState.m_Type = type;
-        m_PVPState.m_BetTrophy = targetTrophy;
+        m_PVPState.m_TargetTrophy = targetTrophy;
         m_PVPState.m_BetTrophy = betTrophy;
         m_PVPState.m_CurrentQuestion = 0;        
     }
 
     public void TrophyAcquired(Category m_Trophy)
     {
-        m_GameList.m_GameList[m_CurrentGame].m_PieceA[(int)m_Trophy] = 1;
-        m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA = 0;
+        SetTrophyAcquired((int)m_Trophy);
+        m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA = 0;        
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
+        ChecGameCompleted();
         SaveSessionList();
+    }
+
+    public void ChecGameCompleted()
+    {
+        if (GetMyNumberOfTrophy() == 6)
+        {
+            m_GameList.m_GameList[m_CurrentGame].m_IsCompleted = true;
+            SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).GetComponent<UIPvP>().ShowResult();
+        }
     }
 
     public int GetGameIndexByID(int gameid) {
@@ -436,28 +471,86 @@ public class GameManager : MonoBehaviour {
                         gi.m_SpinProgressB++;
                         gi.m_SpinProgressB = Mathf.Clamp(gi.m_SpinProgressB, 0, 2);
                     }
-                    //AddOneTrophy
-                    if (Random.Range(0, 2) == 1)
-                    {
-                        for (int k = 0; k < gi.m_PieceB.Count; k++)
-                        {
-                            if (gi.m_PieceB[k] == 0)
-                            {
-                                gi.m_PieceB[k] = 1;
-                                break;
-                            }
-                        }
-                    }
+
                     //Finish challenge
                     if (m_GameList.m_GameList[m_CurrentGame].m_ChallengeState == 1)
                     {
                         m_GameList.m_GameList[m_CurrentGame].m_ChallengeState++;
                         m_GameList.m_GameList[m_CurrentGame].m_ChallengeScoreB = 0;
+
+                        m_GameList.m_GameList[m_CurrentGame].m_PieceA[m_GameList.m_GameList[m_CurrentGame].m_BetTrophyB] = 1;
+                        m_GameList.m_GameList[m_CurrentGame].m_PieceB[m_GameList.m_GameList[m_CurrentGame].m_BetTrophyB] = 0;
+                    }
+                    else
+                    {
+                        //AddOneTrophy
+                        if (Random.Range(0, 2) == 1)
+                        {
+                            for (int k = 0; k < gi.m_PieceB.Count; k++)
+                            {
+                                if (gi.m_PieceB[k] == 0)
+                                {
+                                    gi.m_PieceB[k] = 1;
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }            
         }
         m_GameList.Save();
+    }
+
+    public bool CanChallenge()
+    {
+        List<int> myTrophy = GetMyTrophy();
+        List<int> theirTrophy = GetOpponentTrophy();
+        int my = -1;
+        int their = -1;
+        bool flag = false;
+        for (int i = 0; i < myTrophy.Count; i++)
+        {
+            
+            if (myTrophy[i] == 0 || theirTrophy[i] == 1)
+            {                
+            }
+            else
+            {                
+                if (!flag)
+                {                    
+                    flag = true;
+                    my = i;
+                }
+            }
+        }
+        flag = false;
+        for (int i = 0; i < theirTrophy.Count; i++)
+        {
+            
+            if (theirTrophy[i] == 0 || myTrophy[i] == 1)
+            {
+                
+            }
+            else
+            {
+                
+                if (!flag)
+                {
+                    
+                    flag = true;
+                    their = i;
+                }
+            }
+        }
+        if (their != -1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 #region SessionInfoManupilate
@@ -561,6 +654,7 @@ public class GameManager : MonoBehaviour {
 
     public List<int> GetCurrentTrophyState()
     {
+        Debug.Log(m_GameList.m_GameList[m_CurrentGame].m_PlayerA + "  " + m_PlayerProfile.m_PlayerID);
         if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
         {
             return m_GameList.m_GameList[m_CurrentGame].m_PieceA;
@@ -575,11 +669,40 @@ public class GameManager : MonoBehaviour {
     {
         if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
         {
-            m_GameList.m_GameList[m_CurrentGame].m_PieceA[trophy] = 1;
+            m_GameList.m_GameList[m_CurrentGame].m_PieceA[trophy] = 1;            
         }
         else
         {
             m_GameList.m_GameList[m_CurrentGame].m_PieceB[trophy] = 1;
+        }
+    }
+
+    public int GetMyNumberOfTrophy()
+    {
+        int count = 0;
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        {
+            for (int i = 0; i < m_GameList.m_GameList[m_CurrentGame].m_PieceA.Count; i++)
+            {
+                if (m_GameList.m_GameList[m_CurrentGame].m_PieceA[i] == 1)
+                {
+                    count++;
+                }
+            }
+            Debug.Log("Trophy count: " + count);
+            return count;
+        }
+        else
+        {
+            for (int i = 0; i < m_GameList.m_GameList[m_CurrentGame].m_PieceB.Count; i++)
+            {
+                if (m_GameList.m_GameList[m_CurrentGame].m_PieceB[i] == 1)
+                {
+                    count++;
+                }
+            }
+            Debug.Log("Trophy count: " + count);
+            return count;
         }
     }
 #endregion

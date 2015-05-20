@@ -22,9 +22,9 @@ public class UIGotPuzzle : MonoBehaviour {
     public void OnRespin()
     {
         CanvasScript cv = gameObject.GetComponent<CanvasScript>();
-        cv.MoveOutToRight();
+        cv.MoveOutToRight((int)CanvasID.CANVAS_PVP);
         UIPvP gm = m_GameMainCanvas.GetComponent<UIPvP>();
-        gm.Spin();
+        gm.Respin();
     }
 
     public void OnPlay()

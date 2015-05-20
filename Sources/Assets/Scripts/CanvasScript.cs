@@ -19,6 +19,9 @@ public class CanvasScript : MonoBehaviour {
     Vector3 startPos;
     Vector3 endPos;
 
+    private bool m_IsActive = false;
+    private int m_NextID;
+
 	// Use this for initialization
 	void Start () {
         rt = gameObject.GetComponent<RectTransform>();
@@ -45,8 +48,22 @@ public class CanvasScript : MonoBehaviour {
                 rt.position = endPos;
                 if (endPos.Equals(m_LeftPos.position))
                 {
-                    Debug.Log("FAK");
+                    //Debug.Log("FAK");
                     rt.position = rt.position - new Vector3(1000, 0, 0);
+                }
+
+                if (endPos.Equals(m_RootPos.position))
+                {
+                    SetActive(true);
+                }
+                else
+                {
+                    //Debug.Break();
+                    SetActive(false);
+                    if (m_NextID != -1)
+                    {
+                        SceneManager.Instance.GetCanvasByID((CanvasID)m_NextID).SetActive(true);
+                    }
                 }
             }
         }
@@ -55,34 +72,43 @@ public class CanvasScript : MonoBehaviour {
 
     public void MoveInFromRight()
     {
+        gameObject.SetActive(true);
+        SetActive(true);
         Move(m_RightPos.position, m_RootPos.position, m_MoveDuration);
     }
 
-    public void MoveOutToRight()
+    public void MoveOutToRight(int cid = -1)
     {
         Move(m_RootPos.position, m_RightPos.position, m_MoveDuration);
+        m_NextID = cid;
     }
 
     public void MoveInFromLeft()
     {
+        SetActive(true);
+        gameObject.SetActive(true);
         Move(m_LeftPos.position, m_RootPos.position, m_MoveDuration);
     }
 
 
     public void MoveInFromLeftFar()
     {
+        SetActive(true);
+        gameObject.SetActive(true);
         Move(m_LeftFar.position, m_RootPos.position, m_MoveDuration);
     }
 
 
-    public void MoveOutToLeft()
+    public void MoveOutToLeft(int cid = -1)
     {
         Move(m_RootPos.position, m_LeftPos.position, m_MoveDuration);
+        m_NextID = cid;
     }
 
-    public void MoveOutToLeftFar()
+    public void MoveOutToLeftFar(int cid = -1)
     {
         Move(m_RootPos.position, m_LeftFar.position, m_MoveDuration);
+        m_NextID = cid;
     }
 
     public void Move(Vector3 _startPos, Vector3 _endPos, float time)
@@ -97,13 +123,36 @@ public class CanvasScript : MonoBehaviour {
         m_MoveTime = 0;
     }
 
-    public void Show()
+    public void Show(int cid = -1)
     {
+        //SetActive(true);
+        m_NextID = cid;
         rt.position = m_RootPos.position;
+        gameObject.SetActive(true);
     }
 
     public void Hide()
     {
+        //SetActive(false);
         rt.position = m_LeftFar.position;
+        gameObject.SetActive(false);
+        if (m_NextID != -1)
+        {
+            SceneManager.Instance.GetCanvasByID((CanvasID)m_NextID).SetActive(true);
+        }
+    }
+
+    public void SetActive(bool active)
+    {
+        m_IsActive = active;
+        if (active)
+        {
+            SceneManager.Instance.SetActiveScene(this);
+        }
+    }
+
+    public bool IsActive()
+    {
+        return m_IsActive;
     }
 }

@@ -22,24 +22,34 @@ public class UISelectPieceClaim : MonoBehaviour {
 
     public void UpdateTrophyState()
     {
+        bool flag = false;
         List<int> trophy = GameManager.Instance.GetCurrentTrophyState();
         for (int i = 0; i < 6; i++)
         {
             if (trophy[i] == 0)
             {
                 m_TrophyImage[i].sprite = m_TrophySprite[i];
-                
+                m_TrophyImage[i].GetComponent<Button>().interactable = true;
+                m_CheckImage[i].enabled = false;
+                if (!flag)
+                {
+                    m_CheckImage[i].enabled = true;
+                    flag = true;
+                    m_CurrentSelected = i;
+                }
             }
             else
             {
-                m_TrophyImage[i].sprite = m_TrophySprite[6 + i];                
-            }
-            m_CheckImage[i].enabled = false;
+                m_TrophyImage[i].sprite = m_TrophySprite[6 + i];
+                m_TrophyImage[i].GetComponent<Button>().interactable = false;
+                m_CheckImage[i].enabled = false;
+            }            
         }
     }
 
     void UpdateSelected(int selected)
     {
+        
         m_CurrentSelected = selected;
         for (int i = 0; i < 6; i++)
         {

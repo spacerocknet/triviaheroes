@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 
 public class UIPvP : MonoBehaviour {
@@ -23,6 +24,8 @@ public class UIPvP : MonoBehaviour {
     public Image m_PivotImage;
 
     public Button m_SpinButton;
+
+    public GameObject m_ResultPanel;
     private int m_Progress;
 
     private Category[] m_CategoryMap;
@@ -78,19 +81,33 @@ public class UIPvP : MonoBehaviour {
 
     public void Spin()
     {
-        m_IsSpinning = true;
-        m_StartRotation = m_Rect.localEulerAngles;
-        m_EndRotation = m_Rect.localEulerAngles + new Vector3(0, 0, Random.RandomRange(360 * 5, 360 * 6));
-        m_MoveTime = 0;
+        Debug.Log("SPINNNNN CALL");
+        if (GetComponent<CanvasScript>().IsActive())
+        {
+            Debug.Log("SPINNNNN");
+            if (!m_IsSpinning)
+            {
+                m_IsSpinning = true;
+                m_StartRotation = m_Rect.localEulerAngles;
+                m_EndRotation = m_Rect.localEulerAngles + new Vector3(0, 0, Random.RandomRange(360 * 5, 360 * 6));
+                m_MoveTime = 0;
+            }
+        }
     }
 
     public void OnBack()
-    {
-        CanvasScript cs = gameObject.GetComponent<CanvasScript>();
-        cs.MoveOutToRight();
+    {        
+        if (GetComponent<CanvasScript>().IsActive())
+        {
+            m_IsSpinning = false;
+            CanvasScript cs = gameObject.GetComponent<CanvasScript>();
+            cs.MoveOutToRight();
 
-        cs = m_MainCanvas.GetComponent<CanvasScript>();
-        cs.MoveInFromLeft();
+            cs = m_MainCanvas.GetComponent<CanvasScript>();
+            cs.MoveInFromLeft();
+
+            cs.GetComponent<UIMain>().Refresh();
+        }
     }
 
     public void SetGameInfo(GameInfo game)
@@ -105,12 +122,30 @@ public class UIPvP : MonoBehaviour {
         {
             //Myturn
             m_SpinButton.interactable = true;
+            if (game.m_ChallengeState == 2 && game.m_Challenger == GameManager.Instance.GetPlayerProfile().m_PlayerID)
+            {
+                string s = "You won the challenge";
+                CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+                cs.Show((int)CanvasID.CANVAS_PVP);
+                cs.GetComponent<UIPopup>().SetText(s);
+                game.m_ChallengeState++;
+                GameManager.Instance.m_GameList.Save();
+            }
         }
         else
         {
             //Their turn
             m_SpinButton.interactable = false;
         }
+        if (game.m_IsCompleted)
+        {
+            m_ResultPanel.SetActive(true);
+        }
+        else
+        {
+            m_ResultPanel.SetActive(false);
+        }
+
     }
 
     public void FullFillProgressBar()
@@ -132,5 +167,26 @@ public class UIPvP : MonoBehaviour {
     public void OnFullProgress()
     {
         GameManager.Instance.OnFullProgress();
+    }
+
+    public void Respin()
+    {
+        StartCoroutine("DoRespin");
+    }
+
+    private IEnumerator DoRespin()
+    {
+        while (!GetComponent<CanvasScript>().IsActive())
+        {
+            yield return null;
+        }
+        
+        Spin();
+    }
+
+    public void ShowResult()
+    {
+        //Debug.Break();
+        m_ResultPanel.SetActive(true);
     }
 }

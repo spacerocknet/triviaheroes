@@ -71,10 +71,11 @@ public class UISelectPieceChallenge : MonoBehaviour {
         bool flag = false;
         for (int i = 0; i < myTrophy.Count; i++) {
             m_CheckImage[i].enabled = false;
-            if (myTrophy[i] == 0) {
+            if (myTrophy[i] == 0 /*|| theirTrophy[i] == 1*/) {
                 m_TrophyImage[i].sprite = m_TrophySprite[i + 6];
                 m_TrophyImage[i].GetComponent<Button>().interactable = false;
             } else {
+                bool found = false;                
                 m_TrophyImage[i].sprite = m_TrophySprite[i];
                 m_TrophyImage[i].GetComponent<Button>().interactable = true;
                 if (!flag)
@@ -83,14 +84,13 @@ public class UISelectPieceChallenge : MonoBehaviour {
                     flag = true;
                     m_MyTrophy = i;
                 }
-            }
-            
+            }            
         }
         flag = false;
         for (int i = 0; i < theirTrophy.Count; i++)
         {
             m_CheckImage[i + 6].enabled = false;
-            if (theirTrophy[i] == 0)
+            if (theirTrophy[i] == 0 || myTrophy[i] == 1)
             {
                 m_TrophyImage[i + 6].sprite = m_TrophySprite[i + 6];
                 m_TrophyImage[i + 6].GetComponent<Button>().interactable = false;

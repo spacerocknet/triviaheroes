@@ -68,6 +68,14 @@ public class NetworkManager : MonoBehaviour {
         StartCoroutine(ActuallyDoStartNewGame(friend));
     }
 
+    public void SkipQuestion(Category cat)
+    {
+        Dictionary<string, string> dict = new Dictionary<string, string>();
+        dict.Add("category", "Sports");
+        dict.Add("num", "1");
+        POST("http://54.163.250.79:9000/v1/quiz/request", dict, GameManager.Instance.OnSkipQuestionResult);   
+    }
+
     public void DoCategoryConfirmToPlay(Category cat)
     {
         Dictionary<string, string> dict = new Dictionary<string, string>();
