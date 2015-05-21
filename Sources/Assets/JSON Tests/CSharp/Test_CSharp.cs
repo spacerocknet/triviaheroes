@@ -81,7 +81,7 @@ class Test_CSharp : MonoBehaviour
     void Start()
     {
         Test();
-		Debug.Log("Test results:\n" + m_InGameLog);
+		
     }
 	void OnGUI()
 	{

@@ -37,6 +37,6 @@ public class PageViewItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     public void OnEndDrag(PointerEventData eventData)
     {
         m_ParentScrollRect.OnEndDrag(eventData);
-        Debug.Log(m_ScrollRect.horizontalNormalizedPosition);
+        //Debug.Log(m_ScrollRect.horizontalNormalizedPosition);
     }
 }

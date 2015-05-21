@@ -22,6 +22,7 @@ public class UIQuestion : MonoBehaviour {
     Question m_Question;
 
     public Button[] m_HelpButtons;
+    public Button m_EndGameButton;
 
 	// Use this for initialization
 	void Start () {
@@ -71,7 +72,7 @@ public class UIQuestion : MonoBehaviour {
 
     public void OnEndGame()
     {
-        GameManager.Instance.OnEndPvEGame();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_ENDGAMECONFIRM).Show();
     }
 
     public void SetQuestion(Question question)
@@ -98,6 +99,8 @@ public class UIQuestion : MonoBehaviour {
         m_Question = question;
 
         m_IsShowAnswer = false;
+
+        m_EndGameButton.gameObject.SetActive(false);
     }
 
     public void SetPVEQuestion(Question question, int number)
@@ -126,6 +129,8 @@ public class UIQuestion : MonoBehaviour {
         m_QuestionTitle.text = "Question " + number.ToString() + ";";
 
         m_IsShowAnswer = false;
+
+        m_EndGameButton.gameObject.SetActive(true);
     }
 
     public void ShowAnswer(int select, int answer)

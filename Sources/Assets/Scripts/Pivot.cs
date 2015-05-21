@@ -14,7 +14,7 @@ public class Pivot : MonoBehaviour {
     {
         GameObject go = GameObject.Find("CanvasPvP"); 
         m_UIPvP = go.GetComponent<UIPvP>();
-        Debug.Log(m_UIPvP);
+        //Debug.Log(m_UIPvP);
     }
 
 	void Start () {
@@ -37,7 +37,7 @@ public class Pivot : MonoBehaviour {
             {
                 m_TargetRotation = new Vector3(0, 0, 0);
             }
-            //Debug.Log(z + " " + m_TargetRotation.z);
+            ////Debug.Log(z + " " + m_TargetRotation.z);
         }
 	}
 

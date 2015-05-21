@@ -90,7 +90,7 @@ public class UINewGame : MonoBehaviour {
         for (int i = 0; i < num; i++)
         {
             GameObject go = (GameObject)GameObject.Instantiate(m_FriendPrefab);
-            go.transform.parent = m_MultiPanel.transform;
+            go.transform.SetParent(m_MultiPanel.transform);
             RectTransform rt = go.GetComponent<RectTransform>();
             rt.anchoredPosition = new Vector3(0, -90 - i * 180, 0);
             rt.localScale = new Vector3(1, 1, 1);
@@ -146,7 +146,7 @@ public class UINewGame : MonoBehaviour {
                 {
                      FriendList fl = GameManager.Instance.GetPlayerProfile().m_FriendList;
                      m_SelectedFriend = fl.m_FriendList[i - 1];
-                     Debug.Log(friend.name + " " + i + " " + m_SelectedFriend);
+                     //Debug.Log(friend.name + " " + i + " " + m_SelectedFriend);
                 }
             }
         }

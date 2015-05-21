@@ -73,7 +73,7 @@ public class HorizontalScrollSnap : MonoBehaviour
         {
             m_Lerp = true;
             m_LerpTarget = FindClosestFrom(ScreensContainer.gameObject.GetComponent<RectTransform>().anchoredPosition.x, m_Positions);            
-            Debug.Log("Target: " + m_LerpTarget + " " + ScreensContainer.gameObject.GetComponent<RectTransform>().anchoredPosition.x);            
+            //Debug.Log("Target: " + m_LerpTarget + " " + ScreensContainer.gameObject.GetComponent<RectTransform>().anchoredPosition.x);            
         }
     }
 

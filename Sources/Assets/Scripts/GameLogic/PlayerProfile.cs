@@ -54,6 +54,7 @@ public class PlayerProfile{
 
     public void Save(string path = "TriviaPlayerProfile.xml")
     {
+        path = Utils.pathForDocumentsFile(path);
         var serializer = new XmlSerializer(typeof(PlayerProfile));
         using (var stream = new FileStream(path, FileMode.Create))
         {
@@ -63,10 +64,12 @@ public class PlayerProfile{
 
     public static PlayerProfile Load(string path = "TriviaPlayerProfile.xml")
     {
+        path = Utils.pathForDocumentsFile(path);
         var serializer = new XmlSerializer(typeof(PlayerProfile));
         using (var stream = new FileStream(path, FileMode.Open))
         {
             return serializer.Deserialize(stream) as PlayerProfile;
         }
     }
+
 }

@@ -65,17 +65,17 @@ public class LoadingScene : MonoBehaviour {
 
     private IEnumerator WaitForRequest(WWW www)
     {
-        Debug.Log(www.progress);
+        ////Debug.Log(www.progress);
         yield return www;
 
         // check for errors
         if (www.error == null)
         {
-            Debug.Log("WWW Ok!: " + www.text);
+            //Debug.Log("WWW Ok!: " + www.text);
         }
         else
         {
-            Debug.Log("WWW Error: " + www.error);
+            //Debug.Log("WWW Error: " + www.error);
         }
     }
 	

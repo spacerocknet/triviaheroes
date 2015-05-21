@@ -103,21 +103,21 @@ public class GameManager : MonoBehaviour {
 
     public void LoadPlayerProfile()
     {
-        Debug.Log("LoadPlayerProfile");
-        if (System.IO.File.Exists("TriviaPlayerProfile.xml"))
+        
+        if (System.IO.File.Exists(Utils.pathForDocumentsFile("TriviaPlayerProfile.xml")))
         {
             m_PlayerProfile = PlayerProfile.Load();
             GameObject go = GameObject.Find("GameLoading");
             m_GameList = GameList.Load();
             go.GetComponent<LoadingScene>().SwitchToMainScene();
-            Debug.Log(m_PlayerProfile.m_PlayerName);
+            
             SimulateOtherPlayers();
         }
         else
         {
             GameObject go = GameObject.Find("GameLoading");
             go.GetComponent<LoadingScene>().SwitchToRegisterScene();
-            Debug.Log("2");
+            //Debug.Log("2");
             m_GameList = GameList.CreateEmptyGameList();
         }
     }
@@ -127,14 +127,14 @@ public class GameManager : MonoBehaviour {
         var ret = JSONNode.Parse(result);
         if (ret["result"].AsBool)
         {
-            Debug.Log("Register Successful");
+            //Debug.Log("Register Successful");
             m_PlayerProfile = new PlayerProfile(ret["name"], ret["sex"].AsInt);
             Application.LoadLevel("MainScene");
             m_PlayerProfile.Save();
         }
         else
         {
-            Debug.Log("Register Unsuccessful");
+            //Debug.Log("Register Unsuccessful");
         }        
     }
 
@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour {
 
     public void OnTrophyClaimSelectedResult(string result)
     {
-        Debug.Log(result);
+        //Debug.Log(result);
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
         cs.Hide();
         cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour {
 
     public void OnTrophyChallengeSelectedResult(string result)
     {
-        Debug.Log(result);
+        //Debug.Log(result);
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
         cs.Hide();
         cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
@@ -188,7 +188,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void DoTrophyChallangeNextQuestionResult(string result) {
-        Debug.Log(result);        
+        //Debug.Log(result);        
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);        
         Question q = new Question(result);
         cs.gameObject.GetComponent<UIQuestion>().SetQuestion(q);
@@ -263,33 +263,49 @@ public class GameManager : MonoBehaviour {
 
     public void OnEndPvEGame()
     {
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_ENDGAMERESULT).Show();
+    }
+
+    public void OnEndPvEGameConfirm()
+    {
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_ENDGAMERESULT).Hide();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION).MoveOutToRight();
     }
 
     public void OnAnswerSelect(int select)
     {
-        if (select == m_CurrentQuestion.m_CorrectAnswer)
-        {
-            //Right
-            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
-            cs.gameObject.GetComponent<UIQuestion>().ShowAnswer(select, m_CurrentQuestion.m_CorrectAnswer);
-            m_IsLastAnswerCorrect = true;
-            m_LastAnswerChoice = select;
-        }
-        else
-        {
-            //Wrong
-            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
-            cs.gameObject.GetComponent<UIQuestion>().ShowAnswer(select, m_CurrentQuestion.m_CorrectAnswer);
-            m_IsLastAnswerCorrect = false;
-            m_LastAnswerChoice = select;
-        }
+
+            if (select == m_CurrentQuestion.m_CorrectAnswer)
+            {
+                //Right
+                CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
+                cs.gameObject.GetComponent<UIQuestion>().ShowAnswer(select, m_CurrentQuestion.m_CorrectAnswer);
+                m_IsLastAnswerCorrect = true;
+                m_LastAnswerChoice = select;
+            }
+            else
+            {
+                //Wrong
+                CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
+                cs.gameObject.GetComponent<UIQuestion>().ShowAnswer(select, m_CurrentQuestion.m_CorrectAnswer);
+                m_IsLastAnswerCorrect = false;
+                m_LastAnswerChoice = select;
+            }
+        
     }
 
     public void OnShowAnswerEnded()
     {
         if (m_IsPVE)
         {
-            NetworkManager.Instance.DoGetPVEQuestion();
+            if (m_IsLastAnswerCorrect)
+            {
+                NetworkManager.Instance.DoGetPVEQuestion();
+            }
+            else
+            {
+                OnEndPvEGame();
+            }
         }
         else
         {
@@ -351,25 +367,27 @@ public class GameManager : MonoBehaviour {
 
     void HandleChallengeAnswerEnded()
     {
-        SetChallengeQuestion(m_PVPState.m_CurrentQuestion, m_CurrentQuestion.m_QID, m_LastAnswerChoice);
-        
 
-        if (m_IsLastAnswerCorrect)
-        {
-            AddMyChallengeScore();      
-        }
+            SetChallengeQuestion(m_PVPState.m_CurrentQuestion, m_CurrentQuestion.m_QID, m_LastAnswerChoice);
 
-        if (m_PVPState.m_CurrentQuestion == 5)
-        {
-            EndTurn();    
-        }
-        else
-        {
-            NetworkManager.Instance.DoTrophyChallangeNextQuestion();
-        }
+
+            if (m_IsLastAnswerCorrect)
+            {
+                AddMyChallengeScore();
+            }
+
+            if (m_PVPState.m_CurrentQuestion == 5)
+            {
+                EndTurn();
+            }
+            else
+            {
+                NetworkManager.Instance.DoTrophyChallangeNextQuestion();
+            }
+
+            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
+            cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
         
-        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
-        cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
     }
 
     public void OnFullProgress()
@@ -693,7 +711,7 @@ public class GameManager : MonoBehaviour {
 
     public List<int> GetCurrentTrophyState()
     {
-        Debug.Log(m_GameList.m_GameList[m_CurrentGame].m_PlayerA + "  " + m_PlayerProfile.m_PlayerID);
+        //Debug.Log(m_GameList.m_GameList[m_CurrentGame].m_PlayerA + "  " + m_PlayerProfile.m_PlayerID);
         if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
         {
             return m_GameList.m_GameList[m_CurrentGame].m_PieceA;
@@ -728,7 +746,7 @@ public class GameManager : MonoBehaviour {
                     count++;
                 }
             }
-            Debug.Log("Trophy count: " + count);
+            //Debug.Log("Trophy count: " + count);
             return count;
         }
         else
@@ -740,7 +758,7 @@ public class GameManager : MonoBehaviour {
                     count++;
                 }
             }
-            Debug.Log("Trophy count: " + count);
+            //Debug.Log("Trophy count: " + count);
             return count;
         }
     }

@@ -48,8 +48,9 @@ public class CanvasScript : MonoBehaviour {
                 rt.position = endPos;
                 if (endPos.Equals(m_LeftPos.position))
                 {
-                    //Debug.Log("FAK");
+                    ////Debug.Log("FAK");
                     rt.position = rt.position - new Vector3(1000, 0, 0);
+
                 }
 
                 if (endPos.Equals(m_RootPos.position))

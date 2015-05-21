@@ -13,7 +13,7 @@ public class UIProfile : MonoBehaviour {
         for (int i = 0; i < num; i++)
         {
             GameObject go = (GameObject)GameObject.Instantiate(m_AchievementPrefab);
-            go.transform.parent = m_AchievementPanel.transform;
+            go.transform.SetParent(m_AchievementPanel.transform);
             RectTransform rt = go.GetComponent<RectTransform>();
             rt.anchoredPosition = new Vector3(0, -90 - i * 180, 0);
             rt.localScale = new Vector3(1, 1, 1);

@@ -81,10 +81,10 @@ public class UIPvP : MonoBehaviour {
 
     public void Spin()
     {
-        Debug.Log("SPINNNNN CALL");
+        //Debug.Log("SPINNNNN CALL");
         if (GetComponent<CanvasScript>().IsActive())
         {
-            Debug.Log("SPINNNNN");
+            //Debug.Log("SPINNNNN");
             if (!m_IsSpinning)
             {
                 m_IsSpinning = true;
@@ -155,7 +155,7 @@ public class UIPvP : MonoBehaviour {
 
     public void UpdateProgress(int prog)
     {
-        Debug.Log(prog);
+        //Debug.Log(prog);
         m_PivotImage.sprite = m_PivotSprite[prog];
 
         if (prog == 3)

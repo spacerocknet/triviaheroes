@@ -103,6 +103,7 @@ public class GameList
 
     public void Save(string path = "TriviaSessionList.xml")
     {
+        path = Utils.pathForDocumentsFile(path);
         var serializer = new XmlSerializer(typeof(GameList));
         using (var stream = new FileStream(path, FileMode.Create))
         {
@@ -112,6 +113,7 @@ public class GameList
 
     public static GameList Load(string path = "TriviaSessionList.xml")
     {
+        path = Utils.pathForDocumentsFile(path);
         try
         {
             var serializer = new XmlSerializer(typeof(GameList));

@@ -54,7 +54,7 @@ public class NetworkManager : MonoBehaviour {
         {
             ret["opponent"] = friend;
         }
-        Debug.Log("HIHI");
+        //Debug.Log("HIHI");
         GameManager.Instance.OnStartNewGameResult(ret.ToString());
     }
 
@@ -158,18 +158,18 @@ public class NetworkManager : MonoBehaviour {
 
     private IEnumerator WaitForRequest(WWW www, OnServerCallBack callback)
     {
-        Debug.Log(www.progress);
+        //Debug.Log(www.progress);
         yield return www;
 
         // check for errors
         if (www.error == null)
         {
-            Debug.Log(www.text);
+            //Debug.Log(www.text);
             callback(www.text);            
         }
         else
         {
-            Debug.Log("WWW Error: " + www.error);
+            //Debug.Log("WWW Error: " + www.error);
         }
     }
 }

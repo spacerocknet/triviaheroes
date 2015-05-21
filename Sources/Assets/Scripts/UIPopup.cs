@@ -24,4 +24,6 @@ public class UIPopup : MonoBehaviour {
     {
         m_MessageText.text = text;              
     }
+
+
 }

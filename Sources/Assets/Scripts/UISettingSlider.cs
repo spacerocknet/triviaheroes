@@ -15,7 +15,7 @@ public class UISettingSlider : MonoBehaviour {
 
     public void OnBack()
     {
-        Debug.Log("Back");
+        //Debug.Log("Back");
         CanvasScript cv = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SETTING_SLIDER);
         cv.MoveOutToLeftFar();
     }

@@ -23,7 +23,7 @@ public class StoreCustomizePage : MonoBehaviour {
         for (int i = 0; i < m_NumberOfOption; i++)
         {
             GameObject go = (GameObject)GameObject.Instantiate(m_ItemSelectPagePrefab);
-            go.transform.parent = panel.transform;
+            go.transform.SetParent(panel.transform);
             go.transform.localScale = new Vector3(1, 1, 1);
             go.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -150 - i * 200, 0);
 
@@ -31,7 +31,7 @@ public class StoreCustomizePage : MonoBehaviour {
             {
                 GameObject panel1 = go.transform.FindChild("Panel").gameObject;
                 GameObject go1 = (GameObject)GameObject.Instantiate(m_ItemPrefab);
-                go1.transform.parent = panel1.transform;
+                go1.transform.SetParent(panel1.transform);
                 go1.transform.localScale = new Vector3(1, 1, 1);
                 go1.GetComponent<RectTransform>().anchoredPosition = new Vector3(200 + 0 + j * 200, 0, 0);
             }

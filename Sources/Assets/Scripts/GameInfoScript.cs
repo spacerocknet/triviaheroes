@@ -28,7 +28,7 @@ public class GameInfoScript : MonoBehaviour {
 
     public void OnGameSelect()
     {
-        Debug.Log("Game selected");
+        //Debug.Log("Game selected");
         GameManager gm = m_GameManager.GetComponent<GameManager>();
         gm.OnContinueGame(m_GameID);
     }

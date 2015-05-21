@@ -43,7 +43,7 @@ public class UIMain : MonoBehaviour {
 
     public void OnNewGame()
     {
-        Debug.Log("On New Game");
+        //Debug.Log("On New Game");
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME);
         cs.MoveInFromRight();
 
@@ -71,7 +71,7 @@ public class UIMain : MonoBehaviour {
 
     public void RefreshInfo()
     {
-        Debug.Log(GameManager.Instance.GetPlayerProfile().m_PlayerName);
+        //Debug.Log(GameManager.Instance.GetPlayerProfile().m_PlayerName);
         m_TextName.text = GameManager.Instance.GetPlayerProfile().m_PlayerName;
         m_TextLives.text = GameManager.Instance.GetPlayerProfile().m_Lives.ToString();
         m_TextCoin.text = GameManager.Instance.GetPlayerProfile().m_Coin.ToString();
@@ -98,7 +98,7 @@ public class UIMain : MonoBehaviour {
             if (gl.m_GameList[i].m_CurrentTurn == 1 && !gl.m_GameList[i].m_IsCompleted)
             {
                 GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
-                go.transform.parent = m_MainPanel.gameObject.transform;
+                go.transform.SetParent(m_MainPanel.gameObject.transform);
                 RectTransform rt = go.GetComponent<RectTransform>();
                 rt.localPosition = new Vector3(0, -1200 - num * 200, 0);
                 rt.localScale = new Vector3(1, 1, 1);
@@ -115,7 +115,7 @@ public class UIMain : MonoBehaviour {
         DeleteGameList();
         int num = 0;
         GameList gl = GameManager.Instance.m_GameList;
-        Debug.Log("reload");
+        //Debug.Log("reload");
         for (int i = 0; i < gl.m_GameList.Count; i++)
         {
             if (gl.m_GameList[i].m_CurrentTurn == 2 && !gl.m_GameList[i].m_IsCompleted)
