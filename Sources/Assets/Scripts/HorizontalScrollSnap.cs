@@ -11,13 +11,19 @@ public class HorizontalScrollSnap : MonoBehaviour
     [Tooltip("how many screens or pages are there within the content")]
     public int Screens = 1;
     [Tooltip("which screen or page to start on")]
-    public int StartingScreen = 1;
+    public int StartingScreen = 0;
 
     private List<float> m_Positions;
     private ScrollRect m_ScrollRect;
     private float m_LerpTarget;
     private bool m_Lerp;
     private RectTransform m_ScrollViewRectTrans;
+
+
+    public int m_Cat;
+    public int m_ID;
+    public delegate void OnItemChanged(int cat, int id);
+    OnItemChanged m_Callback;
 
     void Start()
     {
@@ -58,6 +64,7 @@ public class HorizontalScrollSnap : MonoBehaviour
             ScreensContainer.gameObject.GetComponent<RectTransform>().anchoredPosition = Vector3.Lerp(ScreensContainer.gameObject.GetComponent<RectTransform>().anchoredPosition, new Vector3(m_LerpTarget, 0, 0), 10 * Time.deltaTime);
             if (Mathf.Approximately(ScreensContainer.gameObject.GetComponent<RectTransform>().anchoredPosition.x, m_LerpTarget))
             {
+                Debug.Log("OK");
                 m_Lerp = false;
             }
 
@@ -90,14 +97,31 @@ public class HorizontalScrollSnap : MonoBehaviour
         float closest = 0;
         float distance = Mathf.Infinity;
 
+        
+
         foreach (float position in m_Positions)
         {
             if (Mathf.Abs(start - position) < distance)
             {
                 distance = Mathf.Abs(start - position);
-                closest = position;
+                closest = position;               
             }
         }
+
+        for (int i = 0; i < m_Positions.Count; i++)
+        {
+            if (m_Positions[i] == closest)
+            {
+                m_Callback(m_Cat, i);
+            }
+        }
+
         return closest;
+    }
+
+    public void SetItemCallBack(OnItemChanged func, int cat)
+    {
+        m_Callback = func;
+        m_Cat = cat;
     }
 }

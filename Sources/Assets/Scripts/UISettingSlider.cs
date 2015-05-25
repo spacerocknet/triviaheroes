@@ -34,5 +34,6 @@ public class UISettingSlider : MonoBehaviour {
         cv.MoveOutToLeft();
         cv = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PROFILE);
         cv.MoveInFromRight();
+        cv.GetComponent<UIProfile>().Refresh();
     }
 }

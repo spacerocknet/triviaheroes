@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <m_PlayerID>Aga</m_PlayerID>
-  <m_PlayerName>Aga</m_PlayerName>
+  <m_PlayerID>HAHA</m_PlayerID>
+  <m_PlayerName>HAHA</m_PlayerName>
   <m_Level>0</m_Level>
   <m_LevelEXP>0</m_LevelEXP>
   <m_ExpToLevelUP>100</m_ExpToLevelUP>
@@ -10,7 +10,9 @@
   <m_Coin>0</m_Coin>
   <m_Diamond>0</m_Diamond>
   <m_Sex>1</m_Sex>
-  <m_LastTimeAddLive>2015-05-21T10:45:59.069991+07:00</m_LastTimeAddLive>
+  <m_CurrentTier>Young_Adult</m_CurrentTier>
+  <m_CurrentClass>None</m_CurrentClass>
+  <m_LastTimeAddLive>2015-05-25T19:56:26.45342+07:00</m_LastTimeAddLive>
   <m_FriendList>
     <m_FriendList>
       <string>Mage</string>
@@ -24,4 +26,26 @@
       <string>Priest</string>
     </m_FriendList>
   </m_FriendList>
+  <m_ItemCat>
+    <int>0</int>
+    <int>0</int>
+    <int>1</int>
+    <int>1</int>
+  </m_ItemCat>
+  <m_ItemID>
+    <int>1</int>
+    <int>2</int>
+    <int>1</int>
+    <int>2</int>
+  </m_ItemID>
+  <m_ItemPicked>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+  </m_ItemPicked>
 </PlayerProfile>

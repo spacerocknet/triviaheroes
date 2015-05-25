@@ -7,6 +7,9 @@ public class UIProfile : MonoBehaviour {
     public GameObject m_AchievementPanel;
     public GameObject m_AchievementPrefab;
 
+    public CustomizePage m_CustomizePage;
+    public AvatarScript m_Avatar;
+
 	// Use this for initialization
 	void Start () {
         int num = 20;
@@ -35,5 +38,16 @@ public class UIProfile : MonoBehaviour {
     {
         CanvasScript cv = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PROFILE);
         cv.MoveOutToRight();
+    }
+
+    public void Refresh()
+    {
+        m_CustomizePage.Refresh();
+    }
+
+    public void RefreshAvatar()
+    {
+        PlayerProfile pl = GameManager.Instance.GetPlayerProfile();        
+        m_Avatar.SetInfo((int)pl.m_CurrentTier, (int)pl.m_CurrentClass, pl.m_ItemPicked, "B");
     }
 }

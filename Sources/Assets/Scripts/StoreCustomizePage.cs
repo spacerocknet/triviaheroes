@@ -20,22 +20,30 @@ public class StoreCustomizePage : MonoBehaviour {
     void InitPage()
     {
         GameObject panel = transform.FindChild("Panel").gameObject;
-        for (int i = 0; i < m_NumberOfOption; i++)
+
+        
+        for (int i = 0; i < 8; i++)
         {
             GameObject go = (GameObject)GameObject.Instantiate(m_ItemSelectPagePrefab);
             go.transform.SetParent(panel.transform);
             go.transform.localScale = new Vector3(1, 1, 1);
-            go.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -150 - i * 200, 0);
+            go.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -100 - i * 260, 0);
+            go.transform.FindChild("Image").gameObject.SetActive(false);
 
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 2; j++)
             {
                 GameObject panel1 = go.transform.FindChild("Panel").gameObject;
                 GameObject go1 = (GameObject)GameObject.Instantiate(m_ItemPrefab);
                 go1.transform.SetParent(panel1.transform);
                 go1.transform.localScale = new Vector3(1, 1, 1);
                 go1.GetComponent<RectTransform>().anchoredPosition = new Vector3(200 + 0 + j * 200, 0, 0);
+                go1.GetComponent<ItemScript>().SetInfo(i, j + 1, true, true);
             }
+
+            go.GetComponent<HorizontalScrollSnap>().Screens = 2;
         }
-        panel.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, m_NumberOfOption * 200);
+        panel.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, 8 * 260 + 100);
     }
+
+    
 }

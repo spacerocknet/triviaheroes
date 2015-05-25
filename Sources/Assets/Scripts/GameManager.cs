@@ -112,6 +112,7 @@ public class GameManager : MonoBehaviour {
             go.GetComponent<LoadingScene>().SwitchToMainScene();
             
             SimulateOtherPlayers();
+            
         }
         else
         {
@@ -763,4 +764,21 @@ public class GameManager : MonoBehaviour {
         }
     }
 #endregion
+
+    public bool IsItemOwned(int type, int id)
+    {
+        if (id == 0)
+        {
+            return true;
+        }
+        for (int i = 0; i < m_PlayerProfile.m_ItemCat.Count; i++)
+        {
+            if (m_PlayerProfile.m_ItemCat[i] == type && m_PlayerProfile.m_ItemID[i] == id)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

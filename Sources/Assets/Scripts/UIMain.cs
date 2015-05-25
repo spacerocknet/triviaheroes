@@ -18,12 +18,18 @@ public class UIMain : MonoBehaviour {
 
     private int m_CurrentTab;
 
+    public AvatarScript m_Avatar;
+
 	// Use this for initialization
 	void Start () {
         RefreshInfo();
         m_GameInfoList = new List<GameObject>();
         ReloadYourTurnList();
         m_CurrentTab = 1;
+        
+        PlayerProfile pl = GameManager.Instance.GetPlayerProfile();
+        //Debug.LogError(pl.m_ItemPicked.Count);
+        m_Avatar.SetInfo((int)pl.m_CurrentTier, (int)pl.m_CurrentClass, pl.m_ItemPicked, "B");
 	}
 	
 	// Update is called once per frame
@@ -72,7 +78,7 @@ public class UIMain : MonoBehaviour {
     public void RefreshInfo()
     {
         //Debug.Log(GameManager.Instance.GetPlayerProfile().m_PlayerName);
-        m_TextName.text = GameManager.Instance.GetPlayerProfile().m_PlayerName;
+        //m_TextName.text = GameManager.Instance.GetPlayerProfile().m_PlayerName;
         m_TextLives.text = GameManager.Instance.GetPlayerProfile().m_Lives.ToString();
         m_TextCoin.text = GameManager.Instance.GetPlayerProfile().m_Coin.ToString();
         m_TextDiamond.text = GameManager.Instance.GetPlayerProfile().m_Diamond.ToString();
