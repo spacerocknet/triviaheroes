@@ -26,7 +26,10 @@ public class PlayerProfile{
     public FriendList m_FriendList;
     public List<int> m_ItemCat;
     public List<int> m_ItemID;
-    public List<int> m_ItemPicked;
+    [XmlArray("Avatar")]
+    [XmlArrayItem("Avatar")]
+    public List<Avatar> m_AvatarList;
+    public int m_ActiveAvatar;
 
     public PlayerProfile()
     {
@@ -43,7 +46,8 @@ public class PlayerProfile{
         m_CurrentTier = TIER.Young_Adult;
         m_ItemCat = new List<int>();
         m_ItemID = new List<int>();
-        m_ItemPicked = new List<int>();
+        m_AvatarList = new List<Avatar>();
+        m_ActiveAvatar = 0;
         for (int i = 0; i < 8; i++)
         {
             //m_ItemPicked.Add(0);
@@ -68,11 +72,10 @@ public class PlayerProfile{
         m_CurrentTier = TIER.Young_Adult;
         m_ItemCat = new List<int>();
         m_ItemID = new List<int>();
-        m_ItemPicked = new List<int>();
-        for (int i = 0; i < 8; i++)
-        {
-            m_ItemPicked.Add(0);
-        }
+        m_AvatarList = new List<Avatar>();
+        m_ActiveAvatar = 0;
+        
+        m_AvatarList.Add(Avatar.CreateDefaultAvatar());
 
         m_FriendList = FriendList.CreateRandomFriendList();
     }
@@ -95,6 +98,11 @@ public class PlayerProfile{
         {
             return serializer.Deserialize(stream) as PlayerProfile;
         }
+    }
+
+    public void ItemSelected(int cat, int id)
+    {
+        m_AvatarList[m_ActiveAvatar].m_ItemList[cat] = id;
     }
 
 }

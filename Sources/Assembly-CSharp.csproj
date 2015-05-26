@@ -95,6 +95,7 @@
      <Compile Include="Assets\Scripts\UISelectPieceClaim.cs" />
      <Compile Include="Assets\Scripts\UISettingSlider.cs" />
      <Compile Include="Assets\Scripts\UIStore.cs" />
+     <Compile Include="Assets\Scripts\UpgradesPage.cs" />
      <None Include="Assets\Assets50\font\readme.txt" />
      <None Include="Assets\Resources\avatar\offsetNote.txt" />
      <None Include="Assets\JSON Tests\TroubleShoot.txt" />

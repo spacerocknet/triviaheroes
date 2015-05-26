@@ -106,7 +106,8 @@ public class CustomizePage : MonoBehaviour {
     {
         Debug.Log("Item selected " + cat + " " + id);
         PlayerProfile pl = GameManager.Instance.GetPlayerProfile();
-        pl.m_ItemPicked[cat] = id;
+        pl.ItemSelected(cat, id);
+        pl.Save();
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PROFILE).GetComponent<UIProfile>().RefreshAvatar();
     }
 }

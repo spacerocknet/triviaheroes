@@ -43,11 +43,12 @@ public class UIProfile : MonoBehaviour {
     public void Refresh()
     {
         m_CustomizePage.Refresh();
+        RefreshAvatar();
     }
 
     public void RefreshAvatar()
     {
         PlayerProfile pl = GameManager.Instance.GetPlayerProfile();        
-        m_Avatar.SetInfo((int)pl.m_CurrentTier, (int)pl.m_CurrentClass, pl.m_ItemPicked, "B");
+        m_Avatar.SetInfo(GameManager.Instance.GetMyActiveAvatar());
     }
 }

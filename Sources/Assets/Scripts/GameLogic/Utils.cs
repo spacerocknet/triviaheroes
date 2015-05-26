@@ -7,6 +7,7 @@ public class Utils  {
 
     private static string[] m_CategoryName = {"Geographies", "Science", "Art", "History", "Sports", "Entertainment"};
 
+
     public static string CategoryIndexToString(int index)
     {
         return m_CategoryName[index];

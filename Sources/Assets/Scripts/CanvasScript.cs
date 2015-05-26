@@ -55,12 +55,12 @@ public class CanvasScript : MonoBehaviour {
 
                 if (endPos.Equals(m_RootPos.position))
                 {
-                    SetActive(true);
+                    gameObject.SetActive(true);
                 }
                 else
                 {
                     //Debug.Break();
-                    SetActive(false);
+                    gameObject.SetActive(false);
                     if (m_NextID != -1)
                     {
                         SceneManager.Instance.GetCanvasByID((CanvasID)m_NextID).SetActive(true);
@@ -114,7 +114,7 @@ public class CanvasScript : MonoBehaviour {
 
     public void Move(Vector3 _startPos, Vector3 _endPos, float time)
     {
-        m_bIsMoving = true;
+        m_bIsMoving = true;        
 
         startPos = _startPos;
         endPos = _endPos;

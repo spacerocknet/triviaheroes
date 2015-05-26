@@ -17,33 +17,53 @@ public class AvatarScript : MonoBehaviour {
 	
 	}
 
-    public void SetInfo(int tier, int job, List<int> item, string _sex)
+    public void SetInfo(Avatar avatar)
     {
-        string sex = "B";
-        string s = tier.ToString();
+        
+        string sex = "";
+        if (avatar.m_Sex == 0)
+        {
+            sex = "B";
+        }
+        else
+        {
+            sex = "G";
+        }
+        string s = ((int)avatar.m_Tier).ToString();
         while (s.Length < 2) {
             s = "0" + s;
         }
-        s = sex + "_B" + s;
+        s = sex + "_B" + s;        
+
         m_ImageList[0].sprite = Resources.Load<Sprite>("avatar/default/" + s);
         
-        for (int i = 0; i < item.Count; i++)
+        for (int i = 0; i < avatar.m_ItemList.Count; i++)
         {
-            string stier = tier.ToString();
+            string stier = ((int)avatar.m_Tier).ToString();
             while (stier.Length < 2) {
                 stier = "0" + stier;
             }
-            if (item[i] == 0)
+            if (avatar.m_ItemList[i] == 0)
             {
-                m_ImageList[i + 1].sprite = Resources.Load<Sprite>("avatar/default/" + sex + "_" + Avatar.AVATAR_PREFIX[i] + stier);
+                string file = "avatar/default/" + sex + "_" + Avatar.AVATAR_PREFIX[i] + stier;
+                if ((i == 0 || i == 3) && ((int)avatar.m_Tier >= 5 && (int)avatar.m_Tier <=9))
+                {                    
+                    //TODO: change according actuall jobs
+                    file = file + "_D";
+                }
+                m_ImageList[i + 1].sprite = Resources.Load<Sprite>(file);
                 if (m_ImageList[i + 1].sprite == null)
                 {
                     m_ImageList[i + 1].gameObject.SetActive(false);
                 }
+                else
+                {
+                    m_ImageList[i + 1].gameObject.SetActive(true);
+                }
             }
             else
             {
-                string ss = item[i].ToString();
+                string ss = avatar.m_ItemList[i].ToString();
                 while (ss.Length < 2)
                 {
                     ss = "0" + ss;
@@ -71,6 +91,24 @@ public class AvatarScript : MonoBehaviour {
                     m_ImageList[i + 1].gameObject.SetActive(true);
                 }
             }
+        }
+
+        //TODO: jobs speicial item
+        if (((int)avatar.m_Tier >= 5 && (int)avatar.m_Tier <= 9))
+        {
+            m_ImageList[m_ImageList.GetLength(0) - 1].sprite = Resources.Load<Sprite>("avatar/default/I_" + "D");
+            if (m_ImageList[m_ImageList.GetLength(0) - 1].sprite == null)
+            {
+                m_ImageList[m_ImageList.GetLength(0) - 1].gameObject.SetActive(false);
+            }
+            else
+            {
+                m_ImageList[m_ImageList.GetLength(0) - 1].gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            m_ImageList[m_ImageList.GetLength(0) - 1].gameObject.SetActive(false);
         }
     }
 }

@@ -18,10 +18,9 @@ public class HorizontalScrollSnap : MonoBehaviour
     private float m_LerpTarget;
     private bool m_Lerp;
     private RectTransform m_ScrollViewRectTrans;
-
-
     public int m_Cat;
     public int m_ID;
+    public float m_ChildSize = 200;
     public delegate void OnItemChanged(int cat, int id);
     OnItemChanged m_Callback;
 
@@ -47,7 +46,7 @@ public class HorizontalScrollSnap : MonoBehaviour
                 // this does not seem to have an effect [Tested on Unity 4.6.0 RC 2]
                 //m_ScrollRect.horizontalNormalizedPosition = horiNormPos;
                 m_Positions.Add(horiNormPos);
-                horiNormPos = horiNormPos - 200;
+                horiNormPos = horiNormPos - m_ChildSize;
             }
         }
 
@@ -112,7 +111,10 @@ public class HorizontalScrollSnap : MonoBehaviour
         {
             if (m_Positions[i] == closest)
             {
-                m_Callback(m_Cat, i);
+                if (m_Callback != null)
+                {
+                    m_Callback(m_Cat, i);
+                }
             }
         }
 

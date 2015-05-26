@@ -22,14 +22,13 @@ public class UIMain : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        RefreshInfo();
+       
         m_GameInfoList = new List<GameObject>();
-        ReloadYourTurnList();
-        m_CurrentTab = 1;
         
-        PlayerProfile pl = GameManager.Instance.GetPlayerProfile();
-        //Debug.LogError(pl.m_ItemPicked.Count);
-        m_Avatar.SetInfo((int)pl.m_CurrentTier, (int)pl.m_CurrentClass, pl.m_ItemPicked, "B");
+        m_CurrentTab = 1;
+  
+        RefreshInfo();
+        Refresh();
 	}
 	
 	// Update is called once per frame
@@ -179,5 +178,8 @@ public class UIMain : MonoBehaviour {
             default:
                 break;
         }
+
+        PlayerProfile pl = GameManager.Instance.GetPlayerProfile();        
+        m_Avatar.SetInfo(GameManager.Instance.GetMyActiveAvatar());
     }
 }

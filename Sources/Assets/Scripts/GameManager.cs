@@ -781,4 +781,14 @@ public class GameManager : MonoBehaviour {
         return false;
     }
 
+    public Avatar GetMyActiveAvatar()
+    {
+        return m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar];
+    }
+
+    public void UpgradeTier()
+    {
+        m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar].m_Tier++;
+        m_PlayerProfile.Save();
+    }
 }
