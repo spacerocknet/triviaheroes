@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\GameLogic.cs" />
      <Compile Include="Assets\Scripts\GameLogic\Avatar.cs" />
      <Compile Include="Assets\Scripts\GameLogic\FriendList.cs" />
+     <Compile Include="Assets\Scripts\GameLogic\GameConfig.cs" />
      <Compile Include="Assets\Scripts\GameLogic\GameList.cs" />
      <Compile Include="Assets\Scripts\GameLogic\NetworkManager.cs" />
      <Compile Include="Assets\Scripts\GameLogic\PVPState.cs" />
@@ -82,6 +83,7 @@
      <Compile Include="Assets\Scripts\TrophyGroup.cs" />
      <Compile Include="Assets\Scripts\UICrownSelect.cs" />
      <Compile Include="Assets\Scripts\UIEndgameConfirm.cs" />
+     <Compile Include="Assets\Scripts\UIEndgameResult.cs" />
      <Compile Include="Assets\Scripts\UIGotPuzzle.cs" />
      <Compile Include="Assets\Scripts\UIGotTrophy.cs" />
      <Compile Include="Assets\Scripts\UIMain.cs" />
@@ -98,6 +100,7 @@
      <Compile Include="Assets\Scripts\UpgradesPage.cs" />
      <None Include="Assets\Assets50\font\readme.txt" />
      <None Include="Assets\Resources\avatar\offsetNote.txt" />
+     <None Include="Assets\Resources\ExpTable.txt" />
      <None Include="Assets\JSON Tests\TroubleShoot.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

@@ -49,25 +49,37 @@ public class UIQuestion : MonoBehaviour {
     public void OnAnswer1()
     {
         //Correct answer
-        GameManager.Instance.OnAnswerSelect(0);
+        if (!m_IsShowAnswer)
+        {
+            GameManager.Instance.OnAnswerSelect(0);
+        }
     }
 
     public void OnAnswer2()
     {
         //Wrong Answer;
-        GameManager.Instance.OnAnswerSelect(1);
+        if (!m_IsShowAnswer)
+        {
+            GameManager.Instance.OnAnswerSelect(1);
+        }
     }
 
     public void OnAnswer3()
     {
         //Wrong Answer;
-        GameManager.Instance.OnAnswerSelect(2);
+        if (!m_IsShowAnswer)
+        {
+            GameManager.Instance.OnAnswerSelect(2);
+        }
     }
 
     public void OnAnswer4()
     {
         //Wrong Answer;
-        GameManager.Instance.OnAnswerSelect(3);        
+        if (!m_IsShowAnswer)
+        {
+            GameManager.Instance.OnAnswerSelect(3);
+        }
     }
 
     public void OnEndGame()
@@ -82,12 +94,12 @@ public class UIQuestion : MonoBehaviour {
         m_Answer1.text = question.m_Answer1;
         m_Answer2.text = question.m_Answer2;
         m_Answer3.text = question.m_Answer3;
-        m_Timer = 60;
+        m_Timer = 15;
 
         for (int i = 0; i < 4; i++)
         {
             m_CheckImage[i].enabled = false;
-            m_AnswerImage[i].sprite = m_AnswerSprite[i];
+            m_AnswerImage[i].sprite = m_AnswerSprite[0];
             m_AnswerImage[i].GetComponent<Button>().interactable = true;
         }
 
@@ -115,7 +127,7 @@ public class UIQuestion : MonoBehaviour {
         for (int i = 0; i < 4; i++)
         {
             m_CheckImage[i].enabled = false;
-            m_AnswerImage[i].sprite = m_AnswerSprite[i];
+            m_AnswerImage[i].sprite = m_AnswerSprite[0];
             m_AnswerImage[i].GetComponent<Button>().interactable = true;
         }
 
@@ -137,10 +149,15 @@ public class UIQuestion : MonoBehaviour {
     {
         m_IsShowAnswer = true;
         m_ShowAnswerTimer = 2;
-        m_CheckImage[answer].enabled = true;
+        //m_CheckImage[answer].enabled = true;
+
         if (select != answer)
         {
-            m_AnswerImage[select].sprite = m_AnswerSprite[4];            
+            m_AnswerImage[select].sprite = m_AnswerSprite[1];
+        }
+        else
+        {
+            m_AnswerImage[select].sprite = m_AnswerSprite[2];
         }
     }
 

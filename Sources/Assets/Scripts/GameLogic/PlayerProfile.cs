@@ -13,9 +13,9 @@ public class PlayerProfile{
     public string m_PlayerID;
     public string m_PlayerName;
     public int m_Level;
-    public int m_LevelEXP;
-    public int m_ExpToLevelUP;
-    public int m_TotalEXP;
+    //public int m_LevelEXP;
+    //public int m_ExpToLevelUP;
+    public long m_TotalEXP;
     public int m_Lives;
     public int m_Coin;
     public int m_Diamond;
@@ -30,19 +30,21 @@ public class PlayerProfile{
     [XmlArrayItem("Avatar")]
     public List<Avatar> m_AvatarList;
     public int m_ActiveAvatar;
+    public int m_CurrentPVEStage = 0;
+    public List<int> m_PVEState;
 
     public PlayerProfile()
     {
         m_PlayerName = "NULL";
         m_PlayerID = "NULL";
         m_Level = 0;
-        m_LevelEXP = 0;
+        
         m_TotalEXP = 0;
         m_Lives = 5;
         m_Coin = 0;
         m_Diamond = 0;
         m_LastTimeAddLive = DateTime.Now;
-        m_ExpToLevelUP = 100;
+        
         m_CurrentTier = TIER.Young_Adult;
         m_ItemCat = new List<int>();
         m_ItemID = new List<int>();
@@ -61,19 +63,27 @@ public class PlayerProfile{
         m_PlayerName = name;
         m_PlayerID = name;
         m_Level = 0;
-        m_LevelEXP = 0;
+        
         m_TotalEXP = 0;
         m_Lives = 5;
         m_Coin = 0;
         m_Diamond = 0;
         m_Sex = sex;
         m_LastTimeAddLive = DateTime.Now;
-        m_ExpToLevelUP = 100;
+        
         m_CurrentTier = TIER.Young_Adult;
         m_ItemCat = new List<int>();
         m_ItemID = new List<int>();
         m_AvatarList = new List<Avatar>();
         m_ActiveAvatar = 0;
+        m_PVEState = new List<int>();
+
+        for (int i = 0; i < GameConfig.Instance.GetNumberOfPvEStage(); i++)
+        {
+            m_PVEState.Add(0);
+        }
+
+
         
         m_AvatarList.Add(Avatar.CreateDefaultAvatar());
 
@@ -105,4 +115,49 @@ public class PlayerProfile{
         m_AvatarList[m_ActiveAvatar].m_ItemList[cat] = id;
     }
 
+    public int GetCurrentLevel()
+    {
+        Debug.Log(m_TotalEXP);
+        int level = 1;
+        long exp = m_TotalEXP;
+        while (exp >= GameConfig.Instance.GetLevelEXP(level - 1))
+        {           
+            exp = exp - GameConfig.Instance.GetLevelEXP(level - 1);
+            Debug.Log(exp);
+            level++;
+        }
+        return level;
+    }
+
+    public long GetLevelEXP()
+    {
+        int level = 1;
+        long exp = m_TotalEXP;
+        while (exp >= GameConfig.Instance.GetLevelEXP(level - 1))
+        {
+            exp = exp - GameConfig.Instance.GetLevelEXP(level - 1);
+            level++;
+        }
+        return exp;
+    }
+
+    public void AddLives()
+    {
+        Debug.Log("ADD LIVES");
+        m_LastTimeAddLive = DateTime.Now;        
+        m_Lives++;
+        m_Lives = Mathf.Clamp(m_Lives, 0, 5);
+    }
+
+    public void SubtractLives()
+    {
+        Debug.Log("SUBTRACT LIVES");
+        if (m_Lives == 5)
+        {
+            m_LastTimeAddLive = DateTime.Now;
+        }
+        m_Lives--;
+        m_Lives = Mathf.Clamp(m_Lives, 0, 5);
+    }
+    
 }

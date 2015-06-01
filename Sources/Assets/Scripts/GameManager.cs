@@ -29,8 +29,7 @@ public class GameManager : MonoBehaviour {
     private bool m_IsLastAnswerCorrect;
     private int m_LastAnswerChoice;
 
-    private bool m_IsPVE = false;
-    private int m_PVEQuestion = 0;
+    private bool m_IsPVE = false;    
 
     private PVPState m_PVPState = new PVPState();
 
@@ -199,16 +198,13 @@ public class GameManager : MonoBehaviour {
 
     public void DoDoGetPVEQuestionQuestionResult(string result)
     {
+        Debug.Log(result);        
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
         cs.Hide();        
-        cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
-        if (m_PVEQuestion == 0)
-        {
-            cs.MoveInFromRight();
-        }        
-        m_PVEQuestion++;
+        cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);        
+        cs.MoveInFromRight();                
         Question q = new Question(result);
-        cs.gameObject.GetComponent<UIQuestion>().SetPVEQuestion(q, m_PVEQuestion);
+        cs.gameObject.GetComponent<UIQuestion>().SetPVEQuestion(q, m_PlayerProfile.m_CurrentPVEStage + 1);
         SetCurrentQuestion(q);
     }
 
@@ -244,8 +240,7 @@ public class GameManager : MonoBehaviour {
     public void OnStartPVEGame()
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
-        cs.Show();
-        m_PVEQuestion = 0;
+        cs.Show();        
         m_IsPVE = true;
         NetworkManager.Instance.DoGetPVEQuestion();
     }
@@ -262,9 +257,20 @@ public class GameManager : MonoBehaviour {
         m_CurrentQuestion = q;
     }
 
-    public void OnEndPvEGame()
+    public void OnEndPvEGame(bool isWin)
     {
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_ENDGAMERESULT).Show();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_ENDGAMERESULT).GetComponent<UIEndgameResult>().SetResult(isWin);
+        
+        if (m_PlayerProfile.m_CurrentPVEStage > 0 && isWin)
+        {
+            Debug.Log(m_PlayerProfile.m_CurrentPVEStage - 1);
+            m_PlayerProfile.m_PVEState[m_PlayerProfile.m_CurrentPVEStage - 1] = 1;
+        }
+        m_PlayerProfile.m_CurrentPVEStage = 0;
+        m_PlayerProfile.Save();
+
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).GetComponent<UINewGame>().RefreshSingle();
     }
 
     public void OnEndPvEGameConfirm()
@@ -275,7 +281,7 @@ public class GameManager : MonoBehaviour {
 
     public void OnAnswerSelect(int select)
     {
-
+        
             if (select == m_CurrentQuestion.m_CorrectAnswer)
             {
                 //Right
@@ -301,12 +307,19 @@ public class GameManager : MonoBehaviour {
         {
             if (m_IsLastAnswerCorrect)
             {
-                NetworkManager.Instance.DoGetPVEQuestion();
+                m_PlayerProfile.m_CurrentPVEStage++;
+                m_PlayerProfile.Save();
+                SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).GetComponent<UINewGame>().RefreshSingle();
+                CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
+                cs.MoveOutToRight();
             }
             else
-            {
-                OnEndPvEGame();
-            }
+            {                
+                SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).GetComponent<UINewGame>().RefreshSingle();
+                OnEndPvEGame(false);
+                m_PlayerProfile.m_CurrentPVEStage = 0;
+                m_PlayerProfile.Save();
+            }            
         }
         else
         {

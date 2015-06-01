@@ -49,6 +49,7 @@
      <Compile Include="Assets\JSON Tests\UnityScript\Test_UnityScript.js" />
      <None Include="Assets\Assets50\font\readme.txt" />
      <None Include="Assets\Resources\avatar\offsetNote.txt" />
+     <None Include="Assets\Resources\ExpTable.txt" />
      <None Include="Assets\JSON Tests\TroubleShoot.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

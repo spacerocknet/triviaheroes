@@ -28,7 +28,7 @@ public class GameModeTab : MonoBehaviour {
     {
         
         Image img = gameObject.GetComponent<Image>();
-        img.sprite = m_SpriteList[1];
+        img.sprite = m_SpriteList[0];
         m_UINewGame.OnMultiPlayer();
         Vector2 v = m_MultiPanel.transform.parent.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
         m_MultiPanel.transform.parent.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, v.y);
@@ -39,7 +39,7 @@ public class GameModeTab : MonoBehaviour {
     public void OnSingle()
     {
         Image img = gameObject.GetComponent<Image>();
-        img.sprite = m_SpriteList[0];
+        img.sprite = m_SpriteList[1];
         m_UINewGame.OnSinglePlayer();
         Vector3 v = m_MultiPanel.transform.parent.parent.gameObject.GetComponent<RectTransform>().localPosition;
         m_MultiPanel.transform.parent.parent.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(-2000, v.y, v.z);

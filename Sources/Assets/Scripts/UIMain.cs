@@ -2,11 +2,13 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class UIMain : MonoBehaviour {
 
     public Text m_TextName;
     public Text m_TextLives;
+    public Text m_TextLivesTimer;
     public Text m_TextCoin;
     public Text m_TextDiamond;
     public Text m_TextEXP;
@@ -17,6 +19,8 @@ public class UIMain : MonoBehaviour {
     public RectTransform m_MainPanel;
 
     private int m_CurrentTab;
+
+    public Image m_ExpImage;
 
     public AvatarScript m_Avatar;
 
@@ -29,11 +33,13 @@ public class UIMain : MonoBehaviour {
   
         RefreshInfo();
         Refresh();
+
+        GameManager.Instance.GetPlayerProfile().SubtractLives();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+        UpdateLivesTimer();
 	}
 
     public void OnSetting()
@@ -81,7 +87,21 @@ public class UIMain : MonoBehaviour {
         m_TextLives.text = GameManager.Instance.GetPlayerProfile().m_Lives.ToString();
         m_TextCoin.text = GameManager.Instance.GetPlayerProfile().m_Coin.ToString();
         m_TextDiamond.text = GameManager.Instance.GetPlayerProfile().m_Diamond.ToString();
-        m_TextEXP.text = GameManager.Instance.GetPlayerProfile().m_Level.ToString() + " " + GameManager.Instance.GetPlayerProfile().m_LevelEXP.ToString() + "/" + GameManager.Instance.GetPlayerProfile().m_ExpToLevelUP.ToString();
+        int level = GameManager.Instance.GetPlayerProfile().GetCurrentLevel();
+        m_TextEXP.text = "Lv" + level + " " + GameManager.Instance.GetPlayerProfile().GetLevelEXP() + "/" + GameConfig.Instance.GetLevelEXP(level - 1) + " EXP";
+        m_ExpImage.GetComponent<RectTransform>().localScale = new Vector3((float)GameManager.Instance.GetPlayerProfile().GetLevelEXP() / GameConfig.Instance.GetLevelEXP(level - 1), 1, 1);
+
+        if (GameManager.Instance.GetPlayerProfile().m_Lives < 5)
+        {
+            m_TextLivesTimer.gameObject.SetActive(true);
+            UpdateLivesTimer();
+        }
+        else
+        {
+            m_TextLivesTimer.gameObject.SetActive(false);
+        }
+
+        
     }
 
     public void DeleteGameList()
@@ -182,4 +202,29 @@ public class UIMain : MonoBehaviour {
         PlayerProfile pl = GameManager.Instance.GetPlayerProfile();        
         m_Avatar.SetInfo(GameManager.Instance.GetMyActiveAvatar());
     }
+
+    public void UpdateLivesTimer()
+    {
+        DateTime dtnow = DateTime.Now;
+        TimeSpan time = dtnow - GameManager.Instance.GetPlayerProfile().m_LastTimeAddLive;
+        int sec = time.Seconds;
+        if (sec > 1 * 60)
+        {
+            GameManager.Instance.GetPlayerProfile().m_LastTimeAddLive = DateTime.Now;
+            GameManager.Instance.GetPlayerProfile().AddLives();
+            sec = 0;
+            m_TextLives.text = GameManager.Instance.GetPlayerProfile().m_Lives.ToString();
+        }
+
+        m_TextLives.text = GameManager.Instance.GetPlayerProfile().m_Lives.ToString();
+        sec = 1 * 60 - sec;
+        if (GameManager.Instance.GetPlayerProfile().m_Lives < 5)
+        {
+            m_TextLivesTimer.gameObject.SetActive(true);
+            m_TextLivesTimer.text = ((int)(sec / 60)).ToString() + ":" + ((int)(sec % 60)).ToString();
+        } else {
+            m_TextLivesTimer.gameObject.SetActive(false);
+        }
+    }
 }
+

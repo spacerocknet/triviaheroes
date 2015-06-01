@@ -26,9 +26,9 @@ public class ProfileTab : MonoBehaviour {
         Image img = gameObject.GetComponent<Image>();
         img.sprite = m_SpriteList[1];
 
-        m_AchievementTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(-2000, m_AchievementTab.GetComponent<RectTransform>().anchoredPosition.y);
-        m_CustomizeTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(-2000, m_CustomizeTab.GetComponent<RectTransform>().anchoredPosition.y);
-        m_HistoryTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, m_HistoryTab.GetComponent<RectTransform>().anchoredPosition.y);
+        m_AchievementTab.gameObject.SetActive(false);
+        m_CustomizeTab.gameObject.SetActive(false);
+        m_HistoryTab.gameObject.SetActive(true);
     }
 
     public void OnYourTurn()
@@ -36,9 +36,9 @@ public class ProfileTab : MonoBehaviour {
         Image img = gameObject.GetComponent<Image>();
         img.sprite = m_SpriteList[0];
 
-        m_AchievementTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, m_AchievementTab.GetComponent<RectTransform>().anchoredPosition.y);
-        m_CustomizeTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(-2000, m_CustomizeTab.GetComponent<RectTransform>().anchoredPosition.y);
-        m_HistoryTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(-2000, m_HistoryTab.GetComponent<RectTransform>().anchoredPosition.y);
+        m_AchievementTab.gameObject.SetActive(true);
+        m_CustomizeTab.gameObject.SetActive(false);
+        m_HistoryTab.gameObject.SetActive(false);
     }
 
     public void OnPastGame()
@@ -46,8 +46,8 @@ public class ProfileTab : MonoBehaviour {
         Image img = gameObject.GetComponent<Image>();
         img.sprite = m_SpriteList[2];
 
-        m_AchievementTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(-2000, m_AchievementTab.GetComponent<RectTransform>().anchoredPosition.y);
-        m_CustomizeTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, m_CustomizeTab.GetComponent<RectTransform>().anchoredPosition.y);
-        m_HistoryTab.GetComponent<RectTransform>().anchoredPosition = new Vector3(-2000, m_HistoryTab.GetComponent<RectTransform>().anchoredPosition.y);
+        m_AchievementTab.gameObject.SetActive(false);
+        m_CustomizeTab.gameObject.SetActive(true);
+        m_HistoryTab.gameObject.SetActive(false);
     }
 }

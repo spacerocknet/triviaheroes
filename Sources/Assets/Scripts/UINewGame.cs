@@ -20,6 +20,7 @@ public class UINewGame : MonoBehaviour {
     private GameMode m_SelecteMode;
 
     List<GameObject> m_FriendObjectList = new List<GameObject>();
+    List<SingleState> m_SingleStateList = new List<SingleState>();
 
     string m_SelectedFriend;
 
@@ -112,7 +113,7 @@ public class UINewGame : MonoBehaviour {
 
     public void RefreshSingleTab()
     {
-        int num = 20;
+        int num = GameConfig.Instance.GetNumberOfPvEStage();
         for (int i = num - 1; i >= 0; i--)
         {
             GameObject go = (GameObject)GameObject.Instantiate(m_SingleStatePrefab);
@@ -121,10 +122,11 @@ public class UINewGame : MonoBehaviour {
             rt.anchoredPosition = new Vector3(0, -90 - i * 180, 0);
             rt.localScale = new Vector3(1, 1, 1);
 
-            go.GetComponent<SingleState>().SetIndex(i);
-
+            go.GetComponent<SingleState>().SetIndex(num - i);
+            m_SingleStateList.Add(go.GetComponent<SingleState>());            
         }
         m_SinglePanel.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, num * 180);
+        RefreshSingle();
     }
 
     public void OnFriendSelected(GameObject friend)
@@ -149,6 +151,15 @@ public class UINewGame : MonoBehaviour {
                      //Debug.Log(friend.name + " " + i + " " + m_SelectedFriend);
                 }
             }
+        }
+    }
+
+    public void RefreshSingle()
+    {
+        
+        for (int i = 0; i < m_SingleStateList.Count; i++)
+        {
+            m_SingleStateList[i].Refresh();
         }
     }
 }
