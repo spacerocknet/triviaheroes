@@ -9,7 +9,7 @@ public class UIPvP : MonoBehaviour {
     public GameObject m_Board;
     public bool m_IsSpinning = false;
     float m_MoveTime;
-    float m_MoveDuration = 6;
+    float m_MoveDuration = 3;
     Vector3 m_StartRotation;
     Vector3 m_EndRotation;
     RectTransform m_Rect;
@@ -29,6 +29,9 @@ public class UIPvP : MonoBehaviour {
     private int m_Progress;
 
     private Category[] m_CategoryMap;
+
+    public GameObject m_AvatarMe;
+    public GameObject m_AvatarOpponent;
 	// Use this for initialization
 	void Start () {
         m_Rect = m_Board.GetComponent<RectTransform>();
@@ -112,6 +115,7 @@ public class UIPvP : MonoBehaviour {
 
     public void SetGameInfo(GameInfo game)
     {
+        m_AvatarMe.GetComponent<AvatarScript>().SetInfo(GameManager.Instance.GetMyActiveAvatar());  
         m_RoundText.text = "Round " + game.m_Round.ToString();
         m_MyAvatarName.text = GameManager.Instance.GetPlayerProfile().m_PlayerName;
         m_OpponentAvatarName.text = game.m_PlayerB;

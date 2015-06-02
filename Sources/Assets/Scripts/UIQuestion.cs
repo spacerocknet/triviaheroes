@@ -173,15 +173,15 @@ public class UIQuestion : MonoBehaviour {
             case 1:
                 m_HelpButtons[0].interactable = false;
                 int c = 2;
+                int prev = -1;
                 while (c > 0)
-                {
-                    int prev = -1;
+                {                    
                     int idx = Random.Range(0, 4);
                     if (idx != m_Question.m_CorrectAnswer && idx != prev)
                     {
                         prev = idx;
                         c--;
-                        m_AnswerImage[idx].sprite = m_AnswerSprite[4];
+                        //m_AnswerImage[idx].sprite = m_AnswerSprite[4];
                         m_AnswerImage[idx].GetComponent<Button>().interactable = false;
                     }
                     

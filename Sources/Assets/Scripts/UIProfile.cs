@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class UIProfile : MonoBehaviour {
 
@@ -10,9 +11,11 @@ public class UIProfile : MonoBehaviour {
     public CustomizePage m_CustomizePage;
     public AvatarScript m_Avatar;
 
+    public List<UIAchievement> m_AchievementList = new List<UIAchievement>();
+
 	// Use this for initialization
 	void Start () {
-        int num = 20;
+        int num = AchievementList.Instance.GetAchievementCount();
         for (int i = 0; i < num; i++)
         {
             GameObject go = (GameObject)GameObject.Instantiate(m_AchievementPrefab);
@@ -24,6 +27,11 @@ public class UIProfile : MonoBehaviour {
             {
                 go.transform.FindChild("Background").GetComponent<Image>().color = Color.white;
             }
+
+            Achievement a = AchievementList.Instance.GetAchievementBy(i);
+            go.GetComponent<UIAchievement>().SetInfo(a);
+
+            m_AchievementList.Add(go.GetComponent<UIAchievement>());
         }
         m_AchievementPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, num * 180);
 	}
@@ -44,6 +52,16 @@ public class UIProfile : MonoBehaviour {
     {
         m_CustomizePage.Refresh();
         RefreshAvatar();
+        RefreshAchievement();
+    }
+
+    public void RefreshAchievement()
+    {
+        for (int i = 0; i < m_AchievementList.Count; i++)
+        {
+            Achievement a = AchievementList.Instance.GetAchievementBy(i);
+            m_AchievementList[i].SetInfo(a);
+        }
     }
 
     public void RefreshAvatar()

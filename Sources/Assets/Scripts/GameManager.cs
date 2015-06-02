@@ -106,12 +106,13 @@ public class GameManager : MonoBehaviour {
         if (System.IO.File.Exists(Utils.pathForDocumentsFile("TriviaPlayerProfile.xml")))
         {
             m_PlayerProfile = PlayerProfile.Load();
+            AchievementList.Instance.Init();
             GameObject go = GameObject.Find("GameLoading");
             m_GameList = GameList.Load();
             go.GetComponent<LoadingScene>().SwitchToMainScene();
             
             SimulateOtherPlayers();
-            
+            m_PlayerProfile.UpdateLives();
         }
         else
         {
@@ -131,6 +132,7 @@ public class GameManager : MonoBehaviour {
             m_PlayerProfile = new PlayerProfile(ret["name"], ret["sex"].AsInt);
             Application.LoadLevel("MainScene");
             m_PlayerProfile.Save();
+            AchievementList.Instance.Init();
         }
         else
         {
@@ -216,7 +218,8 @@ public class GameManager : MonoBehaviour {
     public void SkipQuestion()
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
-        cs.Show();
+        cs.GetComponent<UIWaiting>().SetContentType(0);
+        cs.Show();        
         NetworkManager.Instance.SkipQuestion((Category)m_CurrentQuestion.m_Category);
     }
 
@@ -225,6 +228,7 @@ public class GameManager : MonoBehaviour {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
         cs.Hide();
         Question q = new Question(result);
+        cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
         cs.gameObject.GetComponent<UIQuestion>().SetQuestion(q);
         SetCurrentQuestion(q);
     }
@@ -232,6 +236,7 @@ public class GameManager : MonoBehaviour {
     public void OnStartPVPGame(string friend)
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
+        cs.GetComponent<UIWaiting>().SetContentType(1);
         cs.Show();
         m_IsPVE = false;
         NetworkManager.Instance.DoStartNewGame(friend);
@@ -240,6 +245,7 @@ public class GameManager : MonoBehaviour {
     public void OnStartPVEGame()
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
+        cs.GetComponent<UIWaiting>().SetContentType(0);
         cs.Show();        
         m_IsPVE = true;
         NetworkManager.Instance.DoGetPVEQuestion();
@@ -248,6 +254,7 @@ public class GameManager : MonoBehaviour {
     public void OnCategoryConfirmToPlay(Category cat)
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
+        cs.GetComponent<UIWaiting>().SetContentType(0);
         cs.Show();
         NetworkManager.Instance.DoCategoryConfirmToPlay(cat);
     }
@@ -271,6 +278,12 @@ public class GameManager : MonoBehaviour {
         m_PlayerProfile.Save();
 
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).GetComponent<UINewGame>().RefreshSingle();
+
+        if (isWin)
+        {
+            Debug.Break();
+            AchievementList.Instance.OnSingleWin();
+        }
     }
 
     public void OnEndPvEGameConfirm()
@@ -438,6 +451,7 @@ public class GameManager : MonoBehaviour {
     public void OnTrophyClaimSelected(int trophy)
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
+        cs.GetComponent<UIWaiting>().SetContentType(0);
         cs.Show();
 
         NetworkManager.Instance.DoTrophyClaimSelected(trophy);
@@ -447,6 +461,7 @@ public class GameManager : MonoBehaviour {
     public void OnTrophyChallengeSelected(int mytrophy, int theirtrophy)
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
+        cs.GetComponent<UIWaiting>().SetContentType(0);
         cs.Show();
 
         NetworkManager.Instance.DoTrophyChallengeSelected();

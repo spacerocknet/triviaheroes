@@ -49,6 +49,7 @@
      <Compile Include="Assets\plugins\SimpleJSON.cs" />
      <None Include="Assets\Assets50\font\readme.txt" />
      <None Include="Assets\Resources\avatar\offsetNote.txt" />
+     <None Include="Assets\Resources\AchivementTable.txt" />
      <None Include="Assets\Resources\ExpTable.txt" />
      <None Include="Assets\JSON Tests\TroubleShoot.txt" />
  <Reference Include="UnityEngine.UI">

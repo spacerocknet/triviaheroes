@@ -33,8 +33,7 @@ public class UIMain : MonoBehaviour {
   
         RefreshInfo();
         Refresh();
-
-        GameManager.Instance.GetPlayerProfile().SubtractLives();
+        
 	}
 	
 	// Update is called once per frame
@@ -207,7 +206,8 @@ public class UIMain : MonoBehaviour {
     {
         DateTime dtnow = DateTime.Now;
         TimeSpan time = dtnow - GameManager.Instance.GetPlayerProfile().m_LastTimeAddLive;
-        int sec = time.Seconds;
+        int sec = (int)time.TotalSeconds;
+        
         if (sec > 1 * 60)
         {
             GameManager.Instance.GetPlayerProfile().m_LastTimeAddLive = DateTime.Now;

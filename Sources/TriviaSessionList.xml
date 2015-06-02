@@ -3,16 +3,16 @@
   <GameList>
     <GameInfo>
       <m_GameID>1</m_GameID>
-      <m_PlayerA>HAHA</m_PlayerA>
-      <m_PlayerB>Warrior</m_PlayerB>
-      <m_Round>4</m_Round>
+      <m_PlayerA>Test</m_PlayerA>
+      <m_PlayerB>Mage</m_PlayerB>
+      <m_Round>2</m_Round>
       <m_PieceA>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
         <int>1</int>
-        <int>0</int>
-        <int>0</int>
+        <int>1</int>
+        <int>1</int>
+        <int>1</int>
+        <int>1</int>
+        <int>1</int>
       </m_PieceA>
       <m_PieceB>
         <int>1</int>
@@ -23,8 +23,57 @@
         <int>0</int>
       </m_PieceB>
       <m_SpinProgressA>0</m_SpinProgressA>
-      <m_SpinProgressB>2</m_SpinProgressB>
+      <m_SpinProgressB>1</m_SpinProgressB>
       <m_CurrentTurn>1</m_CurrentTurn>
+      <m_TurnType>1</m_TurnType>
+      <m_ChallengeScoreA>0</m_ChallengeScoreA>
+      <m_ChallengeScoreB>0</m_ChallengeScoreB>
+      <m_BetTrophyA>0</m_BetTrophyA>
+      <m_BetTrophyB>0</m_BetTrophyB>
+      <m_ChallengeQuestion>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </m_ChallengeQuestion>
+      <m_ChallengeAnswer>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </m_ChallengeAnswer>
+      <m_ChallengeState>0</m_ChallengeState>
+      <m_CurrentRound>0</m_CurrentRound>
+      <m_IsCompleted>true</m_IsCompleted>
+    </GameInfo>
+    <GameInfo>
+      <m_GameID>2</m_GameID>
+      <m_PlayerA>Test</m_PlayerA>
+      <m_PlayerB>RandomOpponent</m_PlayerB>
+      <m_Round>2</m_Round>
+      <m_PieceA>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </m_PieceA>
+      <m_PieceB>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </m_PieceB>
+      <m_SpinProgressA>0</m_SpinProgressA>
+      <m_SpinProgressB>0</m_SpinProgressB>
+      <m_CurrentTurn>2</m_CurrentTurn>
       <m_TurnType>1</m_TurnType>
       <m_ChallengeScoreA>0</m_ChallengeScoreA>
       <m_ChallengeScoreB>0</m_ChallengeScoreB>
@@ -51,9 +100,9 @@
       <m_IsCompleted>false</m_IsCompleted>
     </GameInfo>
     <GameInfo>
-      <m_GameID>2</m_GameID>
-      <m_PlayerA>HAHA</m_PlayerA>
-      <m_PlayerB>Rogue</m_PlayerB>
+      <m_GameID>3</m_GameID>
+      <m_PlayerA>Test</m_PlayerA>
+      <m_PlayerB>RandomOpponent</m_PlayerB>
       <m_Round>1</m_Round>
       <m_PieceA>
         <int>0</int>
@@ -71,7 +120,7 @@
         <int>0</int>
         <int>0</int>
       </m_PieceB>
-      <m_SpinProgressA>1</m_SpinProgressA>
+      <m_SpinProgressA>0</m_SpinProgressA>
       <m_SpinProgressB>0</m_SpinProgressB>
       <m_CurrentTurn>1</m_CurrentTurn>
       <m_TurnType>1</m_TurnType>
@@ -100,8 +149,106 @@
       <m_IsCompleted>false</m_IsCompleted>
     </GameInfo>
     <GameInfo>
-      <m_GameID>3</m_GameID>
-      <m_PlayerA>HAHA</m_PlayerA>
+      <m_GameID>4</m_GameID>
+      <m_PlayerA>Test</m_PlayerA>
+      <m_PlayerB>Warrior</m_PlayerB>
+      <m_Round>1</m_Round>
+      <m_PieceA>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </m_PieceA>
+      <m_PieceB>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </m_PieceB>
+      <m_SpinProgressA>0</m_SpinProgressA>
+      <m_SpinProgressB>0</m_SpinProgressB>
+      <m_CurrentTurn>1</m_CurrentTurn>
+      <m_TurnType>1</m_TurnType>
+      <m_ChallengeScoreA>0</m_ChallengeScoreA>
+      <m_ChallengeScoreB>0</m_ChallengeScoreB>
+      <m_BetTrophyA>0</m_BetTrophyA>
+      <m_BetTrophyB>0</m_BetTrophyB>
+      <m_ChallengeQuestion>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </m_ChallengeQuestion>
+      <m_ChallengeAnswer>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </m_ChallengeAnswer>
+      <m_ChallengeState>0</m_ChallengeState>
+      <m_CurrentRound>0</m_CurrentRound>
+      <m_IsCompleted>false</m_IsCompleted>
+    </GameInfo>
+    <GameInfo>
+      <m_GameID>5</m_GameID>
+      <m_PlayerA>Test</m_PlayerA>
+      <m_PlayerB>Warrior</m_PlayerB>
+      <m_Round>1</m_Round>
+      <m_PieceA>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </m_PieceA>
+      <m_PieceB>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </m_PieceB>
+      <m_SpinProgressA>0</m_SpinProgressA>
+      <m_SpinProgressB>0</m_SpinProgressB>
+      <m_CurrentTurn>1</m_CurrentTurn>
+      <m_TurnType>1</m_TurnType>
+      <m_ChallengeScoreA>0</m_ChallengeScoreA>
+      <m_ChallengeScoreB>0</m_ChallengeScoreB>
+      <m_BetTrophyA>0</m_BetTrophyA>
+      <m_BetTrophyB>0</m_BetTrophyB>
+      <m_ChallengeQuestion>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </m_ChallengeQuestion>
+      <m_ChallengeAnswer>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </m_ChallengeAnswer>
+      <m_ChallengeState>0</m_ChallengeState>
+      <m_CurrentRound>0</m_CurrentRound>
+      <m_IsCompleted>false</m_IsCompleted>
+    </GameInfo>
+    <GameInfo>
+      <m_GameID>6</m_GameID>
+      <m_PlayerA>Test</m_PlayerA>
       <m_PlayerB>RandomOpponent</m_PlayerB>
       <m_Round>1</m_Round>
       <m_PieceA>

@@ -5,7 +5,20 @@ using System.Collections.Generic;
 public class GameConfig {
 
     static int[] m_SingleReward = {10, 20, 40, 80, 160, 320, 640, 1250, 2500, 5000, 10000};
+    static string[] m_LoadingTips = {
+                                        "You get to use each boost once for free during matches",
+                                        "Trivia tournament prizes can only be claimed once at each tier",
+                                        "Use the 50/50 boost to remove two incorrect option choices",
+                                        "User the extra time boost to add an extra 15 seconds to the countdown timer",
+                                        "Use the survey boost to show how other people have answered this question",
+                                        "Use the skip boost to get a new question",
+                                        "Get three questions right in a row for a chance to claim or challenge for a puzzle piece",
+                                        "Collect all 6 puzzle pieces to win a multiplayer match",
+                                        "Help me, help you. Don’t be shy about asking your friends for lives",
+                                        "Upgrade your avatar to unlock new abilities"
+                                    };
     static List<long> m_EXPToNextLevel = new List<long>();
+
 
     private static GameConfig m_sInstance = null;
 
@@ -62,5 +75,11 @@ public class GameConfig {
     public long GetLevelEXP(int level)
     {
         return m_EXPToNextLevel[level];
+    }
+
+    public string GetRandomTips()
+    {
+        int idx = Random.RandomRange(0, m_LoadingTips.GetLength(0));
+        return m_LoadingTips[idx];
     }
 }

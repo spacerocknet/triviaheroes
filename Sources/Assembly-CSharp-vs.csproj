@@ -53,6 +53,8 @@
      <Compile Include="Assets\Scripts\FriendPrefab.cs" />
      <Compile Include="Assets\Scripts\GameInfoScript.cs" />
      <Compile Include="Assets\Scripts\GameLogic.cs" />
+     <Compile Include="Assets\Scripts\GameLogic\Achievement.cs" />
+     <Compile Include="Assets\Scripts\GameLogic\AchievementList.cs" />
      <Compile Include="Assets\Scripts\GameLogic\Avatar.cs" />
      <Compile Include="Assets\Scripts\GameLogic\FriendList.cs" />
      <Compile Include="Assets\Scripts\GameLogic\GameConfig.cs" />
@@ -81,6 +83,7 @@
      <Compile Include="Assets\Scripts\StoreCustomizePage.cs" />
      <Compile Include="Assets\Scripts\StoreTab.cs" />
      <Compile Include="Assets\Scripts\TrophyGroup.cs" />
+     <Compile Include="Assets\Scripts\UIAchievement.cs" />
      <Compile Include="Assets\Scripts\UICrownSelect.cs" />
      <Compile Include="Assets\Scripts\UIEndgameConfirm.cs" />
      <Compile Include="Assets\Scripts\UIEndgameResult.cs" />
@@ -97,9 +100,11 @@
      <Compile Include="Assets\Scripts\UISelectPieceClaim.cs" />
      <Compile Include="Assets\Scripts\UISettingSlider.cs" />
      <Compile Include="Assets\Scripts\UIStore.cs" />
+     <Compile Include="Assets\Scripts\UIWaiting.cs" />
      <Compile Include="Assets\Scripts\UpgradesPage.cs" />
      <None Include="Assets\Assets50\font\readme.txt" />
      <None Include="Assets\Resources\avatar\offsetNote.txt" />
+     <None Include="Assets\Resources\AchivementTable.txt" />
      <None Include="Assets\Resources\ExpTable.txt" />
      <None Include="Assets\JSON Tests\TroubleShoot.txt" />
  <Reference Include="UnityEngine.UI">

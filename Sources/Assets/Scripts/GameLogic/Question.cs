@@ -20,7 +20,7 @@ public class Question
         }
 
         var ret = JSONNode.Parse(q);
-        //Debug.Log(ret["category"]);
+        Debug.Log(q);
         m_Category = Utils.CategoryStringToIndex(ret["category"]);
         m_Question = ret["question"];        
         m_Answer0 = ret["answers"][0];

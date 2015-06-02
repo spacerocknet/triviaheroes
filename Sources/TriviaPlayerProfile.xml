@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <m_PlayerID>HAHA</m_PlayerID>
-  <m_PlayerName>HAHA</m_PlayerName>
+  <m_PlayerID>Test</m_PlayerID>
+  <m_PlayerName>Test</m_PlayerName>
   <m_Level>0</m_Level>
-  <m_TotalEXP>110</m_TotalEXP>
-  <m_Lives>0</m_Lives>
+  <m_TotalEXP>0</m_TotalEXP>
+  <m_Lives>5</m_Lives>
   <m_Coin>0</m_Coin>
   <m_Diamond>0</m_Diamond>
   <m_Sex>1</m_Sex>
   <m_CurrentTier>Young_Adult</m_CurrentTier>
   <m_CurrentClass>None</m_CurrentClass>
-  <m_LastTimeAddLive>2015-06-01T16:06:52.9614829+07:00</m_LastTimeAddLive>
+  <m_LastTimeAddLive>2015-06-02T15:21:14.7379391+07:00</m_LastTimeAddLive>
   <m_FriendList>
     <m_FriendList>
       <string>Mage</string>
@@ -50,7 +50,7 @@
     <int>1</int>
     <int>1</int>
     <int>1</int>
-    <int>1</int>
+    <int>0</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
@@ -59,4 +59,29 @@
     <int>0</int>
     <int>0</int>
   </m_PVEState>
+  <m_AchievementCounter>
+    <int>5</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+  </m_AchievementCounter>
 </PlayerProfile>

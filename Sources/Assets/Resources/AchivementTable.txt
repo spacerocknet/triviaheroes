@@ -1,0 +1,92 @@
+Singleplayer domination
+Number of wins in singleplayer mode
+1 5 11
+WIN_SINGLE
+Multiplayer domination
+Number of wins in multiplayer mode
+25 150 500
+WIN_MULTI
+Doctor in-training
+Upgrade medical avatar
+1 5 10
+UPGRADE_DOCTER
+Scientist in-training
+Upgrade scientist avatar
+1 5 10
+UPGRADE_SCIENTIST
+Athlete in-training
+Upgrade athlete avatar
+1 5 10
+UPGRADE_AHTHLETE
+Entrepreneur in-training
+Upgrade business avatar
+1 5 10
+UPGRADE_BUSINESS
+Warrior in-training
+Upgrade military avatar
+1 5 10
+UPGRADE_WARRIOR
+Musician in-training
+Upgrade musician avatar
+1 5 10
+UPGRADE_MUSICIAN
+Collect them all!
+Collect avatars
+2 4 6
+COLLECT_AVATAR
+Slot addict
+Slot machine spins
+25 150 500
+SPIN_SLOTMACHINE
+World traveler
+Geography questions correct
+50 300 1000
+CORRECT_GEOGRAPHY
+Social butterfly
+Entertainment questions correct
+50 300 1000
+CORRECT_ENTERTAINMENT
+History buff 
+History questions correct
+50 300 1000
+CORRECT_HISTORY
+Bookworm
+Arts and literature questions correct
+50 300 1000
+CORRECT_ART
+Science whiz
+Science and nature questions correct
+50 300 1000
+CORRECT_SCIENCE
+Sports fanatic
+Sports and leisure questions correct
+50 300 1000
+CORRECT_SPORT
+Give me a hint
+50% boost usage
+32 188 625
+USE_HINT
+I need more time
+Extra time boost usage
+32 188 625
+USE_EXTRATIME
+Survey says
+Show popular answer choice boost usage
+32 188 625
+USE_SURVEY
+On to the next question
+Skip boost usage
+32 188 625
+USE_SKIP
+Help me, help you
+Lives received from friends
+1 5 50
+RECEIVE_LIVES
+The doctor is in
+Lives sent to friends
+10 50 500
+SEND_LIVES
+Hot streak
+Number of questions answered correctly in a row
+8 24 72
+STREAK_WIN

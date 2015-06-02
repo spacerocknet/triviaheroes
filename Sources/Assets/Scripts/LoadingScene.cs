@@ -1,28 +1,30 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
 public class LoadingScene : MonoBehaviour {
 
+    public Text m_LoadingTips;
     float m_Timer;
     AsyncOperation m_LoadLevelAsync = null;
 	// Use this for initialization
 	void Start () {
         //GET("http://54.163.250.79:9000/v1/cat/game/1");
 
-        Dictionary<string, string> dict = new Dictionary<string, string>();
-        dict.Add("platform", "IOS");
-        dict.Add("os", "4.3");
-        dict.Add("model", "Note1");
-        dict.Add("phone", "14042309331");
-        dict.Add("device_uuid", "test_udid");
-        dict.Add("type", "mobile");
-        POST("http://54.163.250.79:9000/v1/user/addnoinfo", dict);
+        //Dictionary<string, string> dict = new Dictionary<string, string>();
+        //dict.Add("platform", "IOS");
+        //dict.Add("os", "4.3");
+        //dict.Add("model", "Note1");
+        //dict.Add("phone", "14042309331");
+        //dict.Add("device_uuid", "test_udid");
+        //dict.Add("type", "mobile");
+        //POST("http://54.163.250.79:9000/v1/user/addnoinfo", dict);
 
         //Dictionary<string, string> dict = new Dictionary<string, string>();
         //dict.Add("category", "Sports");
         //dict.Add("num", "1");        
-        //POST("http://54.163.250.79:9000/v1/quiz/request", dict);
+        m_LoadingTips.text = GameConfig.Instance.GetRandomTips();
 	}
 
     public WWW GET(string url)

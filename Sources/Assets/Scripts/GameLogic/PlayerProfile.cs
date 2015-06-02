@@ -32,6 +32,7 @@ public class PlayerProfile{
     public int m_ActiveAvatar;
     public int m_CurrentPVEStage = 0;
     public List<int> m_PVEState;
+    public List<int> m_AchievementCounter;
 
     public PlayerProfile()
     {
@@ -77,13 +78,17 @@ public class PlayerProfile{
         m_AvatarList = new List<Avatar>();
         m_ActiveAvatar = 0;
         m_PVEState = new List<int>();
+        m_AchievementCounter = new List<int>();
+
+        for (int i = 0; i < 23; i++)
+        {
+            m_AchievementCounter.Add(0);
+        }
 
         for (int i = 0; i < GameConfig.Instance.GetNumberOfPvEStage(); i++)
         {
             m_PVEState.Add(0);
         }
-
-
         
         m_AvatarList.Add(Avatar.CreateDefaultAvatar());
 
@@ -158,6 +163,22 @@ public class PlayerProfile{
         }
         m_Lives--;
         m_Lives = Mathf.Clamp(m_Lives, 0, 5);
+    }
+
+    public void UpdateLives()
+    {
+        DateTime now = DateTime.Now;
+
+        TimeSpan s = now - m_LastTimeAddLive;
+
+        m_Lives = m_Lives + (int)s.TotalSeconds / (1 * 60);
+        m_Lives = Mathf.Clamp(m_Lives, 0, 5);
+
+        s = TimeSpan.FromSeconds((int)s.TotalSeconds % (1 * 60));
+
+        m_LastTimeAddLive = now - s;
+
+        Save();
     }
     
 }
