@@ -104,7 +104,7 @@ public class AvatarScript : MonoBehaviour {
                 ss = Avatar.AVATAR_PREFIX[i] + ss;
                 if (i == 0)
                 {
-                    ss = "B_" + ss;
+                    ss = sex + "_" + ss;
                 }
                 else
                 {

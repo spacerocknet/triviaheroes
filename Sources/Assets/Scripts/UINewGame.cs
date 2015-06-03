@@ -43,7 +43,7 @@ public class UINewGame : MonoBehaviour {
         cs = m_MainCanvas.GetComponent<CanvasScript>();
         cs.MoveInFromLeft();
 
-        
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN).gameObject.GetComponent<UIMain>().RefreshInfo();
     }
 
     public void StartGame()

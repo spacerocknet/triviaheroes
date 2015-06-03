@@ -59,7 +59,7 @@ public class CanvasScript : MonoBehaviour {
                 }
                 else
                 {
-                    //Debug.Break();
+                    
                     gameObject.SetActive(false);
                     if (m_NextID != -1)
                     {

@@ -5,12 +5,12 @@
   <m_Level>0</m_Level>
   <m_TotalEXP>0</m_TotalEXP>
   <m_Lives>5</m_Lives>
-  <m_Coin>0</m_Coin>
+  <m_Coin>20</m_Coin>
   <m_Diamond>0</m_Diamond>
   <m_Sex>1</m_Sex>
   <m_CurrentTier>Young_Adult</m_CurrentTier>
   <m_CurrentClass>None</m_CurrentClass>
-  <m_LastTimeAddLive>2015-06-02T15:21:14.7379391+07:00</m_LastTimeAddLive>
+  <m_LastTimeAddLive>2015-06-03T15:14:40.8143355+07:00</m_LastTimeAddLive>
   <m_FriendList>
     <m_FriendList>
       <string>Mage</string>
@@ -24,23 +24,57 @@
       <string>Priest</string>
     </m_FriendList>
   </m_FriendList>
-  <m_ItemCat />
-  <m_ItemID />
+  <m_ItemCat>
+    <int>0</int>
+    <int>0</int>
+    <int>1</int>
+    <int>1</int>
+    <int>2</int>
+    <int>2</int>
+    <int>3</int>
+    <int>3</int>
+    <int>4</int>
+    <int>4</int>
+    <int>5</int>
+    <int>5</int>
+    <int>6</int>
+    <int>6</int>
+    <int>7</int>
+    <int>7</int>
+  </m_ItemCat>
+  <m_ItemID>
+    <int>1</int>
+    <int>2</int>
+    <int>2</int>
+    <int>1</int>
+    <int>1</int>
+    <int>2</int>
+    <int>2</int>
+    <int>1</int>
+    <int>1</int>
+    <int>2</int>
+    <int>2</int>
+    <int>1</int>
+    <int>1</int>
+    <int>2</int>
+    <int>2</int>
+    <int>1</int>
+  </m_ItemID>
   <Avatar>
     <Avatar>
       <m_ItemList>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
+        <int>2</int>
+        <int>2</int>
+        <int>2</int>
+        <int>2</int>
+        <int>2</int>
+        <int>1</int>
+        <int>2</int>
+        <int>2</int>
       </m_ItemList>
       <m_Sex>0</m_Sex>
       <m_ID>0</m_ID>
-      <m_Tier>Toddler</m_Tier>
+      <m_Tier>Elder</m_Tier>
       <m_Jobs>None</m_Jobs>
     </Avatar>
   </Avatar>
@@ -48,10 +82,10 @@
   <m_CurrentPVEStage>0</m_CurrentPVEStage>
   <m_PVEState>
     <int>1</int>
+    <int>0</int>
     <int>1</int>
     <int>1</int>
-    <int>0</int>
-    <int>0</int>
+    <int>1</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
@@ -60,7 +94,7 @@
     <int>0</int>
   </m_PVEState>
   <m_AchievementCounter>
-    <int>5</int>
+    <int>9</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
@@ -75,7 +109,7 @@
     <int>0</int>
     <int>0</int>
     <int>0</int>
-    <int>0</int>
+    <int>2</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>

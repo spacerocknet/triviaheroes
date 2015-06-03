@@ -189,8 +189,7 @@ public class UIPvP : MonoBehaviour {
     }
 
     public void ShowResult()
-    {
-        //Debug.Break();
+    {        
         m_ResultPanel.SetActive(true);
     }
 }

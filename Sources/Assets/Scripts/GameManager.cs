@@ -240,6 +240,9 @@ public class GameManager : MonoBehaviour {
         cs.Show();
         m_IsPVE = false;
         NetworkManager.Instance.DoStartNewGame(friend);
+
+        m_PlayerProfile.SubtractLives();
+        m_PlayerProfile.Save();
     }
 
     public void OnStartPVEGame()
@@ -269,21 +272,41 @@ public class GameManager : MonoBehaviour {
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_ENDGAMERESULT).Show();
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_ENDGAMERESULT).GetComponent<UIEndgameResult>().SetResult(isWin);
         
-        if (m_PlayerProfile.m_CurrentPVEStage > 0 && isWin)
-        {
-            Debug.Log(m_PlayerProfile.m_CurrentPVEStage - 1);
-            m_PlayerProfile.m_PVEState[m_PlayerProfile.m_CurrentPVEStage - 1] = 1;
-        }
-        m_PlayerProfile.m_CurrentPVEStage = 0;
-        m_PlayerProfile.Save();
+
+
 
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).GetComponent<UINewGame>().RefreshSingle();
 
         if (isWin)
         {
-            Debug.Break();
             AchievementList.Instance.OnSingleWin();
+
+            int reward = 0;
+            if (GameManager.Instance.GetPlayerProfile().m_CurrentPVEStage > 0)
+            {
+                reward = GameConfig.Instance.GetSingleReward(GameManager.Instance.GetPlayerProfile().m_CurrentPVEStage - 1);
+            }
+            if (GameManager.Instance.GetPlayerProfile().m_PVEState[GameManager.Instance.GetPlayerProfile().m_CurrentPVEStage - 1] == 1)
+            {
+                reward = 0;
+            }
+
+            m_PlayerProfile.m_Coin += reward;
+            m_PlayerProfile.Save();
         }
+        else
+        {
+            m_PlayerProfile.SubtractLives();
+        }
+
+        if (m_PlayerProfile.m_CurrentPVEStage > 0 && isWin)
+        {
+            Debug.Log(m_PlayerProfile.m_CurrentPVEStage - 1);
+            m_PlayerProfile.m_PVEState[m_PlayerProfile.m_CurrentPVEStage - 1] = 1;
+        }
+
+        m_PlayerProfile.m_CurrentPVEStage = 0;
+        m_PlayerProfile.Save();
     }
 
     public void OnEndPvEGameConfirm()
@@ -302,6 +325,30 @@ public class GameManager : MonoBehaviour {
                 cs.gameObject.GetComponent<UIQuestion>().ShowAnswer(select, m_CurrentQuestion.m_CorrectAnswer);
                 m_IsLastAnswerCorrect = true;
                 m_LastAnswerChoice = select;
+                switch (m_CurrentQuestion.m_Category)
+                {
+                        //CAT_GEOGRAPHY = 0, CAT_SCIENCE, CAT_ART, CAT_HISTORY, CAT_SPORT, CAT_ENTERTAINMENT, CAT_CROWN};
+                    case 0:
+                        AchievementList.Instance.OnAction(Achievement_Action.CORRECT_GEOGRAPHY);
+                        break;
+                    case 1:
+                        AchievementList.Instance.OnAction(Achievement_Action.CORRECT_SCIENCE);
+                        break;
+                    case 2:
+                        AchievementList.Instance.OnAction(Achievement_Action.CORRECT_ART);
+                        break;
+                    case 3:
+                        AchievementList.Instance.OnAction(Achievement_Action.CORRECT_HISTORY);
+                        break;
+                    case 4:
+                        AchievementList.Instance.OnAction(Achievement_Action.CORRECT_SPORT);
+                        break;
+                    case 5:   
+                        AchievementList.Instance.OnAction(Achievement_Action.CORRECT_ENTERTAINMENT);
+                        break;
+                    default:
+                        break;
+                }
             }
             else
             {
@@ -497,6 +544,11 @@ public class GameManager : MonoBehaviour {
         {
             m_GameList.m_GameList[m_CurrentGame].m_IsCompleted = true;
             SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).GetComponent<UIPvP>().ShowResult();
+
+            m_PlayerProfile.m_Coin += 200;
+            m_PlayerProfile.Save();
+
+            AchievementList.Instance.OnAction(Achievement_Action.WIN_MULTI);
         }
     }
 

@@ -24,6 +24,8 @@ public class UIQuestion : MonoBehaviour {
     public Button[] m_HelpButtons;
     public Button m_EndGameButton;
 
+    public Text m_TimeOutText;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -34,6 +36,13 @@ public class UIQuestion : MonoBehaviour {
         if (!m_IsShowAnswer)
         {
             m_Timer -= Time.deltaTime;
+          
+            if (m_Timer < 0)
+            {
+                m_Timer = 0;
+                GameManager.Instance.OnAnswerSelect(-1);
+                m_TimeOutText.gameObject.SetActive(true);
+            }
             m_TimerText.text = Mathf.FloorToInt(m_Timer).ToString();
         }
         if (m_ShowAnswerTimer > 0)
@@ -113,6 +122,7 @@ public class UIQuestion : MonoBehaviour {
         m_IsShowAnswer = false;
 
         m_EndGameButton.gameObject.SetActive(false);
+        m_TimeOutText.gameObject.SetActive(false);
     }
 
     public void SetPVEQuestion(Question question, int number)
@@ -122,7 +132,7 @@ public class UIQuestion : MonoBehaviour {
         m_Answer1.text = question.m_Answer1;
         m_Answer2.text = question.m_Answer2;
         m_Answer3.text = question.m_Answer3;
-        m_Timer = 60;
+        m_Timer = 15;
 
         for (int i = 0; i < 4; i++)
         {
@@ -143,6 +153,7 @@ public class UIQuestion : MonoBehaviour {
         m_IsShowAnswer = false;
 
         m_EndGameButton.gameObject.SetActive(true);
+        m_TimeOutText.gameObject.SetActive(false);
     }
 
     public void ShowAnswer(int select, int answer)
@@ -153,11 +164,17 @@ public class UIQuestion : MonoBehaviour {
 
         if (select != answer)
         {
-            m_AnswerImage[select].sprite = m_AnswerSprite[1];
+            if (select != -1)
+            {
+                m_AnswerImage[select].sprite = m_AnswerSprite[1];
+            }
         }
         else
         {
-            m_AnswerImage[select].sprite = m_AnswerSprite[2];
+            if (select != -1)
+            {
+                m_AnswerImage[select].sprite = m_AnswerSprite[2];
+            }
         }
     }
 
