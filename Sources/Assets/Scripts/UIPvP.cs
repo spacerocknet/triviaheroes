@@ -32,6 +32,7 @@ public class UIPvP : MonoBehaviour {
 
     public GameObject m_AvatarMe;
     public GameObject m_AvatarOpponent;
+    public Text m_RewardText;
 	// Use this for initialization
 	void Start () {
         m_Rect = m_Board.GetComponent<RectTransform>();
@@ -191,5 +192,9 @@ public class UIPvP : MonoBehaviour {
     public void ShowResult()
     {        
         m_ResultPanel.SetActive(true);
+        int reward = 200;
+        int bonus = 0;
+        bonus = Mathf.RoundToInt((float)GameManager.Instance.GetPlayerProfile().m_PayOutBonus / 100 * reward);
+        m_RewardText.text = reward + " " + bonus;
     }
 }

@@ -27,4 +27,23 @@ public class UIStore : MonoBehaviour {
     {
         m_UpgradePages.Refresh();
     }
+
+    public void OnBuyDiamondPack(int pack)
+    {
+        int[] amount = {50, 130, 275, 570, 1500, 4000};
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+        cs.Show((int)CanvasID.CANVAS_STORE);
+        cs.GetComponent<UIPopup>().SetText("Purchase successfull. " + amount[pack - 1] + " diamond added to your account");
+
+        GameManager.Instance.AddDiamond(amount[pack - 1]);
+    }
+
+    public void OnWatchVideo()
+    {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+        cs.Show((int)CanvasID.CANVAS_STORE);
+        cs.GetComponent<UIPopup>().SetText("Watch Video successfull. " + 15 + " diamond added to your account");
+
+        GameManager.Instance.AddDiamond(15);
+    }
 }

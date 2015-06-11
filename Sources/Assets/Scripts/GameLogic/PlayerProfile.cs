@@ -33,6 +33,7 @@ public class PlayerProfile{
     public int m_CurrentPVEStage = 0;
     public List<int> m_PVEState;
     public List<int> m_AchievementCounter;
+    public int m_PayOutBonus;
 
     public PlayerProfile()
     {
@@ -51,6 +52,7 @@ public class PlayerProfile{
         m_ItemID = new List<int>();
         m_AvatarList = new List<Avatar>();
         m_ActiveAvatar = 0;
+        m_PayOutBonus = 1;
         for (int i = 0; i < 8; i++)
         {
             //m_ItemPicked.Add(0);
@@ -77,8 +79,10 @@ public class PlayerProfile{
         m_ItemID = new List<int>();
         m_AvatarList = new List<Avatar>();
         m_ActiveAvatar = 0;
+        m_PayOutBonus = 1;
         m_PVEState = new List<int>();
         m_AchievementCounter = new List<int>();
+        
 
         for (int i = 0; i < 23; i++)
         {
@@ -178,6 +182,15 @@ public class PlayerProfile{
 
         m_LastTimeAddLive = now - s;
 
+        Save();
+    }
+
+    public void AddNewAvatar()
+    {
+        Avatar av = Avatar.CreateDefaultAvatar();
+        av.m_ID = m_AvatarList.Count;
+        m_AvatarList.Add(av);
+        m_ActiveAvatar = m_AvatarList.Count - 1;
         Save();
     }
     

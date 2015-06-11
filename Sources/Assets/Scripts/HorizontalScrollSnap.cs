@@ -126,4 +126,11 @@ public class HorizontalScrollSnap : MonoBehaviour
         m_Callback = func;
         m_Cat = cat;
     }
+
+    public void ScrollTo(int screen)
+    {
+        m_Lerp = true;
+        m_LerpTarget = m_Positions[screen];
+        m_Callback(m_Cat, screen);
+    }
 }

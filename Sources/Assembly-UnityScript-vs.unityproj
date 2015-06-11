@@ -52,6 +52,7 @@
      <None Include="Assets\Resources\AchivementTable.txt" />
      <None Include="Assets\Resources\ExpTable.txt" />
      <None Include="Assets\JSON Tests\TroubleShoot.txt" />
+     <None Include="Assets\Resources\UpgradeCostTable.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

@@ -200,6 +200,8 @@ public class UIMain : MonoBehaviour {
 
         PlayerProfile pl = GameManager.Instance.GetPlayerProfile();        
         m_Avatar.SetInfo(GameManager.Instance.GetMyActiveAvatar());
+
+        RefreshInfo();
     }
 
     public void UpdateLivesTimer()

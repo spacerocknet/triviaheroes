@@ -271,40 +271,33 @@ public class GameManager : MonoBehaviour {
     {
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_ENDGAMERESULT).Show();
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_ENDGAMERESULT).GetComponent<UIEndgameResult>().SetResult(isWin);
-        
-
-
-
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).GetComponent<UINewGame>().RefreshSingle();
-
         if (isWin)
         {
             AchievementList.Instance.OnSingleWin();
-
             int reward = 0;
+            int bonus = 0;
             if (GameManager.Instance.GetPlayerProfile().m_CurrentPVEStage > 0)
             {
                 reward = GameConfig.Instance.GetSingleReward(GameManager.Instance.GetPlayerProfile().m_CurrentPVEStage - 1);
+                bonus = Mathf.RoundToInt((float)GameManager.Instance.GetPlayerProfile().m_PayOutBonus / 100 * reward);
             }
             if (GameManager.Instance.GetPlayerProfile().m_PVEState[GameManager.Instance.GetPlayerProfile().m_CurrentPVEStage - 1] == 1)
             {
                 reward = 0;
             }
-
-            m_PlayerProfile.m_Coin += reward;
+            m_PlayerProfile.m_Coin += (reward + bonus);
             m_PlayerProfile.Save();
         }
         else
         {
             m_PlayerProfile.SubtractLives();
         }
-
         if (m_PlayerProfile.m_CurrentPVEStage > 0 && isWin)
         {
             Debug.Log(m_PlayerProfile.m_CurrentPVEStage - 1);
             m_PlayerProfile.m_PVEState[m_PlayerProfile.m_CurrentPVEStage - 1] = 1;
         }
-
         m_PlayerProfile.m_CurrentPVEStage = 0;
         m_PlayerProfile.Save();
     }
@@ -545,7 +538,10 @@ public class GameManager : MonoBehaviour {
             m_GameList.m_GameList[m_CurrentGame].m_IsCompleted = true;
             SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).GetComponent<UIPvP>().ShowResult();
 
-            m_PlayerProfile.m_Coin += 200;
+            int reward = 200;
+            int bonus = 0;
+            bonus = Mathf.RoundToInt((float)GameManager.Instance.GetPlayerProfile().m_PayOutBonus / 100 * reward);
+            m_PlayerProfile.m_Coin += (bonus + reward);
             m_PlayerProfile.Save();
 
             AchievementList.Instance.OnAction(Achievement_Action.WIN_MULTI);
@@ -866,9 +862,50 @@ public class GameManager : MonoBehaviour {
         return m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar];
     }
 
+    public int GetAvatarCount()
+    {
+        return m_PlayerProfile.m_AvatarList.Count;
+    }
+
+    public int GetActiveAvatarID()
+    {
+        return m_PlayerProfile.m_ActiveAvatar;
+    }
+
+    public void SetActiveAvatar(int id)
+    {
+        m_PlayerProfile.m_ActiveAvatar = id;
+        m_PlayerProfile.Save();
+    }
+
     public void UpgradeTier()
     {
-        m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar].m_Tier++;
+        TIER currentTier = m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar].m_Tier;
+        if (currentTier != TIER.Elder)
+        {
+            m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar].m_Tier++;
+            TIER tier = m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar].m_Tier;
+            if (tier == TIER.Child || tier == TIER.Teenager || tier == TIER.Young_Adult || tier == TIER.Adult_2 || tier == TIER.Adult_4)
+            {
+                m_PlayerProfile.m_PayOutBonus++;
+            }
+        }
+        else
+        {
+            m_PlayerProfile.AddNewAvatar();
+            m_PlayerProfile.m_PayOutBonus++;
+        }
+        m_PlayerProfile.Save();
+    }
+
+    public Avatar GetActiveAvatar()
+    {
+        return m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar];
+    }
+
+    public void AddDiamond(int amount)
+    {
+        m_PlayerProfile.m_Diamond += amount;
         m_PlayerProfile.Save();
     }
 }

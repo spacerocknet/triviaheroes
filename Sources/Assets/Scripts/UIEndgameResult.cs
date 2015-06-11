@@ -47,10 +47,11 @@ public class UIEndgameResult : MonoBehaviour {
             m_LifeText.gameObject.SetActive(false);
 
             int reward = 0;
+            int bonus = 0;
             if (GameManager.Instance.GetPlayerProfile().m_CurrentPVEStage > 0)
             {
                 reward = GameConfig.Instance.GetSingleReward(GameManager.Instance.GetPlayerProfile().m_CurrentPVEStage - 1);
-
+                bonus = Mathf.RoundToInt((float)GameManager.Instance.GetPlayerProfile().m_PayOutBonus / 100 * reward);
             }
 
             if (GameManager.Instance.GetPlayerProfile().m_PVEState[GameManager.Instance.GetPlayerProfile().m_CurrentPVEStage - 1] == 1)
@@ -59,7 +60,7 @@ public class UIEndgameResult : MonoBehaviour {
             }
             else
             {
-                m_RewardText.text = reward.ToString();
+                m_RewardText.text = reward.ToString() + " " + bonus.ToString();
             }
         }
         else

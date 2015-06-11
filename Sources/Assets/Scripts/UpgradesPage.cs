@@ -20,6 +20,8 @@ public class UpgradesPage : MonoBehaviour {
 
     public Button m_NextButton;
     public Button m_BackButton;
+    public Button m_UpgradeButton;
+    public Text m_UpgradeCostText;
 
     private int m_ClassID;
     private int m_Tier;
@@ -34,7 +36,8 @@ public class UpgradesPage : MonoBehaviour {
         "Perfect your abilities with experience and practice.",
         "It’s a long road to achieving mastery but Trivia Heroes will see it through. +1% payout boost",
         "Sharpen your abilities through peer competition.",
-        "Elders exhibit true mastery over all subjects"
+        "Elders exhibit true mastery over all subjects",
+        "Reborn"
     };
 
     private static string[] m_ClassDescription = {
@@ -65,7 +68,8 @@ public class UpgradesPage : MonoBehaviour {
         "Adult 3", 
         "Adult 4",
         "Adult 5",
-        "Elder"
+        "Elder",
+        "Reborn"
     };
     
     private static string[] m_ClassText = {
@@ -114,13 +118,22 @@ public class UpgradesPage : MonoBehaviour {
                 imgBar.sprite = m_ProgressBarDisabled;
             }
         }
-        
-        OnTierSelected(0, 0);
+
+        Avatar avatar = GameManager.Instance.GetActiveAvatar();
+        OnTierSelected(0, (int)avatar.m_Tier- 1);
+        m_TierPageView.ScrollTo((int)avatar.m_Tier);
     }
 
     public void OnUpgrade()
     {
-        GameManager.Instance.UpgradeTier();
+        if (m_Tier < 10)
+        {
+            GameManager.Instance.UpgradeTier();
+        }
+        else
+        {
+            GameManager.Instance.GetPlayerProfile().AddNewAvatar();
+        }
         Refresh();
     }
 
@@ -167,8 +180,25 @@ public class UpgradesPage : MonoBehaviour {
             m_BackButton.gameObject.SetActive(false);
             m_NextButton.gameObject.SetActive(false);
         }
+      
+        Avatar avatar = GameManager.Instance.GetActiveAvatar();
+        if (m_Tier < 10)
+        {
+            m_UpgradeCostText.text = GameConfig.Instance.GetUpgradeCost(m_Tier, avatar.m_ID).ToString();
+        }
+        else
+        {
+            m_UpgradeCostText.text = "500";
+        }
+        if ((int)avatar.m_Tier == m_Tier)
+        {
+            m_UpgradeButton.interactable = true;
+        }
+        else
+        {
+            m_UpgradeButton.interactable = false;
+        }
 
-       
     }
 
     void UpdateNavigateButton() {

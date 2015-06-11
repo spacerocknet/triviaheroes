@@ -69,4 +69,26 @@ public class UIProfile : MonoBehaviour {
         PlayerProfile pl = GameManager.Instance.GetPlayerProfile();        
         m_Avatar.SetInfo(GameManager.Instance.GetMyActiveAvatar());
     }
+
+    public void OnBackAvatar()
+    {
+        int id = GameManager.Instance.GetActiveAvatarID();
+        int count = GameManager.Instance.GetAvatarCount();
+        id--;
+        id = Mathf.Clamp(id, 0, count - 1);
+        GameManager.Instance.SetActiveAvatar(id);
+        RefreshAvatar();
+    }
+
+    public void OnNextAvatar()
+    {
+        int id = GameManager.Instance.GetActiveAvatarID();
+        int count = GameManager.Instance.GetAvatarCount();
+        id++;
+        id = Mathf.Clamp(id, 0, count - 1);
+        GameManager.Instance.SetActiveAvatar(id);
+        RefreshAvatar();
+    }
+
+
 }

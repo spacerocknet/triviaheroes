@@ -19,6 +19,8 @@ public class GameConfig {
                                     };
     static List<long> m_EXPToNextLevel = new List<long>();
 
+    List<List<int>> m_AvatarUpgradeCost;
+
 
     private static GameConfig m_sInstance = null;
 
@@ -26,6 +28,7 @@ public class GameConfig {
     {
         m_sInstance = this;
         LoadExpTable();
+        LoadUpgradeCostTable();
     }
 
     public static GameConfig Instance
@@ -67,6 +70,29 @@ public class GameConfig {
         }
     }
 
+    public void LoadUpgradeCostTable()
+    {
+        TextAsset txt = (TextAsset)Resources.Load("UpgradeCostTable", typeof(TextAsset));
+
+        string[] linesInFile = txt.text.Split('\n');
+
+        m_AvatarUpgradeCost = new List<List<int>>();
+        for (int i = 0; i < linesInFile.GetLength(0); i++)
+        {
+
+            string line = linesInFile[i];
+            //Debug.Log(line);
+            string[] numbers = line.Split(' ');
+            List<int> l = new List<int>();
+            for (int j = 0; j < numbers.GetLength(0); j++)
+            {
+                Debug.Log(numbers[j]);
+                l.Add(int.Parse(numbers[j]));
+            }
+            m_AvatarUpgradeCost.Add(l);            
+        }
+    }
+
     public int GetNumberOfLevel()
     {
         return m_EXPToNextLevel.Count;
@@ -81,5 +107,10 @@ public class GameConfig {
     {
         int idx = Random.RandomRange(0, m_LoadingTips.GetLength(0));
         return m_LoadingTips[idx];
+    }
+
+    public int GetUpgradeCost(int tier, int ava)
+    {
+        return m_AvatarUpgradeCost[tier][ava];
     }
 }
