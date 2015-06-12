@@ -54,11 +54,13 @@ public class UINewGame : MonoBehaviour {
             //CanvasScript cs = m_NewGameCanvas.GetComponent<CanvasScript>();
             //cs.MoveOutToLeft();
             GameManager.Instance.OnStartPVEGame();
+            
+            
         }
         else if (m_SelecteMode == GameMode.GAMEMODE_PVP)
         {
-            GameManager.Instance.OnStartPVPGame(m_SelectedFriend);
-        }
+            GameManager.Instance.OnStartPVPGame(m_SelectedFriend);            
+        }        
     }
 
     public void SetSelectedMode(GameMode mode)
@@ -114,7 +116,7 @@ public class UINewGame : MonoBehaviour {
     public void RefreshSingleTab()
     {
         int num = GameConfig.Instance.GetNumberOfPvEStage();
-        for (int i = num - 1; i >= 0; i--)
+        for (int i = 0; i < num; i++)
         {
             GameObject go = (GameObject)GameObject.Instantiate(m_SingleStatePrefab);
             go.transform.parent = m_SinglePanel.transform;
@@ -122,7 +124,7 @@ public class UINewGame : MonoBehaviour {
             rt.anchoredPosition = new Vector3(0, -90 - i * 180, 0);
             rt.localScale = new Vector3(1, 1, 1);
 
-            go.GetComponent<SingleState>().SetIndex(num - i);
+            go.GetComponent<SingleState>().SetIndex(i + 1);
             m_SingleStateList.Add(go.GetComponent<SingleState>());            
         }
         m_SinglePanel.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, num * 180);

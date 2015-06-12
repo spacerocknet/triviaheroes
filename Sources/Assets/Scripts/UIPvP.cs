@@ -88,6 +88,8 @@ public class UIPvP : MonoBehaviour {
         //Debug.Log("SPINNNNN CALL");
         if (GetComponent<CanvasScript>().IsActive())
         {
+            //HACK
+            SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).MoveOutToRight();
             //Debug.Log("SPINNNNN");
             if (!m_IsSpinning)
             {
@@ -96,7 +98,8 @@ public class UIPvP : MonoBehaviour {
                 m_EndRotation = m_Rect.localEulerAngles + new Vector3(0, 0, Random.RandomRange(360 * 5, 360 * 6));
                 m_MoveTime = 0;
             }
-        }
+            AchievementList.Instance.OnAction(Achievement_Action.SPIN_SLOTMACHINE);
+        }        
     }
 
     public void OnBack()
@@ -105,12 +108,11 @@ public class UIPvP : MonoBehaviour {
         {
             m_IsSpinning = false;
             CanvasScript cs = gameObject.GetComponent<CanvasScript>();
-            cs.MoveOutToRight();
+            cs.MoveOutToRight();            
 
-            cs = m_MainCanvas.GetComponent<CanvasScript>();
-            cs.MoveInFromLeft();
+            SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN).GetComponent<UIMain>().Refresh();
 
-            cs.GetComponent<UIMain>().Refresh();
+            SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).MoveOutToRight();
         }
     }
 

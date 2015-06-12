@@ -23,21 +23,23 @@ public class UpgradesPage : MonoBehaviour {
     public Button m_UpgradeButton;
     public Text m_UpgradeCostText;
 
+    public Image m_CoinImage;
+
     private int m_ClassID;
     private int m_Tier;
 
     private static string[] m_TierDescription = {
-        "No one is born a Trivia Hero, but the potential is strong in this one. +1% payout boost.",
-        "In the child phase we build the foundation to conquer future challenges. +1% payout boost.",
-        "Teenagers must channel their youthful energy and complete secondary education before they are ready for the world. +1% payout boost.",
-        "Training is almost complete; the young adult just needs more experience. +1% payout boost.",
-        "Disciplined and experienced, you are now a full fledged Trivia Hero.",
-        "Even Heroes need to consistently sharpen their skills. +1% payout boost",
-        "Perfect your abilities with experience and practice.",
-        "It’s a long road to achieving mastery but Trivia Heroes will see it through. +1% payout boost",
+        "The potential is strong in this one.",
+        "Still building a strong foundation. +1% payout boost.",
+        "Still needs more training. +1% payout boost.",
+        "Training is almost complete; just needs more experience. +1% payout boost.",
+        "You are now a full fledged Trivia Hero.",
+        "Even Heroes need to sharpen their skills. +1% payout boost.",
+        "Practice makes perfect.",
+        "Working towards achieving mastery. +1% payout boost.",
         "Sharpen your abilities through peer competition.",
-        "Elders exhibit true mastery over all subjects",
-        "Reborn"
+        " Elders are masters in all subjects.",
+        "Reborn."
     };
 
     private static string[] m_ClassDescription = {
@@ -128,7 +130,7 @@ public class UpgradesPage : MonoBehaviour {
     {
         if (m_Tier < 10)
         {
-            GameManager.Instance.UpgradeTier();
+            GameManager.Instance.UpgradeTier(m_ClassID);
         }
         else
         {
@@ -180,11 +182,13 @@ public class UpgradesPage : MonoBehaviour {
             m_BackButton.gameObject.SetActive(false);
             m_NextButton.gameObject.SetActive(false);
         }
-      
+
+        int cost = 500;
         Avatar avatar = GameManager.Instance.GetActiveAvatar();
         if (m_Tier < 10)
         {
             m_UpgradeCostText.text = GameConfig.Instance.GetUpgradeCost(m_Tier, avatar.m_ID).ToString();
+            cost = GameConfig.Instance.GetUpgradeCost(m_Tier, avatar.m_ID);
         }
         else
         {
@@ -193,10 +197,20 @@ public class UpgradesPage : MonoBehaviour {
         if ((int)avatar.m_Tier == m_Tier)
         {
             m_UpgradeButton.interactable = true;
+            m_UpgradeButton.gameObject.SetActive(true);
+            if (GameManager.Instance.GetPlayerProfile().m_Coin > cost)
+            {
+                m_CoinImage.color = Color.white;
+            }
+            else
+            {
+                m_CoinImage.color = Color.red;
+            }
         }
         else
         {
             m_UpgradeButton.interactable = false;
+            m_UpgradeButton.gameObject.SetActive(false);
         }
 
     }

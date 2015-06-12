@@ -87,6 +87,7 @@
      <Compile Include="Assets\Scripts\UICrownSelect.cs" />
      <Compile Include="Assets\Scripts\UIEndgameConfirm.cs" />
      <Compile Include="Assets\Scripts\UIEndgameResult.cs" />
+     <Compile Include="Assets\Scripts\UIExchange.cs" />
      <Compile Include="Assets\Scripts\UIGotPuzzle.cs" />
      <Compile Include="Assets\Scripts\UIGotTrophy.cs" />
      <Compile Include="Assets\Scripts\UIMain.cs" />

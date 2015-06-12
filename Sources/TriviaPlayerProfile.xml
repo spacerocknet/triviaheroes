@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <m_PlayerID>AHAHA</m_PlayerID>
-  <m_PlayerName>AHAHA</m_PlayerName>
+  <m_PlayerID>NewHero</m_PlayerID>
+  <m_PlayerName>NewHero</m_PlayerName>
   <m_Level>0</m_Level>
   <m_TotalEXP>0</m_TotalEXP>
   <m_Lives>5</m_Lives>
   <m_Coin>0</m_Coin>
-  <m_Diamond>0</m_Diamond>
+  <m_Diamond>4216</m_Diamond>
   <m_Sex>1</m_Sex>
   <m_CurrentTier>Young_Adult</m_CurrentTier>
   <m_CurrentClass>None</m_CurrentClass>
-  <m_LastTimeAddLive>2015-06-11T17:43:54.8774205+07:00</m_LastTimeAddLive>
+  <m_LastTimeAddLive>2015-06-12T17:46:40.8493218+07:00</m_LastTimeAddLive>
   <m_FriendList>
     <m_FriendList>
       <string>Mage</string>
@@ -40,23 +40,7 @@
       </m_ItemList>
       <m_Sex>0</m_Sex>
       <m_ID>0</m_ID>
-      <m_Tier>Elder</m_Tier>
-      <m_Jobs>None</m_Jobs>
-    </Avatar>
-    <Avatar>
-      <m_ItemList>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-      </m_ItemList>
-      <m_Sex>0</m_Sex>
-      <m_ID>1</m_ID>
-      <m_Tier>Toddler</m_Tier>
+      <m_Tier>Adult_1</m_Tier>
       <m_Jobs>None</m_Jobs>
     </Avatar>
   </Avatar>
@@ -76,6 +60,7 @@
     <int>0</int>
   </m_PVEState>
   <m_AchievementCounter>
+    <int>11</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
@@ -84,8 +69,7 @@
     <int>0</int>
     <int>0</int>
     <int>0</int>
-    <int>0</int>
-    <int>0</int>
+    <int>3</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
@@ -100,5 +84,30 @@
     <int>0</int>
     <int>0</int>
   </m_AchievementCounter>
-  <m_PayOutBonus>6</m_PayOutBonus>
+  <m_AchievementBonusReceived>
+    <int>3</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+  </m_AchievementBonusReceived>
+  <m_PayOutBonus>4</m_PayOutBonus>
 </PlayerProfile>

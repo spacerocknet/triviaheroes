@@ -154,6 +154,15 @@ public class UIQuestion : MonoBehaviour {
 
         m_EndGameButton.gameObject.SetActive(true);
         m_TimeOutText.gameObject.SetActive(false);
+
+        if (number == 1)
+        {
+            m_EndGameButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            m_EndGameButton.gameObject.SetActive(true);
+        }
     }
 
     public void ShowAnswer(int select, int answer)
@@ -187,8 +196,8 @@ public class UIQuestion : MonoBehaviour {
     {
         switch (type)
         {
-            case 1:
-                m_HelpButtons[0].interactable = false;
+            case 2:
+                m_HelpButtons[1].interactable = false;
                 int c = 2;
                 int prev = -1;
                 while (c > 0)
@@ -200,13 +209,14 @@ public class UIQuestion : MonoBehaviour {
                         c--;
                         //m_AnswerImage[idx].sprite = m_AnswerSprite[4];
                         m_AnswerImage[idx].GetComponent<Button>().interactable = false;
-                    }
-                    
+                    }                    
                 }
+                AchievementList.Instance.OnAction(Achievement_Action.USE_HINT);
                 break;
-            case 2:
+            case 1:
                 m_Timer += 15f;
-                m_HelpButtons[1].interactable = false;
+                m_HelpButtons[0].interactable = false;
+                AchievementList.Instance.OnAction(Achievement_Action.USE_EXTRATIME);
                 break;
             case 3:
                 m_HelpButtons[2].interactable = false;
@@ -222,11 +232,12 @@ public class UIQuestion : MonoBehaviour {
                 m_Answer1.text = m_Answer1.text + " (" + arr[1].ToString() + ")";
                 m_Answer2.text = m_Answer2.text + " (" + arr[2].ToString() + ")";
                 m_Answer3.text = m_Answer3.text + " (" + arr[3].ToString() + ")";
+                AchievementList.Instance.OnAction(Achievement_Action.USE_SURVEY);
                 break;
             case 4:
                 m_HelpButtons[3].interactable = false;
                 GameManager.Instance.SkipQuestion();
-
+                AchievementList.Instance.OnAction(Achievement_Action.USE_SKIP);
                 break;
             default:
                 

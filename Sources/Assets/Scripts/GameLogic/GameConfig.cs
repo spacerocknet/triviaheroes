@@ -85,8 +85,7 @@ public class GameConfig {
             string[] numbers = line.Split(' ');
             List<int> l = new List<int>();
             for (int j = 0; j < numbers.GetLength(0); j++)
-            {
-                Debug.Log(numbers[j]);
+            {                
                 l.Add(int.Parse(numbers[j]));
             }
             m_AvatarUpgradeCost.Add(l);            
@@ -112,5 +111,10 @@ public class GameConfig {
     public int GetUpgradeCost(int tier, int ava)
     {
         return m_AvatarUpgradeCost[tier][ava];
+    }
+
+    public float GetExchangeRate()
+    {
+        return 27.7114286f;
     }
 }

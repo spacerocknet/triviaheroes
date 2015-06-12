@@ -33,6 +33,7 @@ public class PlayerProfile{
     public int m_CurrentPVEStage = 0;
     public List<int> m_PVEState;
     public List<int> m_AchievementCounter;
+    public List<int> m_AchievementBonusReceived;
     public int m_PayOutBonus;
 
     public PlayerProfile()
@@ -82,11 +83,12 @@ public class PlayerProfile{
         m_PayOutBonus = 1;
         m_PVEState = new List<int>();
         m_AchievementCounter = new List<int>();
-        
+        m_AchievementBonusReceived = new List<int>();
 
         for (int i = 0; i < 23; i++)
         {
             m_AchievementCounter.Add(0);
+            m_AchievementBonusReceived.Add(0);
         }
 
         for (int i = 0; i < GameConfig.Instance.GetNumberOfPvEStage(); i++)
@@ -192,6 +194,7 @@ public class PlayerProfile{
         m_AvatarList.Add(av);
         m_ActiveAvatar = m_AvatarList.Count - 1;
         Save();
+        AchievementList.Instance.OnAction(Achievement_Action.COLLECT_AVATAR);
     }
     
 }

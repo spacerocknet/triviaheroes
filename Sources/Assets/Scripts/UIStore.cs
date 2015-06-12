@@ -46,4 +46,11 @@ public class UIStore : MonoBehaviour {
 
         GameManager.Instance.AddDiamond(15);
     }
+
+    public void OnExchange()
+    {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_EXCHANGE);
+        cs.Show();
+        cs.GetComponent<UIExchange>().SetInfo(GameManager.Instance.GetPlayerProfile().m_Diamond, GameConfig.Instance.GetExchangeRate());
+    }
 }

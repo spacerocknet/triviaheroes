@@ -39,7 +39,9 @@ public class SingleState : MonoBehaviour {
 
     public void Refresh()
     {
+        
         PlayerProfile pl = GameManager.Instance.GetPlayerProfile();
+        Debug.Log("PVEStage: " + pl.m_CurrentPVEStage);
         if (m_Index <= pl.m_CurrentPVEStage)
         {
             m_CircleImage.sprite = m_SpriteList[3];

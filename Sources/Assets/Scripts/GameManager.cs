@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour {
 
     public void OnContinueGame(int gameid)
     {
+        m_IsPVE = false;
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
         cs.MoveInFromRight();
         m_CurrentGame = GameManager.Instance.GetGameIndexByID(gameid);        
@@ -150,6 +151,8 @@ public class GameManager : MonoBehaviour {
         GameInfo gi = GameManager.Instance.m_GameList.AddNewGame(ret["opponent"]);
         cs.gameObject.GetComponent<UIPvP>().SetGameInfo(gi);
         m_CurrentGame = GameManager.Instance.m_GameList.m_GameList.Count - 1;
+
+        //SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).MoveOutToRight();
     }
 
     public void OnCategoryConfirmToPlayResult(string result)
@@ -300,6 +303,7 @@ public class GameManager : MonoBehaviour {
         }
         m_PlayerProfile.m_CurrentPVEStage = 0;
         m_PlayerProfile.Save();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).GetComponent<UINewGame>().RefreshSingle();
     }
 
     public void OnEndPvEGameConfirm()
@@ -386,6 +390,12 @@ public class GameManager : MonoBehaviour {
             if (m_PVPState.m_Type == PVPStateType.NORMAL)
             {
                 HandleNormalAnswerEnded();
+                if (!m_IsLastAnswerCorrect)
+                {
+                    SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).MoveOutToRight();
+                    SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).MoveOutToRight();
+                    SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN).MoveInFromLeft();
+                }
             }
             else if (m_PVPState.m_Type == PVPStateType.TROPHY)
             {
@@ -878,7 +888,7 @@ public class GameManager : MonoBehaviour {
         m_PlayerProfile.Save();
     }
 
-    public void UpgradeTier()
+    public void UpgradeTier(int m_ClassID)
     {
         TIER currentTier = m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar].m_Tier;
         if (currentTier != TIER.Elder)
@@ -888,6 +898,36 @@ public class GameManager : MonoBehaviour {
             if (tier == TIER.Child || tier == TIER.Teenager || tier == TIER.Young_Adult || tier == TIER.Adult_2 || tier == TIER.Adult_4)
             {
                 m_PlayerProfile.m_PayOutBonus++;
+            }
+            if (tier == TIER.Adult_1)
+            {
+                m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar].m_Jobs = (CLASS)(m_ClassID + 1);
+            }
+            if (tier == TIER.Adult_1 || tier == TIER.Adult_2 || tier == TIER.Adult_3 || tier == TIER.Adult_4 || tier == TIER.Adult_5)
+            {
+                CLASS job = m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar].m_Jobs;
+                if (job == CLASS.Medicial) {
+                    AchievementList.Instance.OnAction(Achievement_Action.UPGRADE_DOCTER);
+                } 
+                else if (job == CLASS.Musician) {
+                    AchievementList.Instance.OnAction(Achievement_Action.UPGRADE_MUSICIAN);
+                }
+                else if (job == CLASS.Athlete)
+                {
+                    AchievementList.Instance.OnAction(Achievement_Action.UPGRADE_AHTHLETE);
+                }
+                else if (job == CLASS.Enterpreneur)
+                {
+                    AchievementList.Instance.OnAction(Achievement_Action.UPGRADE_BUSINESS);
+                }
+                else if (job == CLASS.Scientist)
+                {
+                    AchievementList.Instance.OnAction(Achievement_Action.UPGRADE_SCIENTIST);
+                }
+                else if (job == CLASS.Warrior)
+                {
+                    AchievementList.Instance.OnAction(Achievement_Action.UPGRADE_WARRIOR);
+                }
             }
         }
         else
@@ -906,6 +946,13 @@ public class GameManager : MonoBehaviour {
     public void AddDiamond(int amount)
     {
         m_PlayerProfile.m_Diamond += amount;
+        m_PlayerProfile.Save();
+    }
+
+    public void ExchangeDiamond(int amount)
+    {
+        m_PlayerProfile.m_Diamond -= amount;
+        m_PlayerProfile.m_Coin += Mathf.RoundToInt(amount * GameConfig.Instance.GetExchangeRate());
         m_PlayerProfile.Save();
     }
 }

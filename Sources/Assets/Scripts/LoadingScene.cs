@@ -8,6 +8,7 @@ public class LoadingScene : MonoBehaviour {
     public Text m_LoadingTips;
     float m_Timer;
     AsyncOperation m_LoadLevelAsync = null;
+    public float m_DisplayTime;
 	// Use this for initialization
 	void Start () {
         //GET("http://54.163.250.79:9000/v1/cat/game/1");
@@ -84,7 +85,7 @@ public class LoadingScene : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         m_Timer += Time.deltaTime;        
-        if (m_Timer > 1 && m_LoadLevelAsync != null && m_LoadLevelAsync.progress >= 0.9f)
+        if (m_Timer > m_DisplayTime && m_LoadLevelAsync != null && m_LoadLevelAsync.progress >= 0.9f)
         {
             m_LoadLevelAsync.allowSceneActivation = true;
         }

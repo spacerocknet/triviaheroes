@@ -29,7 +29,7 @@ public class UIProfile : MonoBehaviour {
             }
 
             Achievement a = AchievementList.Instance.GetAchievementBy(i);
-            go.GetComponent<UIAchievement>().SetInfo(a);
+            go.GetComponent<UIAchievement>().SetInfo(a, i);
 
             m_AchievementList.Add(go.GetComponent<UIAchievement>());
         }
@@ -60,7 +60,7 @@ public class UIProfile : MonoBehaviour {
         for (int i = 0; i < m_AchievementList.Count; i++)
         {
             Achievement a = AchievementList.Instance.GetAchievementBy(i);
-            m_AchievementList[i].SetInfo(a);
+            m_AchievementList[i].SetInfo(a, i);
         }
     }
 

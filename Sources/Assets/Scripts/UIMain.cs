@@ -57,8 +57,8 @@ public class UIMain : MonoBehaviour {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME);
         cs.MoveInFromRight();
 
-        cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN);
-        cs.MoveOutToLeft();
+        //cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN);
+        //cs.MoveOutToLeft();
     }
 
     public void OnYourTurn()
@@ -227,6 +227,11 @@ public class UIMain : MonoBehaviour {
         } else {
             m_TextLivesTimer.gameObject.SetActive(false);
         }
+    }
+
+    public void OnAvatarPress()
+    {
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PROFILE).MoveInFromRight();
     }
 }
 
