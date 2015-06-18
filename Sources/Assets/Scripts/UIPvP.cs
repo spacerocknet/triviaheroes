@@ -171,6 +171,17 @@ public class UIPvP : MonoBehaviour {
         }
     }
 
+    public void UpdateProgressAbilityUse(int prog)
+    {
+        //Debug.Log(prog);
+        m_PivotImage.sprite = m_PivotSprite[prog];
+
+        if (prog == 3)
+        {
+            OnFullProgress();
+        }
+    }
+
     public void OnFullProgress()
     {
         GameManager.Instance.OnFullProgress();
@@ -198,5 +209,11 @@ public class UIPvP : MonoBehaviour {
         int bonus = 0;
         bonus = Mathf.RoundToInt((float)GameManager.Instance.GetPlayerProfile().m_PayOutBonus / 100 * reward);
         m_RewardText.text = reward + " " + bonus;
+    }
+
+    public void OnUseAbility()
+    {
+        Debug.Log("Ability use");
+        GameManager.Instance.OnUseAbility();
     }
 }

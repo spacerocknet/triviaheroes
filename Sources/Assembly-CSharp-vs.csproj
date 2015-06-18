@@ -69,6 +69,7 @@
      <Compile Include="Assets\Scripts\GameModeTab.cs" />
      <Compile Include="Assets\Scripts\GameTab.cs" />
      <Compile Include="Assets\Scripts\HorizontalScrollSnap.cs" />
+     <Compile Include="Assets\Scripts\InviteFriendPrefab.cs" />
      <Compile Include="Assets\Scripts\ItemScript.cs" />
      <Compile Include="Assets\Scripts\LoadingScene.cs" />
      <Compile Include="Assets\Scripts\NewGameTab.cs" />
@@ -92,6 +93,7 @@
      <Compile Include="Assets\Scripts\UIGotTrophy.cs" />
      <Compile Include="Assets\Scripts\UIMain.cs" />
      <Compile Include="Assets\Scripts\UINewGame.cs" />
+     <Compile Include="Assets\Scripts\UIOutLives.cs" />
      <Compile Include="Assets\Scripts\UIPopup.cs" />
      <Compile Include="Assets\Scripts\UIProfile.cs" />
      <Compile Include="Assets\Scripts\UIPvP.cs" />

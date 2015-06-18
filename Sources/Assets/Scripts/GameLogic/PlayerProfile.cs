@@ -95,8 +95,10 @@ public class PlayerProfile{
         {
             m_PVEState.Add(0);
         }
-        
-        m_AvatarList.Add(Avatar.CreateDefaultAvatar());
+
+        Avatar av = Avatar.CreateDefaultAvatar();
+        av.m_Sex = m_Sex;
+        m_AvatarList.Add(av);
 
         m_FriendList = FriendList.CreateRandomFriendList();
     }
@@ -190,6 +192,7 @@ public class PlayerProfile{
     public void AddNewAvatar()
     {
         Avatar av = Avatar.CreateDefaultAvatar();
+        av.m_Sex = m_Sex;
         av.m_ID = m_AvatarList.Count;
         m_AvatarList.Add(av);
         m_ActiveAvatar = m_AvatarList.Count - 1;

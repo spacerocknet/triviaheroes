@@ -955,4 +955,38 @@ public class GameManager : MonoBehaviour {
         m_PlayerProfile.m_Coin += Mathf.RoundToInt(amount * GameConfig.Instance.GetExchangeRate());
         m_PlayerProfile.Save();
     }
+
+    public void NotEnoughDiamond()
+    {
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_OUTLIVES).Show();
+    }
+
+    public void NotEnoughCoin()
+    {
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_EXCHANGE).Show();
+    }
+
+    public void OnUseDiamond(int amount)
+    {
+        m_PlayerProfile.m_Diamond -= amount;
+        m_PlayerProfile.Save();
+    }
+
+    public void OnUseCoin(int amount)
+    {
+        m_PlayerProfile.m_Coin -= amount;
+        m_PlayerProfile.Save();
+    }
+
+    public void OnUseAbility()
+    {
+        Avatar ava = GameManager.Instance.GetActiveAvatar();
+        //if (ava.m_Jobs == CLASS.Medicial)
+        //{
+            //Free claim 
+            GameManager.Instance.FulfillProgress();            
+            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
+            cs.gameObject.GetComponent<UIPvP>().UpdateProgressAbilityUse(GetMySpinProgress());
+        //
+    }
 }

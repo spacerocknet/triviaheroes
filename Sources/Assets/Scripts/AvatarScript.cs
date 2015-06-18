@@ -29,45 +29,82 @@ public class AvatarScript : MonoBehaviour {
     {
         
         string sex = "";
-        if (avatar.m_Sex == 0)
+        if (avatar.m_Sex == 1)
         {
-            Debug.Log("Girl");
             sex = "G";
         }
         else
         {
-            Debug.Log("Boy");
             sex = "B";
         }
-        string s = ((int)avatar.m_Tier).ToString();
-        while (s.Length < 2) {
-            s = "0" + s;
-        }
-        s = sex + "_B" + s;
 
-        //Debug.Log("avatar/default/" + s);
-        m_ImageList[0].sprite = Resources.Load<Sprite>("avatar/default/" + s);
+        string tier = ((int)avatar.m_Tier).ToString();
+        while (tier.Length < 2) {
+            tier = "0" + tier;
+        }
+
+        string job = "";
+        switch (avatar.m_Jobs)
+        {
+            case CLASS.Medicial:
+                job = "_D";
+                break;
+            case CLASS.Scientist:
+                Debug.Log("Scientist");
+                job = "_S";
+                break;
+            case CLASS.Athlete:
+                Debug.Log("Athlete");
+                job = "_A";
+                break;
+            case CLASS.Enterpreneur:
+                Debug.Log("Athlete");
+                job = "_E";
+                break;
+            case CLASS.Warrior:
+                Debug.Log("Warrior");
+                job = "_W";
+                break;
+            case CLASS.Musician:
+                Debug.Log("Warrior");
+                job = "_M";
+                break;
+            default:
+                break;
+        }
+
+        string sbody = sex + "_B" + tier;        
+        m_ImageList[0].sprite = Resources.Load<Sprite>("avatar/default/" + sbody);
         
         for (int i = 0; i < avatar.m_ItemList.Count; i++)
         {
             m_ImageList[i + 1].gameObject.SetActive(false);
-
-
-            string stier = ((int)avatar.m_Tier).ToString();
-            while (stier.Length < 2) {
-                stier = "0" + stier;
-            }
             if (avatar.m_ItemList[i] == 0)
             {
-                string file = "avatar/default/" + sex + "_" + Avatar.AVATAR_PREFIX[i] + stier;
-                if ((i == 0 || i == 3) && ((int)avatar.m_Tier >= 5 && (int)avatar.m_Tier <= 9))
-                {
+                string file1 = "avatar/default/" + sex + "_" + Avatar.AVATAR_PREFIX[i] + tier;
+                string file2 = "avatar/default/" + "U" + "_" + Avatar.AVATAR_PREFIX[i] + tier;
+                string file3 = file1 + job;
+                string file4 = file2 + job;
+                //if ((i == 0 || i == 3 || i == 1) && ((int)avatar.m_Tier >= 5 && (int)avatar.m_Tier <= 9))
+                //{
                     //TODO: change according actuall jobs
-                    file = file + "_D";
+                    //file = file + job;
+                    //fileU = fileU + job;
+                //}
+
+                m_ImageList[i + 1].sprite = Resources.Load<Sprite>(file3);
+                if (m_ImageList[i + 1].sprite == null)
+                {
+                    m_ImageList[i + 1].sprite = Resources.Load<Sprite>(file4);
                 }
-
-
-                m_ImageList[i + 1].sprite = Resources.Load<Sprite>(file);
+                if (m_ImageList[i + 1].sprite == null)
+                {
+                    m_ImageList[i + 1].sprite = Resources.Load<Sprite>(file1);
+                }
+                if (m_ImageList[i + 1].sprite == null)
+                {
+                    m_ImageList[i + 1].sprite = Resources.Load<Sprite>(file2);
+                }
                 if (m_ImageList[i + 1].sprite == null)
                 {
                     //Debug.Log("Cant load: " + file);
@@ -142,19 +179,37 @@ public class AvatarScript : MonoBehaviour {
         //TODO: jobs speicial item
         if (((int)avatar.m_Tier >= 5 && (int)avatar.m_Tier <= 9))
         {
-            m_ImageList[m_ImageList.GetLength(0) - 1].sprite = Resources.Load<Sprite>("avatar/default/I_" + "D");
-            if (m_ImageList[m_ImageList.GetLength(0) - 1].sprite == null)
+            m_ImageList[m_ImageList.GetLength(0) - 2].sprite = Resources.Load<Sprite>("avatar/default/I" + job);
+            if (m_ImageList[m_ImageList.GetLength(0) - 2].sprite == null)
             {
-                m_ImageList[m_ImageList.GetLength(0) - 1].gameObject.SetActive(false);
+                m_ImageList[m_ImageList.GetLength(0) - 2].gameObject.SetActive(false);
             }
             else
             {
-                m_ImageList[m_ImageList.GetLength(0) - 1].gameObject.SetActive(true);
+                m_ImageList[m_ImageList.GetLength(0) - 2].gameObject.SetActive(true);
             }
         }
         else
         {
+            m_ImageList[m_ImageList.GetLength(0) - 2].gameObject.SetActive(false);
+        }
+
+
+        string sitem = "avatar/default/" + sex + "_S" + tier + job;
+        m_ImageList[m_ImageList.GetLength(0) - 1].sprite = Resources.Load<Sprite>(sitem);
+        if (m_ImageList[m_ImageList.GetLength(0) - 1].sprite == null)
+        {
+            sitem = "avatar/default/" + "U" + "_S" + tier + job;
+            m_ImageList[m_ImageList.GetLength(0) - 1].sprite = Resources.Load<Sprite>(sitem);
+        }
+
+        if (m_ImageList[m_ImageList.GetLength(0) - 1].sprite == null)
+        {
             m_ImageList[m_ImageList.GetLength(0) - 1].gameObject.SetActive(false);
         }
+        else
+        {
+            m_ImageList[m_ImageList.GetLength(0) - 1].gameObject.SetActive(true);
+        }        
     }
 }

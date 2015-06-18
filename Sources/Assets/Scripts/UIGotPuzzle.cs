@@ -21,10 +21,18 @@ public class UIGotPuzzle : MonoBehaviour {
 
     public void OnRespin()
     {
-        CanvasScript cv = gameObject.GetComponent<CanvasScript>();
-        cv.MoveOutToRight((int)CanvasID.CANVAS_PVP);
-        UIPvP gm = m_GameMainCanvas.GetComponent<UIPvP>();
-        gm.Respin();
+        if (GameManager.Instance.GetPlayerProfile().m_Diamond > 3)
+        {
+            CanvasScript cv = gameObject.GetComponent<CanvasScript>();
+            cv.MoveOutToRight((int)CanvasID.CANVAS_PVP);
+            UIPvP gm = m_GameMainCanvas.GetComponent<UIPvP>();
+            gm.Respin();
+            GameManager.Instance.OnUseDiamond(3);
+        }
+        else
+        {
+            GameManager.Instance.NotEnoughDiamond();
+        }
     }
 
     public void OnPlay()
@@ -39,5 +47,6 @@ public class UIGotPuzzle : MonoBehaviour {
         m_CategoryImage.sprite = m_CatSprite[(int)category];
         m_CurrentCat = category;
     }
+
 }
 

@@ -159,6 +159,8 @@ public class UpgradesPage : MonoBehaviour {
     {        
         Avatar ava = Avatar.CreateDefaultAvatar();
         ava.m_Tier = (TIER)(tier + 1);
+        ava.m_Jobs = (CLASS)(m_ClassID + 1);
+        ava.m_Sex = GameManager.Instance.GetPlayerProfile().m_Sex;
         m_AvatarScript.SetInfo(ava);
 
         m_Tier = tier;

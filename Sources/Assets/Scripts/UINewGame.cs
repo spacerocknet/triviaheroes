@@ -48,19 +48,25 @@ public class UINewGame : MonoBehaviour {
 
     public void StartGame()
     {
+        if (GameManager.Instance.GetPlayerProfile().m_Lives > 0)
+        {
+            if (m_SelecteMode == GameMode.GAMEMODE_PVE)
+            {
+                //CanvasScript cs = m_NewGameCanvas.GetComponent<CanvasScript>();
+                //cs.MoveOutToLeft();
+                GameManager.Instance.OnStartPVEGame();
 
-        if (m_SelecteMode == GameMode.GAMEMODE_PVE)
-        {
-            //CanvasScript cs = m_NewGameCanvas.GetComponent<CanvasScript>();
-            //cs.MoveOutToLeft();
-            GameManager.Instance.OnStartPVEGame();
-            
-            
+
+            }
+            else if (m_SelecteMode == GameMode.GAMEMODE_PVP)
+            {
+                GameManager.Instance.OnStartPVPGame(m_SelectedFriend);
+            }
         }
-        else if (m_SelecteMode == GameMode.GAMEMODE_PVP)
+        else
         {
-            GameManager.Instance.OnStartPVPGame(m_SelectedFriend);            
-        }        
+            GameManager.Instance.NotEnoughDiamond();
+        }
     }
 
     public void SetSelectedMode(GameMode mode)
