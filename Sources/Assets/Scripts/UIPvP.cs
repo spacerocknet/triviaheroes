@@ -173,13 +173,8 @@ public class UIPvP : MonoBehaviour {
 
     public void UpdateProgressAbilityUse(int prog)
     {
-        //Debug.Log(prog);
-        m_PivotImage.sprite = m_PivotSprite[prog];
-
-        if (prog == 3)
-        {
-            OnFullProgress();
-        }
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM);
+        cs.Show();
     }
 
     public void OnFullProgress()
@@ -214,6 +209,11 @@ public class UIPvP : MonoBehaviour {
     public void OnUseAbility()
     {
         Debug.Log("Ability use");
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+        cs.GetComponent<UIPopup>().Show("Do you want to use FreeClaim", 1, OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
+    }
+    public void OnUseAbilityConfirm()
+    {
         GameManager.Instance.OnUseAbility();
     }
 }

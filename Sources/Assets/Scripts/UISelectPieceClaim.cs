@@ -10,6 +10,8 @@ public class UISelectPieceClaim : MonoBehaviour {
     public Image[] m_CheckImage;
     int m_CurrentSelected = -1;
 
+    public Text 
+
 	// Use this for initialization
 	void Start () {
 	

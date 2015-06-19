@@ -981,12 +981,9 @@ public class GameManager : MonoBehaviour {
     public void OnUseAbility()
     {
         Avatar ava = GameManager.Instance.GetActiveAvatar();
-        //if (ava.m_Jobs == CLASS.Medicial)
-        //{
-            //Free claim 
-            GameManager.Instance.FulfillProgress();            
-            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
-            cs.gameObject.GetComponent<UIPvP>().UpdateProgressAbilityUse(GetMySpinProgress());
-        //
+        ClearProgress();
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM);
+        cs.MoveInFromRight();
+        //cs.gameObject.GetComponent<UIPvP>().UpdateProgressAbilityUse(GetMySpinProgress());
     }
 }
