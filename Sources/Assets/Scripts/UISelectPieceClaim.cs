@@ -10,7 +10,19 @@ public class UISelectPieceClaim : MonoBehaviour {
     public Image[] m_CheckImage;
     int m_CurrentSelected = -1;
 
-    public Text 
+    public Text m_ButtonText;
+    bool m_IsAbilityClaim;
+    public bool IsAbilityClaim
+    {
+        get
+        {
+            return m_IsAbilityClaim;
+        }
+        set
+        {
+            m_IsAbilityClaim = value;
+        }
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -100,9 +112,21 @@ public class UISelectPieceClaim : MonoBehaviour {
     {
         if (m_CurrentSelected != -1)
         {
-            SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM).MoveOutToRight();
-            GameManager.Instance.OnTrophyClaimSelected(m_CurrentSelected);
+            if (m_IsAbilityClaim)
+            {
+                SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM).MoveOutToRight();
+                GameManager.Instance.OnAbilityClaimSelected(m_CurrentSelected);
+            } else
+            {
+                SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM).MoveOutToRight();
+                GameManager.Instance.OnTrophyClaimSelected(m_CurrentSelected);
+            }
         }
+    }
+
+    public void SetButtonText(string s)
+    {
+        m_ButtonText.text = s;
     }
 
     

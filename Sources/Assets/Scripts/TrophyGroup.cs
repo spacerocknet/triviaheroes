@@ -28,7 +28,7 @@ public class TrophyGroup : MonoBehaviour {
 
     public void SetTrophyState(List<int> state)
     {
-        Debug.Log(m_ImageList.Count);
+        
         for (int i = 0; i < state.Count; i++)
         {
             if (state[i] == 0)

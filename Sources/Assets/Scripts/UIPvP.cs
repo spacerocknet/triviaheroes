@@ -133,8 +133,8 @@ public class UIPvP : MonoBehaviour {
             {
                 string s = "You won the challenge";
                 CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
-                cs.Show((int)CanvasID.CANVAS_PVP);
-                cs.GetComponent<UIPopup>().SetText(s);
+                cs.GetComponent<UIPopup>().Show(s, 0, null, null, (int)CanvasID.CANVAS_PVP);                                       
+                
                 game.m_ChallengeState++;
                 GameManager.Instance.m_GameList.Save();
             }
@@ -174,6 +174,7 @@ public class UIPvP : MonoBehaviour {
     public void UpdateProgressAbilityUse(int prog)
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM);
+        cs.GetComponent<UISelectPieceClaim>().IsAbilityClaim = false;
         cs.Show();
     }
 
@@ -210,7 +211,9 @@ public class UIPvP : MonoBehaviour {
     {
         Debug.Log("Ability use");
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
-        cs.GetComponent<UIPopup>().Show("Do you want to use FreeClaim", 1, OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
+        //cs.GetComponent<UIPopup>().Show("Do you want to use FreeClaim", 1, OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
+
+        cs.GetComponent<UIPopup>().Show("Do you want to use Free Challenge", 1, OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
     }
     public void OnUseAbilityConfirm()
     {

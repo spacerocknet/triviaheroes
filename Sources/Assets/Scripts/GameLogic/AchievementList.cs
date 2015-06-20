@@ -41,7 +41,7 @@ public class AchievementList
         while (idx < linesInFile.GetLength(0)) {
             string title = linesInFile[idx++];
             string des = linesInFile[idx++];
-            Debug.Log(linesInFile[idx]);
+            
             string[] numbers = linesInFile[idx++].Split(' ');
             
             List<int> req = new List<int>();

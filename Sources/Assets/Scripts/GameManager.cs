@@ -478,6 +478,8 @@ public class GameManager : MonoBehaviour {
     public void OnSelectClaim()
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM);
+        cs.GetComponent<UISelectPieceClaim>().SetButtonText("Play");
+        cs.GetComponent<UISelectPieceClaim>().IsAbilityClaim = false;
         cs.MoveInFromRight();
 
         cs.gameObject.GetComponent<UISelectPieceClaim>().UpdateTrophyState();
@@ -488,6 +490,7 @@ public class GameManager : MonoBehaviour {
         if (CanChallenge())
         {
             CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECHALLENGE);
+            cs.GetComponent<UISelectPieceChallenge>().IsAbilityChallenge = false;
             cs.MoveInFromRight();
             cs.gameObject.GetComponent<UISelectPieceChallenge>().SetTrophyState(GetMyTrophy(), GetOpponentTrophy());            
         }
@@ -506,6 +509,12 @@ public class GameManager : MonoBehaviour {
 
         NetworkManager.Instance.DoTrophyClaimSelected(trophy);
         SetPVPState(PVPStateType.TROPHY, (Category)trophy, Category.CAT_ART);
+    }
+
+    public void OnAbilityClaimSelected(int trophy)
+    {
+        ClearProgress();
+        TrophyAcquired((Category)trophy);
     }
 
     public void OnTrophyChallengeSelected(int mytrophy, int theirtrophy)
@@ -594,7 +603,7 @@ public class GameManager : MonoBehaviour {
         {
             m_GameList.m_GameList[m_CurrentGame].m_ChallengeState++;
         }
-        
+        Debug.Log("End turn");
         m_GameList.m_GameList[m_CurrentGame].m_CurrentTurn = 3 - m_GameList.m_GameList[m_CurrentGame].m_CurrentTurn;
         m_GameList.Save();
     }
@@ -604,6 +613,7 @@ public class GameManager : MonoBehaviour {
         for (int i = 0; i < m_GameList.m_GameList.Count; i++)
         {
             GameInfo gi = m_GameList.m_GameList[i];
+            Debug.Log(gi.m_CurrentTurn);
             if (gi.m_CurrentTurn == 2)
             {
                 if (Random.Range(0, 5) > 0)
@@ -615,7 +625,7 @@ public class GameManager : MonoBehaviour {
                         gi.m_SpinProgressB++;
                         gi.m_SpinProgressB = Mathf.Clamp(gi.m_SpinProgressB, 0, 2);
                     }
-
+                    Debug.Log("Check finish challenge");
                     //Finish challenge
                     if (m_GameList.m_GameList[m_CurrentGame].m_ChallengeState == 1)
                     {
@@ -628,8 +638,10 @@ public class GameManager : MonoBehaviour {
                     else
                     {
                         //AddOneTrophy
-                        if (Random.Range(0, 2) == 1)
+                        Debug.Log("Random Add Trophy");
+                        if (Random.Range(0, 2) == 0)
                         {
+                            Debug.Log("Add Trophy");
                             for (int k = 0; k < gi.m_PieceB.Count; k++)
                             {
                                 if (gi.m_PieceB[k] == 0)
@@ -809,6 +821,32 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public List<int> GetMyTrophyList()
+    {
+        //Debug.Log(m_GameList.m_GameList[m_CurrentGame].m_PlayerA + "  " + m_PlayerProfile.m_PlayerID);
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        {
+            return m_GameList.m_GameList[m_CurrentGame].m_PieceA;
+        }
+        else
+        {
+            return m_GameList.m_GameList[m_CurrentGame].m_PieceB;
+        }
+    }
+
+    public List<int> GetOpponentTrophyList()
+    {
+        //Debug.Log(m_GameList.m_GameList[m_CurrentGame].m_PlayerA + "  " + m_PlayerProfile.m_PlayerID);
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        {
+            return m_GameList.m_GameList[m_CurrentGame].m_PieceB;
+        }
+        else
+        {
+            return m_GameList.m_GameList[m_CurrentGame].m_PieceA;
+        }
+    }
+
     public void SetTrophyAcquired(int trophy)
     {
         if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
@@ -981,9 +1019,105 @@ public class GameManager : MonoBehaviour {
     public void OnUseAbility()
     {
         Avatar ava = GameManager.Instance.GetActiveAvatar();
-        ClearProgress();
-        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM);
-        cs.MoveInFromRight();
-        //cs.gameObject.GetComponent<UIPvP>().UpdateProgressAbilityUse(GetMySpinProgress());
+
+        //FREE CLAIM
+        //ClearProgress();
+        //CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM);
+        //cs.GetComponent<UISelectPieceClaim>().SetButtonText("Claim");
+        //cs.GetComponent<UISelectPieceClaim>().IsAbilityClaim = true;
+        //cs.gameObject.GetComponent<UISelectPieceClaim>().UpdateTrophyState();
+        //cs.MoveInFromRight();
+        
+        //FREECHALLENGE
+        //if (CanChallenge())
+        //{
+        //    CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECHALLENGE);
+        //    cs.GetComponent<UISelectPieceChallenge>().IsAbilityChallenge = true;
+        //    cs.gameObject.GetComponent<UISelectPieceChallenge>().SetTrophyState(GetMyTrophy(), GetOpponentTrophy());
+        //    cs.MoveInFromRight();
+        //}
+        //else
+        //{
+        //    CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+        //    cs.GetComponent<UIPopup>().Show("This ability undoes your opponent’s last ability move. Avatars can only use this ability once opponent has used her/her avatar ability.  ", 0, null, null, (int)CanvasID.CANVAS_PVP);                                       
+        //}
+
+        //SWITCH PUZZLE
+        //if (CanSwitch())
+        //{
+        //    DoSwitchPuzzle();
+        //}
+        //else
+        //{
+        //    CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+        //    cs.GetComponent<UIPopup>().Show("This ability swaps your puzzle piece set with your opponent’s set. Avatars can only use this ability once an opponent has at least one puzzle piece ", 0, null, null, (int)canvasid.canvas_pvp);
+        //}
+
+        //REMOVE PUZZLE
+        if (CanRemove())
+        {
+            DoRemovePuzzle();
+        }
+        else
+        {
+            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+            cs.GetComponent<UIPopup>().Show("This ability swaps your puzzle piece set with your opponent’s set. Avatars can only use this ability once an opponent has at least one puzzle piece ", 0, null, null, (int)canvasid.canvas_pvp);
+        }
+    }
+
+    public void DoSwitchPuzzle()
+    {
+        for (int i = 0; i < m_GameList.m_GameList[m_CurrentGame].m_PieceA.Count; i++)
+        {
+            int tg = m_GameList.m_GameList[m_CurrentGame].m_PieceA[i];
+            m_GameList.m_GameList[m_CurrentGame].m_PieceA[i] = m_GameList.m_GameList[m_CurrentGame].m_PieceB[i];
+            m_GameList.m_GameList[m_CurrentGame].m_PieceB[i] = tg;
+        }
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
+        cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
+        m_PlayerProfile.Save();
+    }
+
+    public bool CanSwitch()
+    {
+        List<int> myTrophy = GetMyTrophy();
+        List<int> theirTrophy = GetOpponentTrophy();
+        int my = -1;
+        int their = -1;
+        bool flag = false;
+        for (int i = 0; i < myTrophy.Count; i++)
+        {
+
+            if (myTrophy[i] == 1 || theirTrophy[i] == 1)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool CanRemove()
+    {
+        for (int i = 0; i < GetOpponentTrophy().Count; i++)
+        {
+            if (GetOpponentTrophy()[i] == 1)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void DoRemovePuzzle()
+    {
+    }
+
+    public void OnTrophyChallengeSelectedAbility(int mytrophy, int theirtrophy)
+    {
+        GetMyTrophyList()[theirtrophy] = 1;
+        GetOpponentTrophyList()[theirtrophy] = 0;
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
+        cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
+        m_PlayerProfile.Save();
     }
 }

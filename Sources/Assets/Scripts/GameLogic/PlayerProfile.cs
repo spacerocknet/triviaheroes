@@ -130,7 +130,7 @@ public class PlayerProfile{
 
     public int GetCurrentLevel()
     {
-        Debug.Log(m_TotalEXP);
+        
         int level = 1;
         long exp = m_TotalEXP;
         while (exp >= GameConfig.Instance.GetLevelEXP(level - 1))

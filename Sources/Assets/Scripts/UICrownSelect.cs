@@ -30,9 +30,8 @@ public class UICrownSelect : MonoBehaviour {
         }
         else
         {
-            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
-            cs.Show((int)CanvasID.CANVAS_CROWNSELECT);            
-            cs.GetComponent<UIPopup>().SetText(TextManager.Instance.GetTextByKey("CantChallenge"));
+            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_CROWNSELECT);
+            cs.GetComponent<UIPopup>().Show(TextManager.Instance.GetTextByKey("CantChallenge"), 0, null, null, (int)CanvasID.CANVAS_CROWNSELECT);                                       
         }
     }
 }

@@ -6,11 +6,11 @@
   <m_TotalEXP>0</m_TotalEXP>
   <m_Lives>5</m_Lives>
   <m_Coin>0</m_Coin>
-  <m_Diamond>15</m_Diamond>
+  <m_Diamond>210</m_Diamond>
   <m_Sex>0</m_Sex>
   <m_CurrentTier>Young_Adult</m_CurrentTier>
   <m_CurrentClass>None</m_CurrentClass>
-  <m_LastTimeAddLive>2015-06-19T14:24:49.4624189+07:00</m_LastTimeAddLive>
+  <m_LastTimeAddLive>2015-06-20T09:34:52.7394055+07:00</m_LastTimeAddLive>
   <m_FriendList>
     <m_FriendList>
       <string>Mage</string>
@@ -69,7 +69,7 @@
     <int>0</int>
     <int>0</int>
     <int>0</int>
-    <int>2</int>
+    <int>10</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>

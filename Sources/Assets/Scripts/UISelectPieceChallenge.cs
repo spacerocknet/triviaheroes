@@ -11,6 +11,19 @@ public class UISelectPieceChallenge : MonoBehaviour {
     int m_MyTrophy;
     int m_TheirTrophy;
 
+    bool m_IsAbilityChallenge;
+    public bool IsAbilityChallenge
+    {
+        get
+        {
+            return m_IsAbilityChallenge;
+        }
+        set
+        {
+            m_IsAbilityChallenge = value;
+        }
+    }
+
 	// Use this for initialization
 	void Start () {
 	
@@ -26,8 +39,16 @@ public class UISelectPieceChallenge : MonoBehaviour {
 
         if (m_MyTrophy != -1 && m_TheirTrophy != -1)
         {
-            SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECHALLENGE).MoveOutToRight();
-            GameManager.Instance.OnTrophyChallengeSelected(m_MyTrophy, m_TheirTrophy);
+            if (m_IsAbilityChallenge)
+            {
+                SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECHALLENGE).MoveOutToRight();
+                GameManager.Instance.OnTrophyChallengeSelectedAbility(m_MyTrophy, m_TheirTrophy);
+            }
+            else
+            {
+                SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECHALLENGE).MoveOutToRight();
+                GameManager.Instance.OnTrophyChallengeSelected(m_MyTrophy, m_TheirTrophy);
+            }
         }
     }
 

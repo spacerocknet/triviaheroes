@@ -90,8 +90,7 @@ public class UIAchievement : MonoBehaviour {
             }
         }
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
-        cs.Show((int)CanvasID.CANVAS_STORE);
-        cs.GetComponent<UIPopup>().SetText(reward + " diamond added to your account");
+        cs.GetComponent<UIPopup>().Show(reward + " diamond added to your account", 0, null, null, (int)CanvasID.CANVAS_STORE);               
         GameManager.Instance.AddDiamond(reward);
         m_ClaimButton.gameObject.SetActive(false);
     }
