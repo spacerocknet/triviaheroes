@@ -5,7 +5,7 @@ using SimpleJSON;
 
 public enum Category {CAT_GEOGRAPHY = 0, CAT_SCIENCE, CAT_ART, CAT_HISTORY, CAT_SPORT, CAT_ENTERTAINMENT, CAT_CROWN};
 
-
+public enum Ability { ABILITY_CLAIM = 0, ABILITY_UNDO, ABILITY_CHALLENGE, ABILITY_SWITCH, ABILITY_REMOVE, ABILITY_COPY };
 
 public class GameManager : MonoBehaviour {
 
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
     private bool m_IsLastAnswerCorrect;
     private int m_LastAnswerChoice;
 
-    private bool m_IsPVE = false;    
+    public bool m_IsPVE = false;    
 
     private PVPState m_PVPState = new PVPState();
 
@@ -245,11 +245,21 @@ public class GameManager : MonoBehaviour {
         NetworkManager.Instance.DoStartNewGame(friend);
 
         m_PlayerProfile.SubtractLives();
-        m_PlayerProfile.Save();
+
+
     }
 
     public void OnStartPVEGame()
     {
+        if (m_PlayerProfile.m_CurrentPVEStage == 0)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                m_PlayerProfile.m_PVEBoostUsed[i] = false;
+            }
+            m_PlayerProfile.Save();
+        }
+
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
         cs.GetComponent<UIWaiting>().SetContentType(0);
         cs.Show();        
@@ -509,13 +519,7 @@ public class GameManager : MonoBehaviour {
 
         NetworkManager.Instance.DoTrophyClaimSelected(trophy);
         SetPVPState(PVPStateType.TROPHY, (Category)trophy, Category.CAT_ART);
-    }
-
-    public void OnAbilityClaimSelected(int trophy)
-    {
-        ClearProgress();
-        TrophyAcquired((Category)trophy);
-    }
+    }    
 
     public void OnTrophyChallengeSelected(int mytrophy, int theirtrophy)
     {
@@ -871,7 +875,6 @@ public class GameManager : MonoBehaviour {
                     count++;
                 }
             }
-            //Debug.Log("Trophy count: " + count);
             return count;
         }
         else
@@ -883,10 +886,46 @@ public class GameManager : MonoBehaviour {
                     count++;
                 }
             }
-            //Debug.Log("Trophy count: " + count);
             return count;
         }
     }
+
+    public void SetMeUseAbility()
+    {
+        GameInfo gi = GetCurrentGameInfo();
+        gi.m_PlayerUseAbility = m_PlayerProfile.m_PlayerID;
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        {
+            gi.m_PlayerAAbilityUsed++;
+        }
+        else
+        {
+            gi.m_PlayerBAbilityUsed++;
+        }
+        SaveSessionList();
+    }
+
+    public void SetAbilityID(int id)
+    {
+        GameInfo gi = GetCurrentGameInfo();
+        gi.m_LastAbility = id;
+        SaveSessionList();
+    }
+
+    public void SetTrophyAcquried(int trophy)
+    {
+        GameInfo gi = GetCurrentGameInfo();
+        gi.m_TrophyAcquired = trophy;
+        SaveSessionList();
+    }
+
+    public void SetTrophyRemoved(int trophy)
+    {
+        GameInfo gi = GetCurrentGameInfo();
+        gi.m_TrophyRemoved = trophy;
+        SaveSessionList();
+    }
+
 #endregion
 
     public bool IsItemOwned(int type, int id)
@@ -1020,6 +1059,80 @@ public class GameManager : MonoBehaviour {
     {
         Avatar ava = GameManager.Instance.GetActiveAvatar();
 
+        switch (ava.m_Jobs)
+        {
+            case CLASS.Medicial:
+                {
+                    DoFreeClaim();                                        
+                    break;
+                }
+            case CLASS.Athlete:
+                {
+                    if (CanChallenge())
+                    {
+                        DoFreeChallenge();
+                    }
+                    else
+                    {
+                        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+                        cs.GetComponent<UIPopup>().Show("This ability undoes your opponent’s last ability move. Avatars can only use this ability once opponent has used her/her avatar ability.  ", 0, null, null, (int)CanvasID.CANVAS_PVP);
+                    }
+                    break;
+                }
+            case CLASS.Enterpreneur:
+                {
+                    if (CanSwitch())
+                    {
+                        DoSwitchPuzzle();
+                    }
+                    else
+                    {
+                        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+                        cs.GetComponent<UIPopup>().Show("This ability swaps your puzzle piece set with your opponent’s set. Avatars can only use this ability once an opponent has at least one puzzle piece ", 0, null, null, (int)CanvasID.CANVAS_PVP);
+                    }
+                    break;
+                }
+            case CLASS.Musician:
+                {
+                    if (CanCopy())
+                    {
+                        DoCopy();
+                    }
+                    else
+                    {
+                        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+                        cs.GetComponent<UIPopup>().Show("This ability allows you to use the same ability as your opponent. Avatars can only use this ability once opponent has used her/her avatar ability. ", 0, null, null, (int)CanvasID.CANVAS_PVP);
+                    }
+                    break;
+                }
+            case CLASS.Scientist:
+                {
+                    if (CanUndo())
+                    {
+                        DoUndo();
+                    } else {
+                        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+                        cs.GetComponent<UIPopup>().Show("This ability undoes your opponent’s last ability move. Avatars can only use this ability once opponent has used her/her avatar ability.  ", 0, null, null, (int)CanvasID.CANVAS_PVP);
+                    }
+                    break;
+                }
+            case CLASS.Warrior:
+                {
+                    if (CanRemove())
+                    {
+                        DoRemovePuzzle();
+                    }
+                    else
+                    {
+                        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+                        cs.GetComponent<UIPopup>().Show("This ability swaps your puzzle piece set with your opponent’s set. Avatars can only use this ability once an opponent has at least one puzzle piece ", 0, null, null, (int)CanvasID.CANVAS_PVP);
+                    }
+                    break;
+                }
+            default:
+                break;
+        }
+
         //FREE CLAIM
         //ClearProgress();
         //CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM);
@@ -1054,15 +1167,15 @@ public class GameManager : MonoBehaviour {
         //}
 
         //REMOVE PUZZLE
-        if (CanRemove())
-        {
-            DoRemovePuzzle();
-        }
-        else
-        {
-            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
-            cs.GetComponent<UIPopup>().Show("This ability swaps your puzzle piece set with your opponent’s set. Avatars can only use this ability once an opponent has at least one puzzle piece ", 0, null, null, (int)canvasid.canvas_pvp);
-        }
+        //if (CanRemove())
+        //{
+        //    DoRemovePuzzle();
+        //}
+        //else
+        //{
+        //    CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+        //    cs.GetComponent<UIPopup>().Show("This ability swaps your puzzle piece set with your opponent’s set. Avatars can only use this ability once an opponent has at least one puzzle piece ", 0, null, null, (int)CanvasID.CANVAS_PVP);
+        //}
     }
 
     public void DoSwitchPuzzle()
@@ -1075,7 +1188,12 @@ public class GameManager : MonoBehaviour {
         }
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
         cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
-        m_PlayerProfile.Save();
+        SetMeUseAbility();
+        SetAbilityID((int)Ability.ABILITY_SWITCH);
+        SetTrophyRemoved(-1);
+        SetTrophyAcquired(-1);
+        SaveSessionList();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
     }
 
     public bool CanSwitch()
@@ -1110,14 +1228,196 @@ public class GameManager : MonoBehaviour {
 
     public void DoRemovePuzzle()
     {
+        List<int> li = GetOpponentTrophyList();
+        List<int> l = new List<int>();
+        for (int i = 0; i < li.Count; i++)
+        {
+            if (li[i] == 1)
+            {
+                l.Add(i);
+            }
+        }
+        int pick = l[Random.Range(0, l.Count)];
+        OnAbilityRemovedSelected(pick);
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
     }
 
     public void OnTrophyChallengeSelectedAbility(int mytrophy, int theirtrophy)
     {
-        GetMyTrophyList()[theirtrophy] = 1;
+        if (GetMyTrophyList()[theirtrophy] == 0)
+        {
+            GetMyTrophyList()[theirtrophy] = 1;
+            SetTrophyAcquried(theirtrophy);
+        }
+        else
+        {
+            SetTrophyAcquried(-1);
+        }
         GetOpponentTrophyList()[theirtrophy] = 0;
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
         cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
+        SetMeUseAbility();
+        SetAbilityID((int)Ability.ABILITY_CHALLENGE);
+        SetTrophyRemoved(theirtrophy);
+        SaveSessionList();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
+    }
+
+    public void OnAbilityRemovedSelected(int trophy)
+    {
+        GetOpponentTrophyList()[trophy] = 0;
+        
+        SetMeUseAbility();
+        SetAbilityID((int)Ability.ABILITY_REMOVE);
+        SetTrophyAcquired(-1);
+        SetTrophyRemoved(trophy);
+        SaveSessionList();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
+    }
+
+    public void OnAbilityClaimSelected(int trophy)
+    {
+        ClearProgress();
+        TrophyAcquired((Category)trophy);
+        GameInfo gi = GetCurrentGameInfo();
+        SetMeUseAbility();
+        SetAbilityID((int)Ability.ABILITY_CLAIM);
+        SetTrophyAcquired(trophy);
+        SetTrophyRemoved(-1);
+        SaveSessionList();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
+    }
+
+    public bool CanCopy()
+    {
+        if (GetCurrentGameInfo().m_LastAbility != -1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool CanUndo()
+    {
+        if (GetCurrentGameInfo().m_LastAbility != -1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void DoCopy()
+    {
+        Ability ability = (Ability)GetCurrentGameInfo().m_LastAbility;
+        switch (ability)
+        {
+            case Ability.ABILITY_CLAIM:
+                {
+                    DoFreeClaim();
+                    break;
+                }
+            case Ability.ABILITY_CHALLENGE:
+                {
+                    DoFreeChallenge();
+                    break;
+                }
+            case Ability.ABILITY_REMOVE:
+                {
+                    DoRemovePuzzle();
+                    break;
+                }
+            case Ability.ABILITY_SWITCH:
+                {
+                    DoSwitchPuzzle();
+                    break;
+                }
+            default:
+                break;
+        }
+    }
+
+    public void DoUndo()
+    {
+        GameInfo gi = GetCurrentGameInfo();
+        List<int> oppTrophy = GetOpponentTrophyList();
+        List<int> myTrophy = GetMyTrophyList();
+
+        if (gi.m_TrophyAcquired != -1)
+        {
+            oppTrophy[gi.m_TrophyAcquired] = 0;
+        }
+        if (gi.m_TrophyRemoved != -1)
+        {
+            myTrophy[gi.m_TrophyAcquired] = 1;
+        }
+    }
+
+    public void DoFreeClaim()
+    {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM);
+        cs.GetComponent<UISelectPieceClaim>().SetButtonText("Claim");
+        cs.GetComponent<UISelectPieceClaim>().IsAbilityClaim = true;
+        cs.gameObject.GetComponent<UISelectPieceClaim>().UpdateTrophyState();
+        cs.MoveInFromRight();
+    }
+
+    public void DoFreeChallenge()
+    {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECHALLENGE);
+        cs.GetComponent<UISelectPieceChallenge>().IsAbilityChallenge = true;
+        cs.gameObject.GetComponent<UISelectPieceChallenge>().SetTrophyState(GetMyTrophy(), GetOpponentTrophy());
+        cs.MoveInFromRight();
+    }
+
+    public int GetNumberOfAbilityCanUse() {
+        int tier = (int)GetActiveAvatar().m_Tier;
+        if (tier >= 9)
+        {
+            return 3;
+        }
+        else if (tier >= 7)
+        {
+            return 2;
+        }
+        else if (tier >= 5)
+        {
+            return 1;
+        }
+        return 0;
+    }
+
+    public int GetAbilityLeft()
+    {
+        GameInfo gi = GetCurrentGameInfo();
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        {
+            return GetNumberOfAbilityCanUse() - gi.m_PlayerAAbilityUsed;
+        }
+        else
+        {
+            return GetNumberOfAbilityCanUse() - gi.m_PlayerBAbilityUsed;
+        }
+    }
+
+    public void ShowHelpNewGame()
+    {
+        Debug.Log("Show help new game");
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_HELP).GetComponent<UIHelp>().Show(0);
+        m_PlayerProfile.m_FirstTimeExperience[0] = true;
+        m_PlayerProfile.Save();
+    }
+
+    public void ShowHelpBoost()
+    {
+        Debug.Log("Show help boost");
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_HELP).GetComponent<UIHelp>().Show(1);
+        m_PlayerProfile.m_FirstTimeExperience[1] = true;
         m_PlayerProfile.Save();
     }
 }

@@ -91,6 +91,7 @@
      <Compile Include="Assets\Scripts\UIExchange.cs" />
      <Compile Include="Assets\Scripts\UIGotPuzzle.cs" />
      <Compile Include="Assets\Scripts\UIGotTrophy.cs" />
+     <Compile Include="Assets\Scripts\UIHelp.cs" />
      <Compile Include="Assets\Scripts\UIMain.cs" />
      <Compile Include="Assets\Scripts\UINewGame.cs" />
      <Compile Include="Assets\Scripts\UIOutLives.cs" />

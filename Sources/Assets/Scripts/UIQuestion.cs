@@ -123,6 +123,11 @@ public class UIQuestion : MonoBehaviour {
 
         m_EndGameButton.gameObject.SetActive(false);
         m_TimeOutText.gameObject.SetActive(false);
+
+        if (GameManager.Instance.GetPlayerProfile().m_FirstTimeExperience[1] == false)
+        {
+            GameManager.Instance.ShowHelpBoost();
+        }
     }
 
     public void SetPVEQuestion(Question question, int number)
@@ -163,6 +168,23 @@ public class UIQuestion : MonoBehaviour {
         {
             m_EndGameButton.gameObject.SetActive(true);
         }
+
+        if (GameManager.Instance.GetPlayerProfile().m_FirstTimeExperience[1] == false)
+        {
+            GameManager.Instance.ShowHelpBoost();
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (GameManager.Instance.GetPlayerProfile().m_PVEBoostUsed[i] == false)
+            {
+                m_HelpButtons[i].interactable = true;
+            }
+            else
+            {
+                m_HelpButtons[i].interactable = false;
+            }
+        }
     }
 
     public void ShowAnswer(int select, int answer)
@@ -194,6 +216,11 @@ public class UIQuestion : MonoBehaviour {
     //4: Skip, get new question
     public void OnUseHelp(int type)
     {
+        if (GameManager.Instance.m_IsPVE)
+        {
+            GameManager.Instance.GetPlayerProfile().m_PVEBoostUsed[type - 1] = true;
+        }
+
         switch (type)
         {
             case 2:

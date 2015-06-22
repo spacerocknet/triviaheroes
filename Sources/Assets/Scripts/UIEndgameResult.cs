@@ -71,6 +71,15 @@ public class UIEndgameResult : MonoBehaviour {
             m_RewardText.gameObject.SetActive(false);
             m_LifeText.gameObject.SetActive(true);
         }
+
         m_QuestionText.text = "Question #" + GameManager.Instance.GetPlayerProfile().m_CurrentPVEStage;
+        if (!isWin)
+        {
+            m_QuestionText.gameObject.SetActive(false);
+        }
+        else
+        {
+            m_QuestionText.gameObject.SetActive(true);
+        }
     }
 }

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <m_PlayerID>HAH</m_PlayerID>
-  <m_PlayerName>HAH</m_PlayerName>
+  <m_PlayerID>Test</m_PlayerID>
+  <m_PlayerName>Test</m_PlayerName>
   <m_Level>0</m_Level>
   <m_TotalEXP>0</m_TotalEXP>
   <m_Lives>5</m_Lives>
-  <m_Coin>0</m_Coin>
-  <m_Diamond>210</m_Diamond>
-  <m_Sex>0</m_Sex>
+  <m_Coin>91</m_Coin>
+  <m_Diamond>0</m_Diamond>
+  <m_Sex>1</m_Sex>
   <m_CurrentTier>Young_Adult</m_CurrentTier>
   <m_CurrentClass>None</m_CurrentClass>
-  <m_LastTimeAddLive>2015-06-20T09:34:52.7394055+07:00</m_LastTimeAddLive>
+  <m_LastTimeAddLive>2015-06-22T17:39:50.6511716+07:00</m_LastTimeAddLive>
   <m_FriendList>
     <m_FriendList>
       <string>Mage</string>
@@ -38,7 +38,7 @@
         <int>0</int>
         <int>0</int>
       </m_ItemList>
-      <m_Sex>0</m_Sex>
+      <m_Sex>1</m_Sex>
       <m_ID>0</m_ID>
       <m_Tier>Toddler</m_Tier>
       <m_Jobs>None</m_Jobs>
@@ -46,11 +46,17 @@
   </Avatar>
   <m_ActiveAvatar>0</m_ActiveAvatar>
   <m_CurrentPVEStage>0</m_CurrentPVEStage>
+  <m_PVEBoostUsed>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+  </m_PVEBoostUsed>
   <m_PVEState>
+    <int>1</int>
     <int>0</int>
     <int>0</int>
-    <int>0</int>
-    <int>0</int>
+    <int>1</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
@@ -60,6 +66,7 @@
     <int>0</int>
   </m_PVEState>
   <m_AchievementCounter>
+    <int>2</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
@@ -69,16 +76,15 @@
     <int>0</int>
     <int>0</int>
     <int>0</int>
-    <int>10</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
-    <int>0</int>
-    <int>0</int>
-    <int>0</int>
-    <int>0</int>
+    <int>5</int>
+    <int>4</int>
+    <int>3</int>
+    <int>1</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
@@ -110,4 +116,12 @@
     <int>0</int>
   </m_AchievementBonusReceived>
   <m_PayOutBonus>1</m_PayOutBonus>
+  <m_FirstTimeExperience>
+    <boolean>true</boolean>
+    <boolean>true</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+  </m_FirstTimeExperience>
 </PlayerProfile>

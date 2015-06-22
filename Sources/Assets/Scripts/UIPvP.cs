@@ -33,6 +33,7 @@ public class UIPvP : MonoBehaviour {
     public GameObject m_AvatarMe;
     public GameObject m_AvatarOpponent;
     public Text m_RewardText;
+    public Text m_AbilityLeftText;
 	// Use this for initialization
 	void Start () {
         m_Rect = m_Board.GetComponent<RectTransform>();
@@ -153,6 +154,7 @@ public class UIPvP : MonoBehaviour {
             m_ResultPanel.SetActive(false);
         }
 
+        m_AbilityLeftText.text = GameManager.Instance.GetAbilityLeft().ToString();
     }
 
     public void FullFillProgressBar()
@@ -213,7 +215,50 @@ public class UIPvP : MonoBehaviour {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
         //cs.GetComponent<UIPopup>().Show("Do you want to use FreeClaim", 1, OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
 
-        cs.GetComponent<UIPopup>().Show("Do you want to use Free Challenge", 1, OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
+        if (GameManager.Instance.GetAbilityLeft() > 0)
+        {
+            switch (GameManager.Instance.GetActiveAvatar().m_Jobs)
+            {
+                case CLASS.Medicial:
+                    {
+                        cs.GetComponent<UIPopup>().Show("Do you want to use Free Claim Ability?", 1, OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
+                        break;
+                    }
+                case CLASS.Scientist:
+                    {
+                        cs.GetComponent<UIPopup>().Show("Do you want to use Undo Ability?", 1, OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
+                        break;
+                    }
+                case CLASS.Athlete:
+                    {
+                        cs.GetComponent<UIPopup>().Show("Do you want to use Free Challenge Ability?", 1, OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
+                        break;
+                    }
+                case CLASS.Enterpreneur:
+                    {
+                        cs.GetComponent<UIPopup>().Show("Do you want to use Switch Puzzle Ability?", 1, OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
+                        break;
+                    }
+                case CLASS.Warrior:
+                    {
+                        cs.GetComponent<UIPopup>().Show("Do you want to use Remove Puzzle Ability?", 1, OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
+                        break;
+                    }
+                case CLASS.Musician:
+                    {
+                        cs.GetComponent<UIPopup>().Show("Do you want to use Copy Ability?", 1, OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
+                        break;
+                    }
+                default:
+                    break;
+            }
+            
+        }
+        else
+        {
+            cs.GetComponent<UIPopup>().Show("There is no ablity left to use.", 0, null, null, (int)CanvasID.CANVAS_PVP);
+        }
+        
     }
     public void OnUseAbilityConfirm()
     {

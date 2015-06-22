@@ -31,10 +31,13 @@ public class PlayerProfile{
     public List<Avatar> m_AvatarList;
     public int m_ActiveAvatar;
     public int m_CurrentPVEStage = 0;
+    public List<bool> m_PVEBoostUsed;
     public List<int> m_PVEState;
     public List<int> m_AchievementCounter;
     public List<int> m_AchievementBonusReceived;
     public int m_PayOutBonus;
+
+    public List<bool> m_FirstTimeExperience;
 
     public PlayerProfile()
     {
@@ -84,6 +87,18 @@ public class PlayerProfile{
         m_PVEState = new List<int>();
         m_AchievementCounter = new List<int>();
         m_AchievementBonusReceived = new List<int>();
+        m_FirstTimeExperience = new List<bool>();
+        m_PVEBoostUsed = new List<bool>();
+
+        for (int i = 0; i < 4; i++)
+        {
+            m_PVEBoostUsed.Add(false);
+        }
+
+        for (int i = 0; i < 6; i++)
+        {
+            m_FirstTimeExperience.Add(false);
+        }
 
         for (int i = 0; i < 23; i++)
         {

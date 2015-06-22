@@ -24,6 +24,8 @@ public class UIMain : MonoBehaviour {
 
     public AvatarScript m_Avatar;
 
+    public StoreTab m_StoreTab;
+
 	// Use this for initialization
 	void Start () {
        
@@ -33,7 +35,8 @@ public class UIMain : MonoBehaviour {
   
         RefreshInfo();
         Refresh();
-        
+
+
 	}
 	
 	// Update is called once per frame
@@ -49,6 +52,9 @@ public class UIMain : MonoBehaviour {
 
     public void OnAddDiamond()
     {
+        CanvasScript cv = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_STORE);
+        cv.MoveInFromRight();
+        m_StoreTab.OnCurrency();
     }
 
     public void OnNewGame()

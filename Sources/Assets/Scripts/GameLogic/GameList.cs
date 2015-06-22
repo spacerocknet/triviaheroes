@@ -34,6 +34,13 @@ public class GameInfo
     //public DateTime m_LastPlayedTime = DateTime.Now;
     public bool m_IsCompleted = false;
 
+    public int m_PlayerAAbilityUsed;
+    public int m_PlayerBAbilityUsed;
+    public string m_PlayerUseAbility;
+    public int m_LastAbility;
+    public int m_TrophyAcquired;
+    public int m_TrophyRemoved;
+
     public int GetScoreA()
     {
         int count = 0;

@@ -126,6 +126,7 @@ public class CanvasScript : MonoBehaviour {
 
     public void Show(int cid = -1)
     {
+        Debug.Log("Show: " + gameObject.name);
         //SetActive(true);
         m_NextID = cid;
         rt.position = m_RootPos.position;
@@ -134,6 +135,7 @@ public class CanvasScript : MonoBehaviour {
 
     public void Hide()
     {
+        Debug.Log("Hide: " + gameObject.name);
         //SetActive(false);
         rt.position = m_LeftFar.position;
         gameObject.SetActive(false);

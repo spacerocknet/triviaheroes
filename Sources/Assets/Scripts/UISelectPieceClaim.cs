@@ -12,6 +12,8 @@ public class UISelectPieceClaim : MonoBehaviour {
 
     public Text m_ButtonText;
     bool m_IsAbilityClaim;
+    //bool m_IsAbilityRemove;
+
     public bool IsAbilityClaim
     {
         get
@@ -23,6 +25,18 @@ public class UISelectPieceClaim : MonoBehaviour {
             m_IsAbilityClaim = value;
         }
     }
+
+    //public bool IsAbilityRemove
+    //{
+    //    get
+    //    {
+    //        return m_IsAbilityRemove;
+    //    }
+    //    set
+    //    {
+    //        m_IsAbilityRemove = value;
+    //    }
+    //}
 
 	// Use this for initialization
 	void Start () {
@@ -58,6 +72,33 @@ public class UISelectPieceClaim : MonoBehaviour {
                 m_TrophyImage[i].GetComponent<Button>().interactable = false;
                 m_CheckImage[i].enabled = false;
             }            
+        }
+    }
+
+    public void UpdateOpponentState()
+    {
+        bool flag = false;
+        List<int> trophy = GameManager.Instance.GetOpponentTrophyList();
+        for (int i = 0; i < 6; i++)
+        {
+            if (trophy[i] == 1)
+            {
+                m_TrophyImage[i].sprite = m_TrophySprite[i];
+                m_TrophyImage[i].GetComponent<Button>().interactable = true;
+                m_CheckImage[i].enabled = false;
+                if (!flag)
+                {
+                    m_CheckImage[i].enabled = true;
+                    flag = true;
+                    m_CurrentSelected = i;
+                }
+            }
+            else
+            {
+                m_TrophyImage[i].sprite = m_TrophySprite[6 + i];
+                m_TrophyImage[i].GetComponent<Button>().interactable = false;
+                m_CheckImage[i].enabled = false;
+            }
         }
     }
 
@@ -117,6 +158,11 @@ public class UISelectPieceClaim : MonoBehaviour {
                 SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM).MoveOutToRight();
                 GameManager.Instance.OnAbilityClaimSelected(m_CurrentSelected);
             } else
+            //if (m_IsAbilityRemove) {
+            //    Debug.Log("Remove trophy");
+            //    SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM).MoveOutToRight();
+            //    GameManager.Instance.OnAbilityRemovedSelected(m_CurrentSelected);            
+            //} else 
             {
                 SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECLAIM).MoveOutToRight();
                 GameManager.Instance.OnTrophyClaimSelected(m_CurrentSelected);
