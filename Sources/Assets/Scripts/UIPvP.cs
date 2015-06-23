@@ -157,6 +157,11 @@ public class UIPvP : MonoBehaviour {
         m_AbilityLeftText.text = GameManager.Instance.GetAbilityLeft().ToString();
     }
 
+    public void CheckAndShowMessage(GameInfo game)
+    {
+
+    }
+
     public void FullFillProgressBar()
     {
         m_PivotImage.sprite = m_PivotSprite[3];

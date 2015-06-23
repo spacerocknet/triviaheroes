@@ -71,6 +71,8 @@ public class SceneManager : MonoBehaviour{
             {
                 GameManager.Instance.ShowHelpNewGame();
             }
+
+            GameManager.Instance.CheckFirstUpgrade();
         }
     }
 

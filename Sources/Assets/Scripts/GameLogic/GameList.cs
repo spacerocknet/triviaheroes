@@ -21,7 +21,7 @@ public class GameInfo
     public int m_CurrentTurn = 1;
     public int m_TurnType = 1;
 
-    public string m_Challenger; //1 - playerA is the challenger; 2 - playerB is the challenger
+    public string m_Challenger = ""; //1 - playerA is the challenger; 2 - playerB is the challenger
     public int m_ChallengeScoreA = 0;
     public int m_ChallengeScoreB = 0;
     public int m_BetTrophyA = 0;
@@ -34,12 +34,13 @@ public class GameInfo
     //public DateTime m_LastPlayedTime = DateTime.Now;
     public bool m_IsCompleted = false;
 
-    public int m_PlayerAAbilityUsed;
-    public int m_PlayerBAbilityUsed;
-    public string m_PlayerUseAbility;
-    public int m_LastAbility;
-    public int m_TrophyAcquired;
-    public int m_TrophyRemoved;
+    public int m_PlayerAAbilityUsed = 0;
+    public int m_PlayerBAbilityUsed = 0;
+    public string m_PlayerUseAbility = "";
+    public int m_LastAbility = -1;
+    public int m_TrophyAcquired = -1;
+    public int m_TrophyRemoved = -1;
+    public bool m_AbilityShowed = false;
 
     public int GetScoreA()
     {

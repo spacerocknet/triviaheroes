@@ -5,6 +5,8 @@ public class UIStore : MonoBehaviour {
 
     public UpgradesPage m_UpgradePages;
 
+    public StoreTab m_StoreTab;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -49,5 +51,10 @@ public class UIStore : MonoBehaviour {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_EXCHANGE);
         cs.Show();
         cs.GetComponent<UIExchange>().SetInfo(GameManager.Instance.GetPlayerProfile().m_Diamond, GameConfig.Instance.GetExchangeRate());
+    }
+
+    public void ShowUpgradeTab()
+    {
+        m_StoreTab.OnUpgrade();
     }
 }

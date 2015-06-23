@@ -26,6 +26,8 @@ public class UIMain : MonoBehaviour {
 
     public StoreTab m_StoreTab;
 
+    public Image m_AlertImage;
+
 	// Use this for initialization
 	void Start () {
        
@@ -238,6 +240,11 @@ public class UIMain : MonoBehaviour {
     public void OnAvatarPress()
     {
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PROFILE).MoveInFromRight();
+    }
+
+    public void ShowAlertImage(bool value)
+    {
+        m_AlertImage.gameObject.SetActive(value);
     }
 }
 

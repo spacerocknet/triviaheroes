@@ -119,10 +119,20 @@ public class UpgradesPage : MonoBehaviour {
             {
                 imgBar.sprite = m_ProgressBarDisabled;
             }
+
+            if (i == tier)
+            {
+                m_TierList[i].transform.FindChild("Image/Glow").gameObject.SetActive(true);
+            }
+            else
+            {
+                m_TierList[i].transform.FindChild("Image/Glow").gameObject.SetActive(false);
+            }
         }
 
         Avatar avatar = GameManager.Instance.GetActiveAvatar();
         OnTierSelected(0, (int)avatar.m_Tier- 1);
+        Debug.Log((int)avatar.m_Tier);
         m_TierPageView.ScrollTo((int)avatar.m_Tier);
     }
 

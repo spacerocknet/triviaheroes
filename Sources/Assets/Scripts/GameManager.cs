@@ -5,7 +5,7 @@ using SimpleJSON;
 
 public enum Category {CAT_GEOGRAPHY = 0, CAT_SCIENCE, CAT_ART, CAT_HISTORY, CAT_SPORT, CAT_ENTERTAINMENT, CAT_CROWN};
 
-public enum Ability { ABILITY_CLAIM = 0, ABILITY_UNDO, ABILITY_CHALLENGE, ABILITY_SWITCH, ABILITY_REMOVE, ABILITY_COPY };
+public enum Ability { ABILITY_NONE = -1, ABILITY_CLAIM = 0, ABILITY_UNDO, ABILITY_CHALLENGE, ABILITY_SWITCH, ABILITY_REMOVE, ABILITY_COPY };
 
 public class GameManager : MonoBehaviour {
 
@@ -76,7 +76,26 @@ public class GameManager : MonoBehaviour {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
         cs.MoveInFromRight();
         m_CurrentGame = GameManager.Instance.GetGameIndexByID(gameid);        
-        cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());        
+        cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
+
+        GameInfo gi = GetCurrentGameInfo();
+        if (gi.m_PlayerUseAbility != m_PlayerProfile.m_PlayerID && gi.m_AbilityShowed == false)
+        {
+            if (GetActiveAbility() != Ability.ABILITY_UNDO)
+            {
+                CanvasScript css = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+                css.GetComponent<UIPopup>().Show(gi.m_PlayerUseAbility + " used " + TextManager.Instance.GetAbilityName((Ability)gi.m_LastAbility) + " ability.", 0, null, null, (int)CanvasID.CANVAS_PVP);
+                gi.m_AbilityShowed = true;
+            }
+            else
+            {
+                CanvasScript css = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+                UIPvP uipvp = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).GetComponent<UIPvP>();
+                css.GetComponent<UIPopup>().Show(gi.m_PlayerUseAbility + " used " + TextManager.Instance.GetAbilityName((Ability)gi.m_LastAbility) + " ability. Undo it?", 1, uipvp.OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
+                gi.m_AbilityShowed = true;
+            }
+        }
+        SaveSessionList();
     }
 
     public void OnMultiPlayer()
@@ -299,8 +318,7 @@ public class GameManager : MonoBehaviour {
             {
                 reward = 0;
             }
-            m_PlayerProfile.m_Coin += (reward + bonus);
-            m_PlayerProfile.Save();
+            AddCoin(reward + bonus);            
         }
         else
         {
@@ -564,8 +582,7 @@ public class GameManager : MonoBehaviour {
             int reward = 200;
             int bonus = 0;
             bonus = Mathf.RoundToInt((float)GameManager.Instance.GetPlayerProfile().m_PayOutBonus / 100 * reward);
-            m_PlayerProfile.m_Coin += (bonus + reward);
-            m_PlayerProfile.Save();
+            AddCoin(reward + bonus);            
 
             AchievementList.Instance.OnAction(Achievement_Action.WIN_MULTI);
         }
@@ -656,6 +673,20 @@ public class GameManager : MonoBehaviour {
                             }
                         }
                     }
+
+                    gi.m_LastAbility = (int)Ability.ABILITY_CLAIM;
+                    gi.m_PlayerUseAbility = gi.m_PlayerB;
+                    gi.m_TrophyRemoved = -1;
+                    for (int k = 0; k < gi.m_PieceB.Count; k++)
+                    {
+                        if (gi.m_PieceB[k] == 0)
+                        {
+                            gi.m_PieceB[k] = 1;
+                            gi.m_TrophyAcquired = k;
+                            break;
+                        }
+                    }
+                    gi.m_AbilityShowed = false;
                 }
             }            
         }
@@ -1029,8 +1060,7 @@ public class GameManager : MonoBehaviour {
     public void ExchangeDiamond(int amount)
     {
         m_PlayerProfile.m_Diamond -= amount;
-        m_PlayerProfile.m_Coin += Mathf.RoundToInt(amount * GameConfig.Instance.GetExchangeRate());
-        m_PlayerProfile.Save();
+        AddCoin(Mathf.RoundToInt(amount * GameConfig.Instance.GetExchangeRate()));        
     }
 
     public void NotEnoughDiamond()
@@ -1051,8 +1081,7 @@ public class GameManager : MonoBehaviour {
 
     public void OnUseCoin(int amount)
     {
-        m_PlayerProfile.m_Coin -= amount;
-        m_PlayerProfile.Save();
+        AddCoin(-amount);        
     }
 
     public void OnUseAbility()
@@ -1107,8 +1136,10 @@ public class GameManager : MonoBehaviour {
                 }
             case CLASS.Scientist:
                 {
+                    Debug.Log("Undo attempt");
                     if (CanUndo())
                     {
+                        Debug.Log("DoUnDo");
                         DoUndo();
                     } else {
                         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
@@ -1356,6 +1387,8 @@ public class GameManager : MonoBehaviour {
         {
             myTrophy[gi.m_TrophyAcquired] = 1;
         }
+        SaveSessionList();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
     }
 
     public void DoFreeClaim()
@@ -1418,6 +1451,76 @@ public class GameManager : MonoBehaviour {
         Debug.Log("Show help boost");
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_HELP).GetComponent<UIHelp>().Show(1);
         m_PlayerProfile.m_FirstTimeExperience[1] = true;
+        m_PlayerProfile.Save();
+    }
+
+    public Ability GetActiveAbility()
+    {
+        Ability ret = Ability.ABILITY_CLAIM;
+        Avatar ava = GetActiveAvatar();
+        switch (ava.m_Jobs)
+        {
+            case CLASS.Medicial:
+                {
+                    ret = Ability.ABILITY_CLAIM;
+                    break;
+                }
+            case CLASS.Athlete:
+                {
+                    ret = Ability.ABILITY_CLAIM;
+                    break;
+                }
+            case CLASS.Enterpreneur:
+                {
+                    ret = Ability.ABILITY_SWITCH;
+                    break;
+                }
+            case CLASS.Musician:
+                {
+                    ret = Ability.ABILITY_COPY;
+                    break;
+                }
+            case CLASS.Scientist:
+                {
+                    ret = Ability.ABILITY_UNDO;
+                    break;
+                }
+            case CLASS.Warrior:
+                {
+                    ret = Ability.ABILITY_REMOVE;
+                    break;
+                }
+            default:
+                break;
+
+        }
+        return ret;
+    }
+
+    public void ShowHelpUpgrade(bool value)
+    {
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN).GetComponent<UIMain>().ShowAlertImage(value);
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SETTING_SLIDER).GetComponent<UISettingSlider>().ShowAlertImage(value);
+    }
+
+    public void AddCoin(int amount)
+    {
+        m_PlayerProfile.m_Coin += amount;
+        m_PlayerProfile.Save();
+        CheckFirstUpgrade();
+    }
+
+    public void CheckFirstUpgrade()
+    {
+        if (GetPlayerProfile().m_FirstTimeExperience[2] == false && GetPlayerProfile().m_Coin >= 0)
+        {
+            GameManager.Instance.ShowHelpUpgrade(true);
+        }
+    }
+
+    public void OnFirstTimeUserExperienceComplete(int id)
+    {
+        m_PlayerProfile.m_FirstTimeExperience[id] = true;
         m_PlayerProfile.Save();
     }
 }
