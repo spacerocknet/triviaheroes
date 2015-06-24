@@ -14,6 +14,7 @@ public class AvatarScript : MonoBehaviour {
     int[] c_offsetY = {0, 38, 0, 0, 0, 32, 28, 0, 0};
 
     public Image[] m_ImageList;
+    public Image m_QuestionImage;
 
 	// Use this for initialization
 	void Start () {
@@ -27,7 +28,12 @@ public class AvatarScript : MonoBehaviour {
 
     public void SetInfo(Avatar avatar)
     {
-        
+        for (int i = 0; i < m_ImageList.GetLength(0); i++)
+        {
+            m_ImageList[i].gameObject.SetActive(true);
+            m_QuestionImage.gameObject.SetActive(false);
+        }
+
         string sex = "";
         if (avatar.m_Sex == 1)
         {
@@ -211,5 +217,14 @@ public class AvatarScript : MonoBehaviour {
         {
             m_ImageList[m_ImageList.GetLength(0) - 1].gameObject.SetActive(true);
         }        
+    }
+
+    public void SetIsUnkonw()
+    {
+        for (int i = 0; i < m_ImageList.GetLength(0); i++)
+        {
+            m_ImageList[i].gameObject.SetActive(false);
+        }
+        m_QuestionImage.gameObject.SetActive(true);
     }
 }

@@ -37,6 +37,20 @@ public class UISettingSlider : MonoBehaviour {
             cv.GetComponent<UIStore>().ShowUpgradeTab();
             GameManager.Instance.ShowHelpUpgrade(false);
             GameManager.Instance.OnFirstTimeUserExperienceComplete(2);
+
+            if (GameManager.Instance.GetActiveAvatar().m_Tier == TIER.Young_Adult)
+            {
+                GameManager.Instance.OnFirstTimeUserExperienceComplete(3);
+                CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+                cs.GetComponent<UIPopup>().Show("As an adult you can select a career. Career paths unlock a new ability for your avatar.", 0, null, null, (int)CanvasID.CANVAS_STORE); 
+            }
+
+            if (GameManager.Instance.GetActiveAvatar().m_Tier == TIER.Elder)
+            {
+                GameManager.Instance.OnFirstTimeUserExperienceComplete(5);
+                CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+                cs.GetComponent<UIPopup>().Show("True mastery has been attained. It is up to you to train the new generation.", 0, null, null, (int)CanvasID.CANVAS_STORE);
+            }
         }
 
         cv.GetComponent<UIStore>().Refresh();

@@ -3,7 +3,7 @@ using System.Collections;
 
 public enum CanvasID { CANVAS_MAIN = 0, CANVAS_NEWGAME, CANVAS_PVP, CANVAS_WAITING, CANVAS_GOTPUZZLE, CANVAS_GOTTROPHY, CANVAS_QUESTION, CANVAS_SETTING_SLIDER,
 CANVAS_PROFILE, CANVAS_STORE, CANVAS_CROWNSELECT, CANVAS_SELECTPIECECLAIM, CANVAS_SELECTPIECECHALLENGE, CANVAS_POPUP, CANVAS_ENDGAMECONFIRM, 
-    CANVAS_ENDGAMERESULT, CANVAS_EXCHANGE, CANVAS_OUTLIVES, CANVAS_HELP
+    CANVAS_ENDGAMERESULT, CANVAS_EXCHANGE, CANVAS_OUTLIVES, CANVAS_HELP, CANVAS_SELECTCAREER
 };
 
 public class SceneManager : MonoBehaviour{
@@ -73,6 +73,8 @@ public class SceneManager : MonoBehaviour{
             }
 
             GameManager.Instance.CheckFirstUpgrade();
+            GameManager.Instance.CheckFirstAdultUpgrade();
+            GameManager.Instance.CheckFirstReborn();
         }
     }
 

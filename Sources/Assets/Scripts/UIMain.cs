@@ -90,7 +90,7 @@ public class UIMain : MonoBehaviour {
     public void RefreshInfo()
     {
         //Debug.Log(GameManager.Instance.GetPlayerProfile().m_PlayerName);
-        //m_TextName.text = GameManager.Instance.GetPlayerProfile().m_PlayerName;
+        m_TextName.text = GameManager.Instance.GetPlayerProfile().m_PlayerName;
         m_TextLives.text = GameManager.Instance.GetPlayerProfile().m_Lives.ToString();
         m_TextCoin.text = GameManager.Instance.GetPlayerProfile().m_Coin.ToString();
         m_TextDiamond.text = GameManager.Instance.GetPlayerProfile().m_Diamond.ToString();

@@ -36,6 +36,7 @@ public class PlayerProfile{
     public List<int> m_AchievementCounter;
     public List<int> m_AchievementBonusReceived;
     public int m_PayOutBonus;
+    public int m_ElderMatch;
 
     public List<bool> m_FirstTimeExperience;
 
@@ -57,6 +58,7 @@ public class PlayerProfile{
         m_AvatarList = new List<Avatar>();
         m_ActiveAvatar = 0;
         m_PayOutBonus = 1;
+        m_ElderMatch = 0;
         for (int i = 0; i < 8; i++)
         {
             //m_ItemPicked.Add(0);
@@ -116,6 +118,8 @@ public class PlayerProfile{
         m_AvatarList.Add(av);
 
         m_FriendList = FriendList.CreateRandomFriendList();
+
+        m_ElderMatch = 0;
     }
 
     public void Save(string path = "TriviaPlayerProfile.xml")

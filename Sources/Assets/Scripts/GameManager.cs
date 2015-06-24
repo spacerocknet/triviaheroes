@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour {
         cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
 
         GameInfo gi = GetCurrentGameInfo();
-        if (gi.m_PlayerUseAbility != m_PlayerProfile.m_PlayerID && gi.m_AbilityShowed == false)
+        if (gi.m_PlayerUseAbility != m_PlayerProfile.m_PlayerID && gi.m_AbilityShowed == false && gi.m_LastAbility != -1)
         {
             if (GetActiveAbility() != Ability.ABILITY_UNDO)
             {
@@ -262,10 +262,12 @@ public class GameManager : MonoBehaviour {
         cs.Show();
         m_IsPVE = false;
         NetworkManager.Instance.DoStartNewGame(friend);
-
         m_PlayerProfile.SubtractLives();
-
-
+        if (GetActiveAvatar().m_Tier == TIER.Elder)
+        {
+            m_PlayerProfile.m_ElderMatch++;
+            m_PlayerProfile.Save();
+        }
     }
 
     public void OnStartPVEGame()
@@ -695,15 +697,15 @@ public class GameManager : MonoBehaviour {
 
     public bool CanChallenge()
     {
-        List<int> myTrophy = GetMyTrophy();
-        List<int> theirTrophy = GetOpponentTrophy();
+        List<int> myTrophy = GetMyTrophyList();
+        List<int> theirTrophy = GetOpponentTrophyList();
         int my = -1;
         int their = -1;
         bool flag = false;
         for (int i = 0; i < myTrophy.Count; i++)
         {
             
-            if (myTrophy[i] == 0 || theirTrophy[i] == 1)
+            if (myTrophy[i] == 0)
             {                
             }
             else
@@ -996,7 +998,7 @@ public class GameManager : MonoBehaviour {
         m_PlayerProfile.Save();
     }
 
-    public void UpgradeTier(int m_ClassID)
+    public void UpgradeTier(CLASS _job = CLASS.None)
     {
         TIER currentTier = m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar].m_Tier;
         if (currentTier != TIER.Elder)
@@ -1009,7 +1011,7 @@ public class GameManager : MonoBehaviour {
             }
             if (tier == TIER.Adult_1)
             {
-                m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar].m_Jobs = (CLASS)(m_ClassID + 1);
+                m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar].m_Jobs = _job;
             }
             if (tier == TIER.Adult_1 || tier == TIER.Adult_2 || tier == TIER.Adult_3 || tier == TIER.Adult_4 || tier == TIER.Adult_5)
             {
@@ -1044,6 +1046,9 @@ public class GameManager : MonoBehaviour {
             m_PlayerProfile.m_PayOutBonus++;
         }
         m_PlayerProfile.Save();
+
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN).GetComponent<UIMain>().RefreshInfo();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN).GetComponent<UIMain>().Refresh();
     }
 
     public Avatar GetActiveAvatar()
@@ -1503,16 +1508,40 @@ public class GameManager : MonoBehaviour {
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SETTING_SLIDER).GetComponent<UISettingSlider>().ShowAlertImage(value);
     }
 
+    public void ShowHelpAdultUpgrade(bool value)
+    {
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN).GetComponent<UIMain>().ShowAlertImage(value);
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SETTING_SLIDER).GetComponent<UISettingSlider>().ShowAlertImage(value);
+    }
+
     public void AddCoin(int amount)
     {
         m_PlayerProfile.m_Coin += amount;
         m_PlayerProfile.Save();
         CheckFirstUpgrade();
+        CheckFirstAdultUpgrade();
+        CheckFirstReborn();
     }
 
     public void CheckFirstUpgrade()
     {
         if (GetPlayerProfile().m_FirstTimeExperience[2] == false && GetPlayerProfile().m_Coin >= 0)
+        {
+            GameManager.Instance.ShowHelpUpgrade(true);
+        }
+    }
+
+    public void CheckFirstAdultUpgrade()
+    {
+        if (GetPlayerProfile().m_FirstTimeExperience[3] == false && GetPlayerProfile().m_Coin >= 0 && GetActiveAvatar().m_Tier == TIER.Young_Adult)
+        {
+            GameManager.Instance.ShowHelpAdultUpgrade(true);
+        }
+    }
+
+    public void CheckFirstReborn()
+    {
+        if (GetPlayerProfile().m_FirstTimeExperience[5] == false && GetPlayerProfile().m_Coin >= 0 && GetActiveAvatar().m_Tier == TIER.Elder && GetPlayerProfile().m_ElderMatch > 0)
         {
             GameManager.Instance.ShowHelpUpgrade(true);
         }

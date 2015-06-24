@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class StoreCustomizePage : MonoBehaviour {
@@ -6,6 +7,8 @@ public class StoreCustomizePage : MonoBehaviour {
     public int m_NumberOfOption;
     public GameObject m_ItemSelectPagePrefab;
     public GameObject m_ItemPrefab;
+
+    private static string[] m_CatName = { "Clothes", "Glasses", "Pets", "Hair", "Eyes", "Nose", "Lips", "Facial Hair" };
 
 	// Use this for initialization
 	void Start () { 
@@ -27,8 +30,9 @@ public class StoreCustomizePage : MonoBehaviour {
             GameObject go = (GameObject)GameObject.Instantiate(m_ItemSelectPagePrefab);
             go.transform.SetParent(panel.transform);
             go.transform.localScale = new Vector3(1, 1, 1);
-            go.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -100 - i * 260, 0);
+            go.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -200 - i * 360, 0);
             go.transform.FindChild("Image").gameObject.SetActive(false);
+            go.transform.FindChild("Text").GetComponent<Text>().text = m_CatName[i];
 
             for (int j = 0; j < 2; j++)
             {
@@ -36,13 +40,13 @@ public class StoreCustomizePage : MonoBehaviour {
                 GameObject go1 = (GameObject)GameObject.Instantiate(m_ItemPrefab);
                 go1.transform.SetParent(panel1.transform);
                 go1.transform.localScale = new Vector3(1, 1, 1);
-                go1.GetComponent<RectTransform>().anchoredPosition = new Vector3(200 + 0 + j * 200, 0, 0);
-                go1.GetComponent<ItemScript>().SetInfo(i, j + 1, true, true);
+                go1.GetComponent<RectTransform>().anchoredPosition = new Vector3(200 + 0 + j * 220, 0, 0);
+                go1.GetComponent<ItemScript>().SetInfo(i, (j % 2) + 1, true, true);
             }
 
-            go.GetComponent<HorizontalScrollSnap>().Screens = 2;
+            go.GetComponent<HorizontalScrollSnap>().Screens = 4;
         }
-        panel.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, 8 * 260 + 100);
+        panel.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, 8 * 360 + 100);
     }
 
     

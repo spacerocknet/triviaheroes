@@ -9,6 +9,10 @@ public class UIGotPuzzle : MonoBehaviour {
     public Sprite[] m_CatSprite;
     Category m_CurrentCat;
 
+    public Text m_CatName;
+
+    private static string[] m_CatTitle = {"Geography", "Science", "Art", "History", "Sport", "Entertaiment" };
+
 	// Use this for initialization
 	void Start () {
 	
@@ -46,6 +50,8 @@ public class UIGotPuzzle : MonoBehaviour {
     {
         m_CategoryImage.sprite = m_CatSprite[(int)category];
         m_CurrentCat = category;
+
+        m_CatName.text = m_CatTitle[(int)category];
     }
 
 }

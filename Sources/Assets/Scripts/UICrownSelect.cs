@@ -22,14 +22,17 @@ public class UICrownSelect : MonoBehaviour {
 
     public void OnChallenge()
     {
+        Debug.Log("ON CHALLENGE");
         if (GameManager.Instance.CanChallenge())
         {
+            Debug.Log("CAN CHALLENGE");
             CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_CROWNSELECT);
             cs.MoveOutToRight();
             GameManager.Instance.OnSelectChallenge();
         }
         else
         {
+            Debug.Log("CANT CHALLENGE");
             CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_CROWNSELECT);
             cs.GetComponent<UIPopup>().Show(TextManager.Instance.GetTextByKey("CantChallenge"), 0, null, null, (int)CanvasID.CANVAS_CROWNSELECT);                                       
         }

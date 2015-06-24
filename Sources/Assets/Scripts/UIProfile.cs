@@ -13,6 +13,8 @@ public class UIProfile : MonoBehaviour {
 
     public List<UIAchievement> m_AchievementList = new List<UIAchievement>();
 
+    public Text m_IndexText;
+
 	// Use this for initialization
 	void Start () {
         int num = AchievementList.Instance.GetAchievementCount();
@@ -53,6 +55,7 @@ public class UIProfile : MonoBehaviour {
         m_CustomizePage.Refresh();
         RefreshAvatar();
         RefreshAchievement();
+        
     }
 
     public void RefreshAchievement()
@@ -68,6 +71,8 @@ public class UIProfile : MonoBehaviour {
     {
         PlayerProfile pl = GameManager.Instance.GetPlayerProfile();        
         m_Avatar.SetInfo(GameManager.Instance.GetMyActiveAvatar());
+
+        m_IndexText.text = (pl.m_ActiveAvatar + 1).ToString() + "/" + (pl.m_AvatarList.Count).ToString(); 
     }
 
     public void OnBackAvatar()

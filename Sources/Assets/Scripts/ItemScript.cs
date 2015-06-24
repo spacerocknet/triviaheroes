@@ -114,7 +114,7 @@ public class ItemScript : MonoBehaviour {
             else
             {
                 m_BuyButton.interactable = true;
-                m_BuyButton.transform.FindChild("Text").GetComponent<Text>().text = "Buy";
+                m_BuyButton.transform.FindChild("Text").GetComponent<Text>().text = "$0.99";
             }
         }
         else

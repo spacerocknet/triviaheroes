@@ -60,7 +60,14 @@ public class UIEndgameResult : MonoBehaviour {
             }
             else
             {
-                m_RewardText.text = reward.ToString() + " + " + bonus.ToString();
+                if (bonus > 0)
+                {
+                    m_RewardText.text = reward + " " + bonus;
+                }
+                else
+                {
+                    m_RewardText.text = reward.ToString();
+                }
             }
         }
         else

@@ -26,18 +26,28 @@ public class UIPopup : MonoBehaviour {
 
     public void OnAccept() {
         gameObject.GetComponent<CanvasScript>().Hide();
+        if (m_YesDelegate != null)
+        {
+            m_YesDelegate();
+        }
     }
 
     public void OnYes()
     {
         gameObject.GetComponent<CanvasScript>().Hide();
-        m_YesDelegate();
+        if (m_YesDelegate != null)
+        {
+            m_YesDelegate();
+        }
     }
 
     public void OnNo()
     {
         gameObject.GetComponent<CanvasScript>().Hide();
-        m_NoDelegate();
+        if (m_NoDelegate != null)
+        {
+            m_NoDelegate();
+        }        
     }
 
     public void SetText(string text)

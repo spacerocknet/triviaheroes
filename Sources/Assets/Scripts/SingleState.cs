@@ -13,6 +13,8 @@ public class SingleState : MonoBehaviour {
 
     public Sprite[] m_SpriteList;
 
+    public GameObject m_Pivot;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -39,7 +41,7 @@ public class SingleState : MonoBehaviour {
 
     public void Refresh()
     {
-        
+        m_Pivot.SetActive(false);
         PlayerProfile pl = GameManager.Instance.GetPlayerProfile();
         Debug.Log("PVEStage: " + pl.m_CurrentPVEStage);
         if (m_Index <= pl.m_CurrentPVEStage)
@@ -47,7 +49,7 @@ public class SingleState : MonoBehaviour {
             m_CircleImage.sprite = m_SpriteList[3];
             if (m_Index == pl.m_CurrentPVEStage)
             {
-                m_LineImage.sprite = m_SpriteList[0];
+                m_LineImage.sprite = m_SpriteList[1];                
             }
             else
             {
@@ -56,6 +58,10 @@ public class SingleState : MonoBehaviour {
         }
         else
         {
+            if (m_Index == pl.m_CurrentPVEStage + 1)
+            {
+                m_Pivot.SetActive(true);
+            }
             m_CircleImage.sprite = m_SpriteList[2];
             m_LineImage.sprite = m_SpriteList[0];
         }

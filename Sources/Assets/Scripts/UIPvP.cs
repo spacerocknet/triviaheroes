@@ -65,7 +65,7 @@ public class UIPvP : MonoBehaviour {
 
                 int cat = Mathf.FloorToInt(m_Rect.localEulerAngles.z / (360f / 7));
 
-                //cat = 1;
+                Debug.Log("CAT: " + cat);
 
                 if (m_CategoryMap[cat] == Category.CAT_CROWN)
                 {
@@ -211,7 +211,12 @@ public class UIPvP : MonoBehaviour {
         int reward = 200;
         int bonus = 0;
         bonus = Mathf.RoundToInt((float)GameManager.Instance.GetPlayerProfile().m_PayOutBonus / 100 * reward);
-        m_RewardText.text = reward + " " + bonus;
+        if (bonus > 0)
+        {
+            m_RewardText.text = reward + " " + bonus;
+        } else{
+            m_RewardText.text = reward.ToString();
+        }
     }
 
     public void OnUseAbility()

@@ -97,7 +97,7 @@ public class UpgradesPage : MonoBehaviour {
     {        
         Avatar v = GameManager.Instance.GetMyActiveAvatar();
         int tier = (int)v.m_Tier;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 11; i++)
         {
             Image imgBar = m_TierList[i].transform.FindChild("Image 1").GetComponent<Image>();
             Image imgCircle = m_TierList[i].transform.FindChild("Image").GetComponent<Image>();
@@ -111,7 +111,7 @@ public class UpgradesPage : MonoBehaviour {
                 imgCircle.sprite = m_CircleDisabled;
             }
 
-            if (i < tier - 1)
+            if (i < tier)
             {
                 imgBar.sprite = m_ProgressBarEnable;
             }
@@ -130,17 +130,21 @@ public class UpgradesPage : MonoBehaviour {
             }
         }
 
-        Avatar avatar = GameManager.Instance.GetActiveAvatar();
-        OnTierSelected(0, (int)avatar.m_Tier- 1);
+        Avatar avatar = GameManager.Instance.GetActiveAvatar();        
         Debug.Log((int)avatar.m_Tier);
         m_TierPageView.ScrollTo((int)avatar.m_Tier);
+        m_ClassID = (int)avatar.m_Jobs - 1;
+        OnTierSelected(0, (int)avatar.m_Tier);
     }
 
     public void OnUpgrade()
     {
-        if (m_Tier < 10)
+        if (m_Tier == 4)
         {
-            GameManager.Instance.UpgradeTier(m_ClassID);
+            SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTCAREER).GetComponent<UISelectCareer>().Show();
+        } else if (m_Tier < 10)
+        {
+            GameManager.Instance.UpgradeTier((CLASS)(m_ClassID + 1));
         }
         else
         {
@@ -166,12 +170,19 @@ public class UpgradesPage : MonoBehaviour {
     }
 
     public void OnTierSelected(int cat, int tier)
-    {        
-        Avatar ava = Avatar.CreateDefaultAvatar();
-        ava.m_Tier = (TIER)(tier + 1);
-        ava.m_Jobs = (CLASS)(m_ClassID + 1);
-        ava.m_Sex = GameManager.Instance.GetPlayerProfile().m_Sex;
-        m_AvatarScript.SetInfo(ava);
+    {
+        if (tier > (int)GameManager.Instance.GetActiveAvatar().m_Tier || tier == 4)
+        {
+            m_AvatarScript.SetIsUnkonw();
+        }
+        else
+        {
+            Avatar ava = Avatar.CreateDefaultAvatar();
+            ava.m_Tier = (TIER)(tier + 1);
+            ava.m_Jobs = (CLASS)(m_ClassID + 1);
+            ava.m_Sex = GameManager.Instance.GetPlayerProfile().m_Sex;
+            m_AvatarScript.SetInfo(ava);
+        }
 
         m_Tier = tier;
 
@@ -179,20 +190,30 @@ public class UpgradesPage : MonoBehaviour {
 
         if (tier >= 4 && tier <= 8)
         {
-            m_Description.text = m_TierDescription[tier] + " " + m_ClassDescription[m_ClassID];
-            m_Title.text = m_TierText[tier] + " " + m_ClassText[m_ClassID];
-            m_AbilityText.text = m_ClassBonusText[m_ClassID];
-            m_BackButton.gameObject.SetActive(true);
-            m_NextButton.gameObject.SetActive(true);
+            Debug.Log(m_ClassID);
+            if (m_ClassID != -1)
+            {
+                m_Description.text = m_TierDescription[tier] + " " + m_ClassDescription[m_ClassID];
+                m_Title.text = m_TierText[tier] + " " + m_ClassText[m_ClassID];
+                m_AbilityText.text = m_ClassBonusText[m_ClassID];
+            }
+            else
+            {
+                m_Description.text = m_TierDescription[tier];
+                m_Title.text = m_TierText[tier];
+                m_AbilityText.text = "";
+            }
+            //m_BackButton.gameObject.SetActive(true);
+            //m_NextButton.gameObject.SetActive(true);
         }
         else
         {
             m_Description.text = m_TierDescription[tier];
             m_Title.text = m_TierText[tier];
             m_AbilityText.text = "";
-            m_ClassID = 0;
-            m_BackButton.gameObject.SetActive(false);
-            m_NextButton.gameObject.SetActive(false);
+            //m_ClassID = 0;
+            //m_BackButton.gameObject.SetActive(false);
+            //m_NextButton.gameObject.SetActive(false);
         }
 
         int cost = 500;

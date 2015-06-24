@@ -30,6 +30,9 @@ public class CustomizePage : MonoBehaviour {
 
             go.GetComponent<HorizontalScrollSnap>().SetItemCallBack(OnItemSelected, i);
 
+            go.transform.FindChild("Text").gameObject.SetActive(false);
+            go.transform.FindChild("Image 1").gameObject.SetActive(false);
+
             int count = 0;
             //Add first dummy
             {
@@ -90,6 +93,8 @@ public class CustomizePage : MonoBehaviour {
             go.GetComponent<HorizontalScrollSnap>().StartingScreen = 0;
         }
         panel.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, 8 * 260 + 150);
+
+
     }
 
     public void Refresh()
