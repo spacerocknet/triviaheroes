@@ -11,7 +11,7 @@ public class UIGotPuzzle : MonoBehaviour {
 
     public Text m_CatName;
 
-    private static string[] m_CatTitle = {"Geography", "Science", "Art", "History", "Sport", "Entertaiment" };
+    private static string[] m_CatTitle = {"Geography", "Science", "Arts and Literature", "History", "Sports", "Entertaiment" };
 
 	// Use this for initialization
 	void Start () {
@@ -35,6 +35,8 @@ public class UIGotPuzzle : MonoBehaviour {
         }
         else
         {
+            //CanvasScript cv = gameObject.GetComponent<CanvasScript>();
+            //cv.MoveOutToRight((int)CanvasID.CANVAS_PVP);
             GameManager.Instance.NotEnoughDiamond();
         }
     }

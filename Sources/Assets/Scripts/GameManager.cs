@@ -422,9 +422,7 @@ public class GameManager : MonoBehaviour {
                 HandleNormalAnswerEnded();
                 if (!m_IsLastAnswerCorrect)
                 {
-                    SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).MoveOutToRight();
-                    SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).MoveOutToRight();
-                    SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN).MoveInFromLeft();
+
                 }
             }
             else if (m_PVPState.m_Type == PVPStateType.TROPHY)
@@ -629,6 +627,10 @@ public class GameManager : MonoBehaviour {
         Debug.Log("End turn");
         m_GameList.m_GameList[m_CurrentGame].m_CurrentTurn = 3 - m_GameList.m_GameList[m_CurrentGame].m_CurrentTurn;
         m_GameList.Save();
+
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).MoveOutToRight();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).MoveOutToRight();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN).MoveInFromLeft();
     }
 
     private void SimulateOtherPlayers()
@@ -982,6 +984,18 @@ public class GameManager : MonoBehaviour {
         return m_PlayerProfile.m_AvatarList[m_PlayerProfile.m_ActiveAvatar];
     }
 
+    public Avatar GetMyAvatarInCurrentGame()
+    {
+        Avatar ava = Avatar.CreateDefaultAvatar();
+        ava.m_Tier = (TIER)GetCurrentGameInfo().m_PlayerATier;
+        ava.m_Jobs = (CLASS)GetCurrentGameInfo().m_PlayerAJobs;
+        for (int i = 0; i < 8; i++)
+        {
+            ava.m_ItemList[i] = GetCurrentGameInfo().m_PlayerAItems[i];
+        }
+        return ava;
+    }
+
     public int GetAvatarCount()
     {
         return m_PlayerProfile.m_AvatarList.Count;
@@ -1070,7 +1084,9 @@ public class GameManager : MonoBehaviour {
 
     public void NotEnoughDiamond()
     {
-        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_OUTLIVES).Show();
+        //SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_OUTLIVES).Show();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_STORE).Show();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_STORE).GetComponent<UIStore>().ShowShopTab();
     }
 
     public void NotEnoughCoin()
@@ -1109,7 +1125,7 @@ public class GameManager : MonoBehaviour {
                     else
                     {
                         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
-                        cs.GetComponent<UIPopup>().Show("This ability undoes your opponent’s last ability move. Avatars can only use this ability once opponent has used her/her avatar ability.  ", 0, null, null, (int)CanvasID.CANVAS_PVP);
+                        cs.GetComponent<UIPopup>().Show(" This ability autofills your puzzle gauge for a free attempt at challenging for a puzzle piece. Avatars can only use this ability once his/her opponent has at least one puzzle piece .  ", 0, null, null, (int)CanvasID.CANVAS_PVP);
                     }
                     break;
                 }
@@ -1161,7 +1177,7 @@ public class GameManager : MonoBehaviour {
                     else
                     {
                         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
-                        cs.GetComponent<UIPopup>().Show("This ability swaps your puzzle piece set with your opponent’s set. Avatars can only use this ability once an opponent has at least one puzzle piece ", 0, null, null, (int)CanvasID.CANVAS_PVP);
+                        cs.GetComponent<UIPopup>().Show("This ability removes one random puzzle piece from your opponent’s set. Avatars can only use this ability once an opponent has at least one puzzle piece.", 0, null, null, (int)CanvasID.CANVAS_PVP);
                     }
                     break;
                 }
@@ -1414,7 +1430,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public int GetNumberOfAbilityCanUse() {
-        int tier = (int)GetActiveAvatar().m_Tier;
+        int tier = (int)GetCurrentGameInfo().m_PlayerATier;
         if (tier >= 9)
         {
             return 3;

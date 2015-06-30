@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <m_PlayerID>NewHero</m_PlayerID>
-  <m_PlayerName>NewHero</m_PlayerName>
+  <m_PlayerID>TestHero</m_PlayerID>
+  <m_PlayerName>TestHero</m_PlayerName>
   <m_Level>0</m_Level>
   <m_TotalEXP>0</m_TotalEXP>
   <m_Lives>5</m_Lives>
@@ -10,7 +10,7 @@
   <m_Sex>1</m_Sex>
   <m_CurrentTier>Young_Adult</m_CurrentTier>
   <m_CurrentClass>None</m_CurrentClass>
-  <m_LastTimeAddLive>2015-06-24T14:15:17.9953069+07:00</m_LastTimeAddLive>
+  <m_LastTimeAddLive>2015-06-30T12:09:57.1174464+07:00</m_LastTimeAddLive>
   <m_FriendList>
     <m_FriendList>
       <string>Mage</string>
@@ -40,43 +40,11 @@
       </m_ItemList>
       <m_Sex>1</m_Sex>
       <m_ID>0</m_ID>
-      <m_Tier>Elder</m_Tier>
-      <m_Jobs>Musician</m_Jobs>
-    </Avatar>
-    <Avatar>
-      <m_ItemList>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-      </m_ItemList>
-      <m_Sex>1</m_Sex>
-      <m_ID>1</m_ID>
-      <m_Tier>Elder</m_Tier>
-      <m_Jobs>Medicial</m_Jobs>
-    </Avatar>
-    <Avatar>
-      <m_ItemList>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-        <int>0</int>
-      </m_ItemList>
-      <m_Sex>1</m_Sex>
-      <m_ID>2</m_ID>
-      <m_Tier>Adult_3</m_Tier>
-      <m_Jobs>Scientist</m_Jobs>
+      <m_Tier>Adult_1</m_Tier>
+      <m_Jobs>Athlete</m_Jobs>
     </Avatar>
   </Avatar>
-  <m_ActiveAvatar>1</m_ActiveAvatar>
+  <m_ActiveAvatar>0</m_ActiveAvatar>
   <m_CurrentPVEStage>0</m_CurrentPVEStage>
   <m_PVEBoostUsed>
     <boolean>false</boolean>
@@ -100,24 +68,24 @@
   <m_AchievementCounter>
     <int>0</int>
     <int>0</int>
-    <int>5</int>
-    <int>3</int>
-    <int>0</int>
-    <int>0</int>
-    <int>0</int>
-    <int>5</int>
-    <int>2</int>
-    <int>1</int>
-    <int>0</int>
-    <int>0</int>
-    <int>0</int>
-    <int>0</int>
-    <int>0</int>
-    <int>0</int>
-    <int>0</int>
     <int>0</int>
     <int>0</int>
     <int>1</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
@@ -147,11 +115,11 @@
     <int>0</int>
     <int>0</int>
   </m_AchievementBonusReceived>
-  <m_PayOutBonus>15</m_PayOutBonus>
+  <m_PayOutBonus>4</m_PayOutBonus>
   <m_ElderMatch>0</m_ElderMatch>
   <m_FirstTimeExperience>
     <boolean>true</boolean>
-    <boolean>true</boolean>
+    <boolean>false</boolean>
     <boolean>true</boolean>
     <boolean>true</boolean>
     <boolean>true</boolean>

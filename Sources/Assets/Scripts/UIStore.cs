@@ -57,4 +57,9 @@ public class UIStore : MonoBehaviour {
     {
         m_StoreTab.OnUpgrade();
     }
+
+    public void ShowShopTab()
+    {
+        m_StoreTab.OnCurrency();
+    }
 }

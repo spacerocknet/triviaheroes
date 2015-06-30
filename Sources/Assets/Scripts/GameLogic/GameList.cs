@@ -10,6 +10,17 @@ public class GameInfo
 {
     public int m_GameID = 0;
     public string m_PlayerA = "";
+    //Avatar Info
+    public int m_PlayerATier;
+    public int m_PlayerAJobs;
+    public int m_PlayerASex;
+    public List<int> m_PlayerAItems = new List<int>();
+    //Avatar Info
+    public int m_PlayerBTier;
+    public int m_PlayerBJobs;
+    public int m_PlayerBSex;
+    public List<int> m_PlayerBItems = new List<int>();
+
     public string m_PlayerB = "";    
     public int m_Round = 1;
 
@@ -103,7 +114,15 @@ public class GameList
             gi.m_ChallengeQuestion.Add(0);
             gi.m_ChallengeAnswer.Add(0);
             gi.m_GameID = max + 1;
-        }        
+        }
+
+        gi.m_PlayerASex = GameManager.Instance.GetPlayerProfile().m_Sex;
+        gi.m_PlayerATier = (int)GameManager.Instance.GetPlayerProfile().GetActiveAvatar().m_Tier;
+        gi.m_PlayerAJobs = (int)GameManager.Instance.GetPlayerProfile().GetActiveAvatar().m_Jobs;
+        for (int i = 0; i < 8; i++)
+        {
+            gi.m_PlayerAItems.Add(GameManager.Instance.GetPlayerProfile().GetActiveAvatar().m_ItemList[i]);
+        }
         m_GameList.Add(gi);
         Save();
         return gi;

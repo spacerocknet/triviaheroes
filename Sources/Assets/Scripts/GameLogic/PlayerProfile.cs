@@ -179,6 +179,7 @@ public class PlayerProfile{
         m_LastTimeAddLive = DateTime.Now;        
         m_Lives++;
         m_Lives = Mathf.Clamp(m_Lives, 0, 5);
+        Save();
     }
 
     public void SubtractLives()
@@ -190,6 +191,7 @@ public class PlayerProfile{
         }
         m_Lives--;
         m_Lives = Mathf.Clamp(m_Lives, 0, 5);
+        Save();
     }
 
     public void UpdateLives()
@@ -219,4 +221,7 @@ public class PlayerProfile{
         AchievementList.Instance.OnAction(Achievement_Action.COLLECT_AVATAR);
     }
     
+    public Avatar GetActiveAvatar() {
+        return m_AvatarList[m_ActiveAvatar];
+    }
 }

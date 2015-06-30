@@ -41,9 +41,7 @@ public class CustomizePage : MonoBehaviour {
                 go1.transform.SetParent(panel1.transform);
                 go1.transform.localScale = new Vector3(1, 1, 1);
                 go1.GetComponent<RectTransform>().anchoredPosition = new Vector3(200 + count * 200, 0, 0);
-
                 go1.GetComponent<ItemScript>().SetInfo(-1, 0, false, false);
-
                 count++;
             }
             for (int j = 0; j < 3; j++)
@@ -55,9 +53,7 @@ public class CustomizePage : MonoBehaviour {
                     go1.transform.SetParent(panel1.transform);
                     go1.transform.localScale = new Vector3(1, 1, 1);
                     go1.GetComponent<RectTransform>().anchoredPosition = new Vector3(200 + count * 200, 0, 0);
-
                     go1.GetComponent<ItemScript>().SetInfo(i, j, false, false);
-
                     count++;
                 }
             }
@@ -69,7 +65,6 @@ public class CustomizePage : MonoBehaviour {
                 go1.transform.SetParent(panel1.transform);
                 go1.transform.localScale = new Vector3(1, 1, 1);
                 go1.GetComponent<RectTransform>().anchoredPosition = new Vector3(200 + count * 200, 0, 0);
-
                 go1.GetComponent<ItemScript>().SetInfo(-1, 0, false, false);
 
                 count++;

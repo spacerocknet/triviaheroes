@@ -14,6 +14,7 @@ public class UIProfile : MonoBehaviour {
     public List<UIAchievement> m_AchievementList = new List<UIAchievement>();
 
     public Text m_IndexText;
+    public Text m_NameText;
 
 	// Use this for initialization
 	void Start () {
@@ -55,7 +56,7 @@ public class UIProfile : MonoBehaviour {
         m_CustomizePage.Refresh();
         RefreshAvatar();
         RefreshAchievement();
-        
+        m_NameText.text = GameManager.Instance.GetPlayerProfile().m_PlayerName;
     }
 
     public void RefreshAchievement()

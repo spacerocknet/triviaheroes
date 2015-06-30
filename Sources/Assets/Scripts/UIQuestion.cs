@@ -94,6 +94,8 @@ public class UIQuestion : MonoBehaviour {
     public void OnEndGame()
     {
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_ENDGAMECONFIRM).Show();
+        //m_IsShowAnswer = true;
+        //m_ShowAnswerTimer = 0;
     }
 
     public void SetQuestion(Question question)

@@ -119,7 +119,7 @@ public class UIPvP : MonoBehaviour {
 
     public void SetGameInfo(GameInfo game)
     {
-        m_AvatarMe.GetComponent<AvatarScript>().SetInfo(GameManager.Instance.GetMyActiveAvatar());  
+        m_AvatarMe.GetComponent<AvatarScript>().SetInfo(GameManager.Instance.GetMyAvatarInCurrentGame());  
         m_RoundText.text = "Round " + game.m_Round.ToString();
         m_MyAvatarName.text = GameManager.Instance.GetPlayerProfile().m_PlayerName;
         m_OpponentAvatarName.text = game.m_PlayerB;
@@ -213,7 +213,7 @@ public class UIPvP : MonoBehaviour {
         bonus = Mathf.RoundToInt((float)GameManager.Instance.GetPlayerProfile().m_PayOutBonus / 100 * reward);
         if (bonus > 0)
         {
-            m_RewardText.text = reward + " " + bonus;
+            m_RewardText.text = reward + " <color=#ff0000ff> + " + bonus + "</color>";
         } else{
             m_RewardText.text = reward.ToString();
         }

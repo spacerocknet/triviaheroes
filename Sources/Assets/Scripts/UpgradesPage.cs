@@ -39,7 +39,7 @@ public class UpgradesPage : MonoBehaviour {
         "Working towards achieving mastery. +1% payout boost.",
         "Sharpen your abilities through peer competition.",
         " Elders are masters in all subjects.",
-        "Reborn."
+        "Train a new generation."
     };
 
     private static string[] m_ClassDescription = {
@@ -71,7 +71,7 @@ public class UpgradesPage : MonoBehaviour {
         "Adult 4",
         "Adult 5",
         "Elder",
-        "Reborn"
+        "Train a new generation"
     };
     
     private static string[] m_ClassText = {
@@ -195,7 +195,14 @@ public class UpgradesPage : MonoBehaviour {
             {
                 m_Description.text = m_TierDescription[tier] + " " + m_ClassDescription[m_ClassID];
                 m_Title.text = m_TierText[tier] + " " + m_ClassText[m_ClassID];
-                m_AbilityText.text = m_ClassBonusText[m_ClassID];
+                if (tier == 4 || tier == 6 || tier == 8)
+                {
+                    m_AbilityText.text = m_ClassBonusText[m_ClassID];
+                }
+                else
+                {
+                    m_AbilityText.text = "";
+                }
             }
             else
             {
