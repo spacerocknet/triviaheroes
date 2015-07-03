@@ -50,7 +50,14 @@ public class ItemScript : MonoBehaviour {
                 }
                 else
                 {
-                    s = "G_" + s;
+                    if (profile.GetActiveAvatar().m_Tier == TIER.Teenager && type == 0)
+                    {
+                        s = "B_" + s;
+                    }
+                    else
+                    {
+                        s = "G_" + s;
+                    }
                 }
 
                 

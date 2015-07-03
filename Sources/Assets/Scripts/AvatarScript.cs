@@ -147,7 +147,14 @@ public class AvatarScript : MonoBehaviour {
                 ss = Avatar.AVATAR_PREFIX[i] + ss;
                 if (i == 0)
                 {
-                    ss = sex + "_" + ss;
+                    if (avatar.m_Tier == TIER.Teenager)
+                    {
+                        ss = "B" + "_" + ss;
+                    }
+                    else
+                    {
+                        ss = sex + "_" + ss;
+                    }
                 }
                 else
                 {
