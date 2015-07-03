@@ -34,17 +34,17 @@ public class StoreCustomizePage : MonoBehaviour {
             go.transform.FindChild("Image").gameObject.SetActive(false);
             go.transform.FindChild("Text").GetComponent<Text>().text = m_CatName[i];
 
-            for (int j = 0; j < 2; j++)
+            for (int j = 0; j < 10; j++)
             {
                 GameObject panel1 = go.transform.FindChild("Panel").gameObject;
                 GameObject go1 = (GameObject)GameObject.Instantiate(m_ItemPrefab);
                 go1.transform.SetParent(panel1.transform);
                 go1.transform.localScale = new Vector3(1, 1, 1);
                 go1.GetComponent<RectTransform>().anchoredPosition = new Vector3(200 + 0 + j * 220, 0, 0);
-                go1.GetComponent<ItemScript>().SetInfo(i, (j % 2) + 1, true, true);
+                go1.GetComponent<ItemScript>().SetInfo(i, (j) + 1, true, true);
             }
 
-            go.GetComponent<HorizontalScrollSnap>().Screens = 4;
+            go.GetComponent<HorizontalScrollSnap>().Screens = 10;
         }
         panel.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, 8 * 360 + 100);
     }

@@ -39,7 +39,7 @@ public class UIRegister : MonoBehaviour {
 
     public void OnDone()
     {
-        //StartCoroutine("LoadNextScene");
+        GameManager.Instance.SetRegisterInfo(m_InputText.text, m_Sex);        
         NetworkManager.Instance.DoRegister(m_InputText.text, m_Sex);
     }
 

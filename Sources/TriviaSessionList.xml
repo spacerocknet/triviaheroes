@@ -3,9 +3,9 @@
   <GameList>
     <GameInfo>
       <m_GameID>1</m_GameID>
-      <m_PlayerA>TestHero</m_PlayerA>
-      <m_PlayerATier>5</m_PlayerATier>
-      <m_PlayerAJobs>3</m_PlayerAJobs>
+      <m_PlayerA>TEst</m_PlayerA>
+      <m_PlayerATier>1</m_PlayerATier>
+      <m_PlayerAJobs>0</m_PlayerAJobs>
       <m_PlayerASex>1</m_PlayerASex>
       <m_PlayerAItems>
         <int>0</int>
@@ -21,7 +21,7 @@
       <m_PlayerBJobs>0</m_PlayerBJobs>
       <m_PlayerBSex>0</m_PlayerBSex>
       <m_PlayerBItems />
-      <m_PlayerB>Warrior</m_PlayerB>
+      <m_PlayerB />
       <m_Round>1</m_Round>
       <m_PieceA>
         <int>0</int>
@@ -32,7 +32,7 @@
         <int>0</int>
       </m_PieceA>
       <m_PieceB>
-        <int>0</int>
+        <int>1</int>
         <int>0</int>
         <int>0</int>
         <int>0</int>

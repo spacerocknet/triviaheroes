@@ -38,7 +38,8 @@ public class UIMain : MonoBehaviour {
         RefreshInfo();
         Refresh();
 
-
+        NetworkManager.Instance.DoGetAllSessionInfo();
+        NetworkManager.Instance.DoUpdateSessionInfo("gamesession_abc104_1435650893641");
 	}
 	
 	// Update is called once per frame

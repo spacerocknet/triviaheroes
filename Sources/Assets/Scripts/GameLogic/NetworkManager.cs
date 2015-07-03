@@ -7,7 +7,9 @@ public class NetworkManager : MonoBehaviour {
 
     public delegate void OnServerCallBack(string result);
 
-    private static NetworkManager m_sInstance = null;    
+    private static NetworkManager m_sInstance = null;
+
+    private static string SERVER_IP = "http://52.4.79.61:9000/v1";
 
     public void Awake()
     {
@@ -56,16 +58,53 @@ public class NetworkManager : MonoBehaviour {
         }
         //Debug.Log("HIHI");
         GameManager.Instance.OnStartNewGameResult(ret.ToString());
+        
     }
 
     public void DoRegister(string name, int sex)
     {
-        StartCoroutine(ActuallyDoRegister(name, sex));
+        Dictionary<string, string> dict = new Dictionary<string, string>();
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            dict.Add("platform", "IOS");
+        }
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            dict.Add("platform", "Android");
+        }
+        dict.Add("os", SystemInfo.operatingSystem);
+        dict.Add("model", SystemInfo.deviceModel);        
+        dict.Add("device_uuid", SystemInfo.deviceUniqueIdentifier);
+        dict.Add("type", "mobile");
+        dict.Add("name", name);
+        dict.Add("sex", sex.ToString());
+        Debug.Log("Register");
+        POST(SERVER_IP + "/user/addnoinfo", dict, GameManager.Instance.OnRegisterCallback);
+        //StartCoroutine(ActuallyDoRegister(name, sex));
     }
 
     public void DoStartNewGame(string friend)
     {
-        StartCoroutine(ActuallyDoStartNewGame(friend));
+        Dictionary<string, string> dict = new Dictionary<string, string>();
+        dict.Add("uid", GameManager.Instance.GetPlayerProfile().m_PlayerID);
+        POST(SERVER_IP + "/gamesession/createorjoin", dict, GameManager.Instance.OnStartNewGameResult);  
+    }
+
+    public void DoUpdateSessionInfo(string sessionid)
+    {
+        Dictionary<string, string> dict = new Dictionary<string, string>();
+        dict.Add("uid", GameManager.Instance.GetPlayerProfile().m_PlayerID);
+        dict.Add("game_session_id", sessionid);
+        dict.Add("custom_field", "custom_value");
+        POST(SERVER_IP + "/gamesession/updategamesession", dict, GameManager.Instance.OnUpdateSessionInfoResult);
+    }
+
+    public void DoGetAllSessionInfo()
+    {
+        Dictionary<string, string> dict = new Dictionary<string, string>();
+        Debug.Log(GameManager.Instance.GetPlayerProfile().m_PlayerID);
+        dict.Add("uid", GameManager.Instance.GetPlayerProfile().m_PlayerID);
+        POST(SERVER_IP + "/gamesession/getgamesessions", dict, GameManager.Instance.OnGetAllSessionInfoResult);
     }
 
     public void SkipQuestion(Category cat)
@@ -73,7 +112,7 @@ public class NetworkManager : MonoBehaviour {
         Dictionary<string, string> dict = new Dictionary<string, string>();
         dict.Add("category", "Sports");
         dict.Add("num", "1");
-        POST("http://54.163.250.79:9000/v1/quiz/request", dict, GameManager.Instance.OnSkipQuestionResult);   
+        POST(SERVER_IP + "/quiz/request", dict, GameManager.Instance.OnSkipQuestionResult);   
     }
 
     public void DoCategoryConfirmToPlay(Category cat)
@@ -81,7 +120,7 @@ public class NetworkManager : MonoBehaviour {
         Dictionary<string, string> dict = new Dictionary<string, string>();
         dict.Add("category", "Sports");
         dict.Add("num", "1");
-        POST("http://54.163.250.79:9000/v1/quiz/request", dict, GameManager.Instance.OnCategoryConfirmToPlayResult);   
+        POST(SERVER_IP + "/quiz/request", dict, GameManager.Instance.OnCategoryConfirmToPlayResult);   
     }
 
     public void DoTrophyClaimSelected(int trophy)
@@ -89,7 +128,7 @@ public class NetworkManager : MonoBehaviour {
         Dictionary<string, string> dict = new Dictionary<string, string>();
         dict.Add("category", "Sports");
         dict.Add("num", "1");
-        POST("http://54.163.250.79:9000/v1/quiz/request", dict, GameManager.Instance.OnTrophyClaimSelectedResult);
+        POST(SERVER_IP + "/quiz/request", dict, GameManager.Instance.OnTrophyClaimSelectedResult);
     }
 
     public void DoTrophyChallengeSelected()
@@ -97,7 +136,7 @@ public class NetworkManager : MonoBehaviour {
         Dictionary<string, string> dict = new Dictionary<string, string>();
         dict.Add("category", "Sports");
         dict.Add("num", "1");
-        POST("http://54.163.250.79:9000/v1/quiz/request", dict, GameManager.Instance.OnTrophyChallengeSelectedResult);        
+        POST(SERVER_IP + "/quiz/request", dict, GameManager.Instance.OnTrophyChallengeSelectedResult);        
     }
 
     public void DoTrophyChallangeNextQuestion()
@@ -105,7 +144,7 @@ public class NetworkManager : MonoBehaviour {
         Dictionary<string, string> dict = new Dictionary<string, string>();
         dict.Add("category", "Sports");
         dict.Add("num", "1");
-        POST("http://54.163.250.79:9000/v1/quiz/request", dict, GameManager.Instance.DoTrophyChallangeNextQuestionResult);        
+        POST(SERVER_IP + "/quiz/request", dict, GameManager.Instance.DoTrophyChallangeNextQuestionResult);        
     }
 
     public void DoGetPVEQuestion()
@@ -113,7 +152,7 @@ public class NetworkManager : MonoBehaviour {
         Dictionary<string, string> dict = new Dictionary<string, string>();
         dict.Add("category", "Sports");
         dict.Add("num", "1");
-        POST("http://54.163.250.79:9000/v1/quiz/request", dict, GameManager.Instance.DoDoGetPVEQuestionQuestionResult);   
+        POST(SERVER_IP + "/quiz/request", dict, GameManager.Instance.DoDoGetPVEQuestionQuestionResult);   
     }
 
     public void OnRegisterResult()
@@ -169,7 +208,9 @@ public class NetworkManager : MonoBehaviour {
         }
         else
         {
-            //Debug.Log("WWW Error: " + www.error);
+            Debug.Log("WWW Error: " + www.error);
         }
     }
+
+    
 }

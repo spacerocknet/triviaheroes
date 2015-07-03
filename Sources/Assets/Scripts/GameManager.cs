@@ -33,6 +33,9 @@ public class GameManager : MonoBehaviour {
 
     private PVPState m_PVPState = new PVPState();
 
+    private string m_RegisterName;
+    private int m_Sex;
+
 
     public void Awake()
     {
@@ -149,7 +152,7 @@ public class GameManager : MonoBehaviour {
         if (ret["result"].AsBool)
         {
             //Debug.Log("Register Successful");
-            m_PlayerProfile = new PlayerProfile(ret["name"], ret["sex"].AsInt);
+            m_PlayerProfile = new PlayerProfile(ret["name"], ret["sex"].AsInt, ret["uid"]);
             Application.LoadLevel("MainScene");
             m_PlayerProfile.Save();
             AchievementList.Instance.Init();
@@ -162,6 +165,7 @@ public class GameManager : MonoBehaviour {
 
     public void OnStartNewGameResult(string result)
     {
+        Debug.Log(result);
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_WAITING);
         cs.Hide();
         cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
@@ -1568,4 +1572,36 @@ public class GameManager : MonoBehaviour {
         m_PlayerProfile.m_FirstTimeExperience[id] = true;
         m_PlayerProfile.Save();
     }
+
+    public void OnRegisterCallback(string result)
+    {
+        Debug.Log(result);
+
+        var ret = new JSONClass();
+        ret["result"].AsBool = true;
+        ret["name"] = m_RegisterName;
+        ret["sex"].AsInt = m_Sex;
+
+        var r = JSONNode.Parse(result);
+        ret["uid"] = r["uid"];
+        
+        GameManager.Instance.OnRegisterResult(ret.ToString());
+    }
+
+    public void SetRegisterInfo(string name, int sex)
+    {
+        m_RegisterName = name;
+        m_Sex = sex;
+    }
+
+    public void OnUpdateSessionInfoResult(string result)
+    {
+        //Debug.Log(result);
+    }
+
+    public void OnGetAllSessionInfoResult(string result)
+    {
+        Debug.Log(result);
+    }
+    
 }

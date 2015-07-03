@@ -44,7 +44,7 @@ public class CustomizePage : MonoBehaviour {
                 go1.GetComponent<ItemScript>().SetInfo(-1, 0, false, false);
                 count++;
             }
-            for (int j = 0; j < 3; j++)
+            for (int j = 0; j <= 10; j++)
             {
                 if (GameManager.Instance.IsItemOwned(i, j))
                 {

@@ -67,10 +67,10 @@ public class PlayerProfile{
         m_FriendList = FriendList.CreateRandomFriendList();
     }
 
-    public PlayerProfile(string name, int sex)
+    public PlayerProfile(string name, int sex, string uid)
     {
         m_PlayerName = name;
-        m_PlayerID = name;
+        m_PlayerID = uid;
         m_Level = 0;
         
         m_TotalEXP = 0;

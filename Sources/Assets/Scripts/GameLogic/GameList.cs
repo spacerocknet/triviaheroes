@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
 using System.IO;
 
 public class GameInfo
@@ -77,6 +78,11 @@ public class GameInfo
             }
         }
         return count;
+    }
+
+    public string ToJsonString()
+    {
+        return "";
     }
 }
 

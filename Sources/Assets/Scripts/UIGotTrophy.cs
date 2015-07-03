@@ -23,4 +23,9 @@ public class UIGotTrophy : MonoBehaviour {
         cv = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION);
         cv.MoveOutToRight();
     }
+
+    public void Show(Category trophy)
+    {
+        GetComponent<CanvasScript>().Show();
+    }
 }
