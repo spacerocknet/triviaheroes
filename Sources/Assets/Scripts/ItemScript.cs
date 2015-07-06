@@ -86,8 +86,7 @@ public class ItemScript : MonoBehaviour {
                 s = Avatar.AVATAR_PREFIX[type] + s;
                 
                 s = "U_" + s;
-                
-                Debug.Log("avatar/IAP/" + s + "_I");
+                                
                 Sprite sprite = Resources.Load<Sprite>("avatar/IAP/" + s + "_I");
                 m_Image.sprite = sprite;
             }

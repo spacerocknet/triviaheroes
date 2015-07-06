@@ -26,7 +26,7 @@ public class HorizontalScrollSnap : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("START" + gameObject.name);
+        
         m_ScrollRect = gameObject.GetComponent<ScrollRect>();
         m_ScrollViewRectTrans = gameObject.GetComponent<RectTransform>();
         m_ScrollRect.inertia = false;

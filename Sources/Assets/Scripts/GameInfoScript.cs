@@ -4,7 +4,7 @@ using System.Collections;
 
 public class GameInfoScript : MonoBehaviour {
 
-    public int m_GameID;
+    public string m_SessionID;
     public GameObject m_GameManager;
 
     public Text m_NameText;
@@ -30,12 +30,12 @@ public class GameInfoScript : MonoBehaviour {
     {
         //Debug.Log("Game selected");
         GameManager gm = m_GameManager.GetComponent<GameManager>();
-        gm.OnContinueGame(m_GameID);
+        gm.OnContinueGame(m_SessionID);
     }
 
     public void SetGameInfo(GameInfo gi)
     {
-        m_NameText.text = gi.m_PlayerB;
+        m_NameText.text = gi.m_PlayerBID;
         m_RoundText.text = "Round: " + gi.m_Round.ToString();
         int sa = gi.GetScoreA();
         int sb = gi.GetScoreB();
@@ -52,7 +52,7 @@ public class GameInfoScript : MonoBehaviour {
         m_ScoreAText.text = gi.GetScoreA().ToString();
         m_ScoreBText.text = gi.GetScoreB().ToString();
         m_ScoreImage.rectTransform.anchoredPosition = m_LeftPos.anchoredPosition + (m_RightPos.anchoredPosition - m_LeftPos.anchoredPosition) * percent;
-        m_GameID = gi.m_GameID;
+        m_SessionID = gi.m_SessionID;
     }
 
     

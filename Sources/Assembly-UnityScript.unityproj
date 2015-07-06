@@ -59,10 +59,9 @@
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>D:/DevSpace/TriviaHeroes/triviaheroes/Sources/Assets/plugins/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{E5D1C7BC-1A59-DF8F-356D-EC8687A7528E}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+ <Reference Include="Newtonsoft.Json">
+ <HintPath>D:/DevSpace/TriviaHeroes/triviaheroes/Sources/Assets/plugins/Newtonsoft.Json.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -74,7 +74,7 @@ public class NetworkManager : MonoBehaviour {
         }
         dict.Add("os", SystemInfo.operatingSystem);
         dict.Add("model", SystemInfo.deviceModel);        
-        dict.Add("device_uuid", SystemInfo.deviceUniqueIdentifier);
+        dict.Add("device_uuid", SystemInfo.deviceUniqueIdentifier + "10");
         dict.Add("type", "mobile");
         dict.Add("name", name);
         dict.Add("sex", sex.ToString());
@@ -90,13 +90,15 @@ public class NetworkManager : MonoBehaviour {
         POST(SERVER_IP + "/gamesession/createorjoin", dict, GameManager.Instance.OnStartNewGameResult);  
     }
 
-    public void DoUpdateSessionInfo(string sessionid)
+    public void DoUpdateSessionInfo(string sessionid, string sessioninfo)
     {
+        
         Dictionary<string, string> dict = new Dictionary<string, string>();
         dict.Add("uid", GameManager.Instance.GetPlayerProfile().m_PlayerID);
         dict.Add("game_session_id", sessionid);
-        dict.Add("custom_field", "custom_value");
-        POST(SERVER_IP + "/gamesession/updategamesession", dict, GameManager.Instance.OnUpdateSessionInfoResult);
+        dict.Add("state", "1");
+        dict.Add("attributes", sessioninfo);
+        POST(SERVER_IP + "/gamesession/updategamesessionstate", dict, GameManager.Instance.OnUpdateSessionInfoResult);
     }
 
     public void DoGetAllSessionInfo()
@@ -180,12 +182,19 @@ public class NetworkManager : MonoBehaviour {
 
         foreach (KeyValuePair<string, string> kvp in post)
         {
-            jsonString = jsonString + "\"" + kvp.Key + "\":" + "\"" + kvp.Value + "\",";
+            if (kvp.Key != "attributes")
+            {
+                jsonString = jsonString + "\"" + kvp.Key + "\":" + "\"" + kvp.Value + "\",";
+            }
+            else
+            {
+                jsonString = jsonString + "\"" + kvp.Key + "\":" + kvp.Value + ",";
+            }
         }
 
         jsonString = jsonString.Substring(0, jsonString.Length - 1);
         jsonString = jsonString + "}";
-
+        Debug.Log(jsonString);
         Dictionary<string, string> header = new Dictionary<string, string>();
         header.Add("Content-Type", "Application/json");
         header.Add("Content-Length", jsonString.Length.ToString());
@@ -202,15 +211,12 @@ public class NetworkManager : MonoBehaviour {
 
         // check for errors
         if (www.error == null)
-        {
-            //Debug.Log(www.text);
+        {            
             callback(www.text);            
         }
         else
         {
             Debug.Log("WWW Error: " + www.error);
         }
-    }
-
-    
+    } 
 }

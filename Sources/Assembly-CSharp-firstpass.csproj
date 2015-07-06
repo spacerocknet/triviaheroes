@@ -59,6 +59,9 @@
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>D:/DevSpace/TriviaHeroes/triviaheroes/Sources/Assets/plugins/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
+ <Reference Include="Newtonsoft.Json">
+ <HintPath>D:/DevSpace/TriviaHeroes/triviaheroes/Sources/Assets/plugins/Newtonsoft.Json.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

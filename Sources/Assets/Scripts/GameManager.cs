@@ -73,12 +73,12 @@ public class GameManager : MonoBehaviour {
 	
 	}
 
-    public void OnContinueGame(int gameid)
+    public void OnContinueGame(string sessionid)
     {
         m_IsPVE = false;
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
         cs.MoveInFromRight();
-        m_CurrentGame = GameManager.Instance.GetGameIndexByID(gameid);        
+        m_CurrentGame = GameManager.Instance.GetGameIndexByID(sessionid); 
         cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
 
         GameInfo gi = GetCurrentGameInfo();
@@ -131,10 +131,11 @@ public class GameManager : MonoBehaviour {
             m_PlayerProfile = PlayerProfile.Load();
             AchievementList.Instance.Init();
             GameObject go = GameObject.Find("GameLoading");
-            m_GameList = GameList.Load();
+            //m_GameList = GameList.Load();
+            m_GameList = GameList.CreateEmptyGameList();
             go.GetComponent<LoadingScene>().SwitchToMainScene();
             
-            SimulateOtherPlayers();
+            //SimulateOtherPlayers();
             m_PlayerProfile.UpdateLives();
         }
         else
@@ -171,11 +172,21 @@ public class GameManager : MonoBehaviour {
         cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
         cs.MoveInFromRight();
         var ret = JSONNode.Parse(result);
-        GameInfo gi = GameManager.Instance.m_GameList.AddNewGame(ret["opponent"]);
-        cs.gameObject.GetComponent<UIPvP>().SetGameInfo(gi);
-        m_CurrentGame = GameManager.Instance.m_GameList.m_GameList.Count - 1;
-
-        //SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).MoveOutToRight();
+        if (ret["attributes"].ToString().Length < 15)
+        {
+            GameInfo gi = GameManager.Instance.m_GameList.AddNewGame(ret["gameSessionId"], ret["uid1"], ret["uid2"]);
+            m_CurrentGame = GameManager.Instance.m_GameList.m_GameList.Count - 1;
+            UpdateMyInfoOnCurrentGame();
+            cs.gameObject.GetComponent<UIPvP>().SetGameInfo(gi);            
+        }
+        else
+        {
+            GameInfo gi = GameManager.Instance.m_GameList.AddExistingGame(ret["attributes"].ToString(), true);
+            m_CurrentGame = GameManager.Instance.m_GameList.m_GameList.Count - 1;
+            UpdateMyInfoOnCurrentGame();
+            cs.gameObject.GetComponent<UIPvP>().SetGameInfo(gi);
+        }                
+        UpdateCurrentGameInfo();        
     }
 
     public void OnCategoryConfirmToPlayResult(string result)
@@ -524,7 +535,7 @@ public class GameManager : MonoBehaviour {
             CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECHALLENGE);
             cs.GetComponent<UISelectPieceChallenge>().IsAbilityChallenge = false;
             cs.MoveInFromRight();
-            cs.gameObject.GetComponent<UISelectPieceChallenge>().SetTrophyState(GetMyTrophy(), GetOpponentTrophy());            
+            cs.gameObject.GetComponent<UISelectPieceChallenge>().SetTrophyState(GetMyTrophyList(), GetOpponentTrophyList());            
         }
 
         else
@@ -592,10 +603,10 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public int GetGameIndexByID(int gameid) {
+    public int GetGameIndexByID(string sessionid) {
         for (int i = 0; i < m_GameList.m_GameList.Count; i++)
         {
-            if (m_GameList.m_GameList[i].m_GameID == gameid) {
+            if (m_GameList.m_GameList[i].m_SessionID == sessionid) {
                 return i;
             }
         }
@@ -604,22 +615,25 @@ public class GameManager : MonoBehaviour {
 
     public void SaveSessionList()
     {
-        m_GameList.Save();
+        //m_GameList.Save();
+        UpdateCurrentGameInfo();
     }
 
-    public List<int> GetMyTrophy()
-    {
-        return m_GameList.m_GameList[m_CurrentGame].m_PieceA;
-    }
+    //public List<int> GetMyTrophy()
+    //{
+    //    List<int> l = new List<int>;
+    //    for (int i = 0; i < 
+    //    return m_GameList.m_GameList[m_CurrentGame].m_PieceA;
+    //}
 
-    public List<int> GetOpponentTrophy()
-    {
-        return m_GameList.m_GameList[m_CurrentGame].m_PieceB;
-    }
+    //public List<int> GetOpponentTrophy()
+    //{
+    //    return m_GameList.m_GameList[m_CurrentGame].m_PieceB;
+    //}
 
     public void EndTurn()
     {
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
             m_GameList.m_GameList[m_CurrentGame].m_Round++;
         }
@@ -630,11 +644,13 @@ public class GameManager : MonoBehaviour {
         }
         Debug.Log("End turn");
         m_GameList.m_GameList[m_CurrentGame].m_CurrentTurn = 3 - m_GameList.m_GameList[m_CurrentGame].m_CurrentTurn;
-        m_GameList.Save();
+        
 
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).MoveOutToRight();
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME).MoveOutToRight();
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN).MoveInFromLeft();
+
+        SaveSessionList();
     }
 
     private void SimulateOtherPlayers()
@@ -683,7 +699,7 @@ public class GameManager : MonoBehaviour {
                     }
 
                     gi.m_LastAbility = (int)Ability.ABILITY_CLAIM;
-                    gi.m_PlayerUseAbility = gi.m_PlayerB;
+                    gi.m_PlayerUseAbility = gi.m_PlayerBID;
                     gi.m_TrophyRemoved = -1;
                     for (int k = 0; k < gi.m_PieceB.Count; k++)
                     {
@@ -698,7 +714,7 @@ public class GameManager : MonoBehaviour {
                 }
             }            
         }
-        m_GameList.Save();
+        
     }
 
     public bool CanChallenge()
@@ -755,7 +771,7 @@ public class GameManager : MonoBehaviour {
 #region SessionInfoManupilate
     public void SetMyBetTrophy(int trophy)
     {
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
             m_GameList.m_GameList[m_CurrentGame].m_BetTrophyA = trophy;
             
@@ -768,7 +784,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetOpponentBetTrophy(int trophy)
     {
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
             m_GameList.m_GameList[m_CurrentGame].m_BetTrophyB = trophy;
         }
@@ -780,7 +796,7 @@ public class GameManager : MonoBehaviour {
 
     public void AddMyChallengeScore()
     {
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
             m_GameList.m_GameList[m_CurrentGame].m_ChallengeScoreA++;
         } else 
@@ -791,7 +807,7 @@ public class GameManager : MonoBehaviour {
 
     public void AddProgress()
     {
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
             m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA++;
         }
@@ -804,7 +820,7 @@ public class GameManager : MonoBehaviour {
 
     public void FulfillProgress()
     {        
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
             m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA = 3;
         }
@@ -817,7 +833,7 @@ public class GameManager : MonoBehaviour {
 
     public void ClearProgress()
     {
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
             m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA = 0;
         }
@@ -830,7 +846,7 @@ public class GameManager : MonoBehaviour {
 
     public int GetMySpinProgress()
     {
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
             return m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA;
         }
@@ -851,48 +867,74 @@ public class GameManager : MonoBehaviour {
         return m_GameList.m_GameList[m_CurrentGame];
     }
 
-    public List<int> GetCurrentTrophyState()
-    {
-        //Debug.Log(m_GameList.m_GameList[m_CurrentGame].m_PlayerA + "  " + m_PlayerProfile.m_PlayerID);
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
-        {
-            return m_GameList.m_GameList[m_CurrentGame].m_PieceA;
-        }
-        else
-        {
-            return m_GameList.m_GameList[m_CurrentGame].m_PieceB;
-        }
-    }
+    //public List<int> GetCurrentTrophyState()
+    //{
+    //    //Debug.Log(m_GameList.m_GameList[m_CurrentGame].m_PlayerAID + "  " + m_PlayerProfile.m_PlayerID);
+    //    if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
+    //    {
+    //        return m_GameList.m_GameList[m_CurrentGame].m_PieceA;
+    //    }
+    //    else
+    //    {
+    //        return m_GameList.m_GameList[m_CurrentGame].m_PieceB;
+    //    }
+    //}
 
     public List<int> GetMyTrophyList()
-    {
-        //Debug.Log(m_GameList.m_GameList[m_CurrentGame].m_PlayerA + "  " + m_PlayerProfile.m_PlayerID);
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+    {        
+        List<int> l = new List<int>();
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
-            return m_GameList.m_GameList[m_CurrentGame].m_PieceA;
+            for (int i = 0; i < 6; i++)
+            {
+                l.Add(m_GameList.m_GameList[m_CurrentGame].m_PieceA[i]);
+            }            
         }
         else
         {
-            return m_GameList.m_GameList[m_CurrentGame].m_PieceB;
+            for (int i = 0; i < 6; i++)
+            {
+                l.Add(m_GameList.m_GameList[m_CurrentGame].m_PieceB[i]);
+            }
         }
+        return l;
     }
 
     public List<int> GetOpponentTrophyList()
     {
-        //Debug.Log(m_GameList.m_GameList[m_CurrentGame].m_PlayerA + "  " + m_PlayerProfile.m_PlayerID);
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        List<int> l = new List<int>();
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
-            return m_GameList.m_GameList[m_CurrentGame].m_PieceB;
+            for (int i = 0; i < 6; i++)
+            {
+                l.Add(m_GameList.m_GameList[m_CurrentGame].m_PieceB[i]);
+            }
         }
         else
         {
-            return m_GameList.m_GameList[m_CurrentGame].m_PieceA;
+            for (int i = 0; i < 6; i++)
+            {
+                l.Add(m_GameList.m_GameList[m_CurrentGame].m_PieceA[i]);
+            }
+        }
+        return l;
+    }
+
+    public string GetOpponentName()
+    {
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
+        {
+            return m_GameList.m_GameList[m_CurrentGame].m_PlayerBName;
+        }
+        else
+        {
+            return m_GameList.m_GameList[m_CurrentGame].m_PlayerAName;
         }
     }
 
     public void SetTrophyAcquired(int trophy)
     {
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
             m_GameList.m_GameList[m_CurrentGame].m_PieceA[trophy] = 1;            
         }
@@ -905,7 +947,7 @@ public class GameManager : MonoBehaviour {
     public int GetMyNumberOfTrophy()
     {
         int count = 0;
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
             for (int i = 0; i < m_GameList.m_GameList[m_CurrentGame].m_PieceA.Count; i++)
             {
@@ -933,13 +975,13 @@ public class GameManager : MonoBehaviour {
     {
         GameInfo gi = GetCurrentGameInfo();
         gi.m_PlayerUseAbility = m_PlayerProfile.m_PlayerID;
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
-            gi.m_PlayerAAbilityUsed++;
+            gi.m_PlayerAIDAbilityUsed++;
         }
         else
         {
-            gi.m_PlayerBAbilityUsed++;
+            gi.m_PlayerBIDAbilityUsed++;
         }
         SaveSessionList();
     }
@@ -991,11 +1033,11 @@ public class GameManager : MonoBehaviour {
     public Avatar GetMyAvatarInCurrentGame()
     {
         Avatar ava = Avatar.CreateDefaultAvatar();
-        ava.m_Tier = (TIER)GetCurrentGameInfo().m_PlayerATier;
-        ava.m_Jobs = (CLASS)GetCurrentGameInfo().m_PlayerAJobs;
+        ava.m_Tier = (TIER)GetCurrentGameInfo().m_PlayerAIDTier;
+        ava.m_Jobs = (CLASS)GetCurrentGameInfo().m_PlayerAIDJobs;
         for (int i = 0; i < 8; i++)
         {
-            ava.m_ItemList[i] = GetCurrentGameInfo().m_PlayerAItems[i];
+            ava.m_ItemList[i] = GetCurrentGameInfo().m_PlayerAIDItems[i];
         }
         return ava;
     }
@@ -1254,8 +1296,8 @@ public class GameManager : MonoBehaviour {
 
     public bool CanSwitch()
     {
-        List<int> myTrophy = GetMyTrophy();
-        List<int> theirTrophy = GetOpponentTrophy();
+        List<int> myTrophy = GetMyTrophyList();
+        List<int> theirTrophy = GetOpponentTrophyList();
         int my = -1;
         int their = -1;
         bool flag = false;
@@ -1272,9 +1314,9 @@ public class GameManager : MonoBehaviour {
 
     public bool CanRemove()
     {
-        for (int i = 0; i < GetOpponentTrophy().Count; i++)
+        for (int i = 0; i < GetOpponentTrophyList().Count; i++)
         {
-            if (GetOpponentTrophy()[i] == 1)
+            if (GetOpponentTrophyList()[i] == 1)
             {
                 return true;
             }
@@ -1429,12 +1471,12 @@ public class GameManager : MonoBehaviour {
     {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTPIECECHALLENGE);
         cs.GetComponent<UISelectPieceChallenge>().IsAbilityChallenge = true;
-        cs.gameObject.GetComponent<UISelectPieceChallenge>().SetTrophyState(GetMyTrophy(), GetOpponentTrophy());
+        cs.gameObject.GetComponent<UISelectPieceChallenge>().SetTrophyState(GetMyTrophyList(), GetOpponentTrophyList());
         cs.MoveInFromRight();
     }
 
     public int GetNumberOfAbilityCanUse() {
-        int tier = (int)GetCurrentGameInfo().m_PlayerATier;
+        int tier = (int)GetCurrentGameInfo().m_PlayerAIDTier;
         if (tier >= 9)
         {
             return 3;
@@ -1453,13 +1495,13 @@ public class GameManager : MonoBehaviour {
     public int GetAbilityLeft()
     {
         GameInfo gi = GetCurrentGameInfo();
-        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerA == m_PlayerProfile.m_PlayerID)
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
-            return GetNumberOfAbilityCanUse() - gi.m_PlayerAAbilityUsed;
+            return GetNumberOfAbilityCanUse() - gi.m_PlayerAIDAbilityUsed;
         }
         else
         {
-            return GetNumberOfAbilityCanUse() - gi.m_PlayerBAbilityUsed;
+            return GetNumberOfAbilityCanUse() - gi.m_PlayerBIDAbilityUsed;
         }
     }
 
@@ -1596,12 +1638,50 @@ public class GameManager : MonoBehaviour {
 
     public void OnUpdateSessionInfoResult(string result)
     {
-        //Debug.Log(result);
+        Debug.Log(result);
     }
 
     public void OnGetAllSessionInfoResult(string result)
-    {
-        Debug.Log(result);
+    {        
+        var ret = JSONNode.Parse(result);
+        for (int i = 0; i < ret["game_sessions"].Count; i++)
+        {            
+            if (ret["game_sessions"][i]["attributes"].ToString().Length > 15) {                
+                GameManager.Instance.m_GameList.AddExistingGame(ret["game_sessions"][i]["attributes"].ToString());            
+            }
+        }
+        UpdateCurrentGameInfo();
     }
-    
+
+    public void UpdateCurrentGameInfo()
+    {
+        string s = GetCurrentGameInfo().ToJsonString();
+        s = s.Replace("[", "\"[");
+        s = s.Replace("]", "]\"");
+        
+        NetworkManager.Instance.DoUpdateSessionInfo(GetCurrentGameInfo().m_SessionID, s);
+    }
+
+    public void UpdateMyInfoOnCurrentGame()
+    {
+        GameInfo gi = GetCurrentGameInfo();
+        Debug.Log(GetPlayerProfile().m_PlayerID + " " + gi.m_PlayerAID + " " + gi.m_PlayerBID);
+        if (GetPlayerProfile().m_PlayerID == gi.m_PlayerAID)
+        {
+            Debug.Log("Im player A");
+            gi.m_PlayerAIDSex = GetPlayerProfile().m_Sex;
+            gi.m_PlayerAIDTier = (int)GetPlayerProfile().GetActiveAvatar().m_Tier;
+            gi.m_PlayerAIDJobs = (int)GetPlayerProfile().GetActiveAvatar().m_Jobs;
+            gi.m_PlayerAName = GetPlayerProfile().m_PlayerName;
+        }
+        else if (GetPlayerProfile().m_PlayerID == gi.m_PlayerBID)
+        {
+            Debug.Log("Im player B");
+            gi.m_PlayerBIDSex = GetPlayerProfile().m_Sex;
+            gi.m_PlayerBIDTier = (int)GetPlayerProfile().GetActiveAvatar().m_Tier;
+            gi.m_PlayerBIDJobs = (int)GetPlayerProfile().GetActiveAvatar().m_Jobs;
+            gi.m_PlayerBName = GetPlayerProfile().m_PlayerName;
+        }
+    }
 }
+

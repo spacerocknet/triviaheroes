@@ -86,6 +86,7 @@ public class UIPvP : MonoBehaviour {
 
     public void Spin()
     {
+        Debug.Log(GameManager.Instance.GetCurrentGameInfo().ToJsonString());
         //Debug.Log("SPINNNNN CALL");
         if (GetComponent<CanvasScript>().IsActive())
         {
@@ -122,9 +123,9 @@ public class UIPvP : MonoBehaviour {
         m_AvatarMe.GetComponent<AvatarScript>().SetInfo(GameManager.Instance.GetMyAvatarInCurrentGame());  
         m_RoundText.text = "Round " + game.m_Round.ToString();
         m_MyAvatarName.text = GameManager.Instance.GetPlayerProfile().m_PlayerName;
-        m_OpponentAvatarName.text = game.m_PlayerB;
-        m_TrophyGroup1.SetTrophyState(game.m_PieceA);
-        m_TrophyGroup2.SetTrophyState(game.m_PieceB);
+        m_OpponentAvatarName.text = GameManager.Instance.GetOpponentName();
+        m_TrophyGroup1.SetTrophyState(GameManager.Instance.GetMyTrophyList());
+        m_TrophyGroup2.SetTrophyState(GameManager.Instance.GetOpponentTrophyList());
         UpdateProgress(game.m_SpinProgressA);
         if (game.m_CurrentTurn == 1)
         {
@@ -136,8 +137,7 @@ public class UIPvP : MonoBehaviour {
                 CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
                 cs.GetComponent<UIPopup>().Show(s, 0, null, null, (int)CanvasID.CANVAS_PVP);                                       
                 
-                game.m_ChallengeState++;
-                GameManager.Instance.m_GameList.Save();
+                game.m_ChallengeState++;                
             }
         }
         else

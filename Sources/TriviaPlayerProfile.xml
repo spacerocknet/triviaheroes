@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <m_PlayerID>5a64da355cd7547efb10b8157ca65c5184309b0b:</m_PlayerID>
-  <m_PlayerName>TEst</m_PlayerName>
+  <m_PlayerID>5a64da355cd7547efb10b8157ca65c5184309b0b10:</m_PlayerID>
+  <m_PlayerName>AA10</m_PlayerName>
   <m_Level>0</m_Level>
   <m_TotalEXP>0</m_TotalEXP>
   <m_Lives>5</m_Lives>
@@ -10,7 +10,7 @@
   <m_Sex>1</m_Sex>
   <m_CurrentTier>Young_Adult</m_CurrentTier>
   <m_CurrentClass>None</m_CurrentClass>
-  <m_LastTimeAddLive>2015-07-03T18:59:55.8765359+07:00</m_LastTimeAddLive>
+  <m_LastTimeAddLive>2015-07-06T16:00:26.7116595+07:00</m_LastTimeAddLive>
   <m_FriendList>
     <m_FriendList>
       <string>Mage</string>
@@ -24,205 +24,27 @@
       <string>Priest</string>
     </m_FriendList>
   </m_FriendList>
-  <m_ItemCat>
-    <int>0</int>
-    <int>0</int>
-    <int>0</int>
-    <int>0</int>
-    <int>0</int>
-    <int>0</int>
-    <int>0</int>
-    <int>1</int>
-    <int>1</int>
-    <int>1</int>
-    <int>1</int>
-    <int>1</int>
-    <int>2</int>
-    <int>2</int>
-    <int>2</int>
-    <int>2</int>
-    <int>2</int>
-    <int>2</int>
-    <int>2</int>
-    <int>3</int>
-    <int>3</int>
-    <int>3</int>
-    <int>3</int>
-    <int>3</int>
-    <int>3</int>
-    <int>4</int>
-    <int>4</int>
-    <int>4</int>
-    <int>4</int>
-    <int>4</int>
-    <int>5</int>
-    <int>5</int>
-    <int>0</int>
-    <int>0</int>
-    <int>1</int>
-    <int>1</int>
-    <int>1</int>
-    <int>1</int>
-    <int>1</int>
-    <int>0</int>
-    <int>2</int>
-    <int>2</int>
-    <int>2</int>
-    <int>3</int>
-    <int>3</int>
-    <int>3</int>
-    <int>3</int>
-    <int>4</int>
-    <int>4</int>
-    <int>4</int>
-    <int>4</int>
-    <int>4</int>
-    <int>5</int>
-    <int>5</int>
-    <int>5</int>
-    <int>5</int>
-    <int>5</int>
-    <int>5</int>
-    <int>5</int>
-    <int>5</int>
-    <int>6</int>
-    <int>6</int>
-    <int>7</int>
-    <int>7</int>
-    <int>7</int>
-    <int>6</int>
-    <int>6</int>
-    <int>7</int>
-    <int>6</int>
-    <int>6</int>
-    <int>6</int>
-    <int>6</int>
-    <int>6</int>
-    <int>6</int>
-    <int>7</int>
-    <int>7</int>
-    <int>7</int>
-    <int>7</int>
-    <int>7</int>
-    <int>7</int>
-  </m_ItemCat>
-  <m_ItemID>
-    <int>3</int>
-    <int>4</int>
-    <int>2</int>
-    <int>1</int>
-    <int>5</int>
-    <int>6</int>
-    <int>7</int>
-    <int>1</int>
-    <int>2</int>
-    <int>3</int>
-    <int>5</int>
-    <int>4</int>
-    <int>1</int>
-    <int>2</int>
-    <int>3</int>
-    <int>4</int>
-    <int>5</int>
-    <int>7</int>
-    <int>6</int>
-    <int>1</int>
-    <int>2</int>
-    <int>4</int>
-    <int>3</int>
-    <int>5</int>
-    <int>6</int>
-    <int>2</int>
-    <int>1</int>
-    <int>3</int>
-    <int>4</int>
-    <int>5</int>
-    <int>4</int>
-    <int>3</int>
-    <int>8</int>
-    <int>9</int>
-    <int>7</int>
-    <int>8</int>
-    <int>9</int>
-    <int>10</int>
-    <int>6</int>
-    <int>10</int>
-    <int>9</int>
-    <int>10</int>
-    <int>8</int>
-    <int>9</int>
-    <int>10</int>
-    <int>8</int>
-    <int>7</int>
-    <int>10</int>
-    <int>9</int>
-    <int>8</int>
-    <int>7</int>
-    <int>6</int>
-    <int>2</int>
-    <int>1</int>
-    <int>6</int>
-    <int>7</int>
-    <int>5</int>
-    <int>8</int>
-    <int>9</int>
-    <int>10</int>
-    <int>1</int>
-    <int>2</int>
-    <int>1</int>
-    <int>2</int>
-    <int>3</int>
-    <int>3</int>
-    <int>4</int>
-    <int>4</int>
-    <int>5</int>
-    <int>6</int>
-    <int>7</int>
-    <int>8</int>
-    <int>10</int>
-    <int>9</int>
-    <int>5</int>
-    <int>6</int>
-    <int>7</int>
-    <int>8</int>
-    <int>9</int>
-    <int>10</int>
-  </m_ItemID>
+  <m_ItemCat />
+  <m_ItemID />
   <Avatar>
     <Avatar>
       <m_ItemList>
         <int>0</int>
         <int>0</int>
-        <int>10</int>
-        <int>10</int>
-        <int>8</int>
-        <int>10</int>
-        <int>10</int>
-        <int>10</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
       </m_ItemList>
       <m_Sex>1</m_Sex>
       <m_ID>0</m_ID>
-      <m_Tier>Elder</m_Tier>
-      <m_Jobs>Scientist</m_Jobs>
-    </Avatar>
-    <Avatar>
-      <m_ItemList>
-        <int>2</int>
-        <int>10</int>
-        <int>0</int>
-        <int>10</int>
-        <int>0</int>
-        <int>8</int>
-        <int>4</int>
-        <int>0</int>
-      </m_ItemList>
-      <m_Sex>1</m_Sex>
-      <m_ID>1</m_ID>
-      <m_Tier>Teenager</m_Tier>
+      <m_Tier>Toddler</m_Tier>
       <m_Jobs>None</m_Jobs>
     </Avatar>
   </Avatar>
-  <m_ActiveAvatar>1</m_ActiveAvatar>
+  <m_ActiveAvatar>0</m_ActiveAvatar>
   <m_CurrentPVEStage>0</m_CurrentPVEStage>
   <m_PVEBoostUsed>
     <boolean>false</boolean>
@@ -247,19 +69,19 @@
     <int>0</int>
     <int>0</int>
     <int>0</int>
-    <int>5</int>
+    <int>0</int>
+    <int>0</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
     <int>1</int>
-    <int>4</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
-    <int>4</int>
+    <int>0</int>
     <int>1</int>
     <int>0</int>
     <int>0</int>
@@ -293,14 +115,14 @@
     <int>0</int>
     <int>0</int>
   </m_AchievementBonusReceived>
-  <m_PayOutBonus>8</m_PayOutBonus>
+  <m_PayOutBonus>1</m_PayOutBonus>
   <m_ElderMatch>0</m_ElderMatch>
   <m_FirstTimeExperience>
     <boolean>true</boolean>
     <boolean>true</boolean>
-    <boolean>true</boolean>
-    <boolean>true</boolean>
-    <boolean>true</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
+    <boolean>false</boolean>
     <boolean>false</boolean>
   </m_FirstTimeExperience>
 </PlayerProfile>

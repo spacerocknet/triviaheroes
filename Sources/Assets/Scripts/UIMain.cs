@@ -38,8 +38,7 @@ public class UIMain : MonoBehaviour {
         RefreshInfo();
         Refresh();
 
-        NetworkManager.Instance.DoGetAllSessionInfo();
-        NetworkManager.Instance.DoUpdateSessionInfo("gamesession_abc104_1435650893641");
+        NetworkManager.Instance.DoGetAllSessionInfo();        
 	}
 	
 	// Update is called once per frame
@@ -149,8 +148,18 @@ public class UIMain : MonoBehaviour {
         int num = 0;
         GameList gl = GameManager.Instance.m_GameList;
         //Debug.Log("reload");
+        if (gl == null)
+        {
+            Debug.Log("gl null");
+        }
+        if (gl.m_GameList == null)
+        {
+            Debug.Log("gl gamelist null");
+        }
+        Debug.Log(gl.m_GameList.Count);
         for (int i = 0; i < gl.m_GameList.Count; i++)
         {
+            Debug.Log(gl.m_GameList[i].ToJsonString());
             if (gl.m_GameList[i].m_CurrentTurn == 2 && !gl.m_GameList[i].m_IsCompleted)
             {
                 

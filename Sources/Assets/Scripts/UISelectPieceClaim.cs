@@ -51,7 +51,7 @@ public class UISelectPieceClaim : MonoBehaviour {
     public void UpdateTrophyState()
     {
         bool flag = false;
-        List<int> trophy = GameManager.Instance.GetCurrentTrophyState();
+        List<int> trophy = GameManager.Instance.GetMyTrophyList();
         for (int i = 0; i < 6; i++)
         {
             if (trophy[i] == 0)
