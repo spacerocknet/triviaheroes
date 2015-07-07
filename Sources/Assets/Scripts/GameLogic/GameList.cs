@@ -192,6 +192,55 @@ public class GameInfo
         }
         return l;
     }
+
+    public bool IsMyTurn(string uid)
+    {
+        if (uid == m_PlayerAID)
+        {
+            return m_CurrentTurn == 1;
+        }
+        if (uid == m_PlayerBID)
+        {
+            return m_CurrentTurn == 2;
+        }
+        return false;
+    }
+
+    public string GetOpponentName(string uid)
+    {
+        if (uid == m_PlayerAID)
+        {
+            return m_PlayerBName;
+        }
+        if (uid == m_PlayerBID)
+        {
+            return m_PlayerAName;
+        }
+        return "";
+    }
+
+    public Avatar GetOpponentAvatar(string uid) {
+        Avatar ava = Avatar.CreateDefaultAvatar();
+        if (uid == m_PlayerAID)
+        {
+            ava.m_Tier = (TIER)m_PlayerBIDTier;
+            ava.m_Jobs = (CLASS)m_PlayerBIDJobs;
+            for (int i = 0; i < 8; i++)
+            {
+                ava.m_ItemList[i] = m_PlayerBIDItems[i];
+            }
+        }
+        if (uid == m_PlayerBID)
+        {
+            ava.m_Tier = (TIER)m_PlayerAIDTier;
+            ava.m_Jobs = (CLASS)m_PlayerAIDJobs;
+            for (int i = 0; i < 8; i++)
+            {
+                ava.m_ItemList[i] = m_PlayerAIDItems[i];
+            }
+        }
+        return ava;
+    }
 }
 
 [XmlRoot("GameList")]
@@ -247,8 +296,20 @@ public class GameList
     public GameInfo AddExistingGame(string sessioninfo, bool join = false)
     {
         GameInfo gi = GameInfo.FromJsonString(sessioninfo, join);
-        
-        m_GameList.Add(gi);
+        bool found = false;
+        for (int i = 0; i < m_GameList.Count; i++)
+        {
+            if (m_GameList[i].m_SessionID == gi.m_SessionID && (gi.m_SessionID != GameManager.Instance.GetCurrentGameID() || !gi.IsMyTurn(GameManager.Instance.GetPlayerID())))
+            {
+                m_GameList[i] = gi;
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+        {
+            m_GameList.Add(gi);
+        }
         return gi;
     }
 

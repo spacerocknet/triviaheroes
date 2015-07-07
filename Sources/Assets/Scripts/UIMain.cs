@@ -30,15 +30,11 @@ public class UIMain : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-       
         m_GameInfoList = new List<GameObject>();
-        
         m_CurrentTab = 1;
-  
         RefreshInfo();
         Refresh();
-
-        NetworkManager.Instance.DoGetAllSessionInfo();        
+        GameManager.Instance.StartUpdateSessionThread();                
 	}
 	
 	// Update is called once per frame
@@ -127,7 +123,7 @@ public class UIMain : MonoBehaviour {
         GameList gl = GameManager.Instance.m_GameList;
         for (int i = 0; i < gl.m_GameList.Count; i++)
         {
-            if (gl.m_GameList[i].m_CurrentTurn == 1 && !gl.m_GameList[i].m_IsCompleted)
+            if (gl.m_GameList[i].IsMyTurn(GameManager.Instance.GetPlayerID()) && !gl.m_GameList[i].m_IsCompleted)
             {
                 GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
                 go.transform.SetParent(m_MainPanel.gameObject.transform);
@@ -160,7 +156,7 @@ public class UIMain : MonoBehaviour {
         for (int i = 0; i < gl.m_GameList.Count; i++)
         {
             Debug.Log(gl.m_GameList[i].ToJsonString());
-            if (gl.m_GameList[i].m_CurrentTurn == 2 && !gl.m_GameList[i].m_IsCompleted)
+            if (!gl.m_GameList[i].IsMyTurn(GameManager.Instance.GetPlayerID()) && !gl.m_GameList[i].m_IsCompleted)
             {
                 
                 GameObject go = (GameObject)GameObject.Instantiate(m_GameInfoPrefab);
@@ -217,7 +213,7 @@ public class UIMain : MonoBehaviour {
         }
 
         PlayerProfile pl = GameManager.Instance.GetPlayerProfile();        
-        m_Avatar.SetInfo(GameManager.Instance.GetMyActiveAvatar());
+        m_Avatar.SetInfo(GameManager.Instance.GetMyActiveAvatar(), true);
 
         RefreshInfo();
     }
@@ -255,6 +251,16 @@ public class UIMain : MonoBehaviour {
     public void ShowAlertImage(bool value)
     {
         m_AlertImage.gameObject.SetActive(value);
+    }
+
+    IEnumerator UpdateSessionList()
+    {
+        while (true)
+        {
+            //NetworkManager.Instance.DoGetAllSessionInfo();
+            Debug.Log("AA");
+            yield return null;
+        }
     }
 }
 

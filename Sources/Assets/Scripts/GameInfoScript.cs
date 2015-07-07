@@ -16,6 +16,8 @@ public class GameInfoScript : MonoBehaviour {
     public RectTransform m_LeftPos;
     public RectTransform m_RightPos;
 
+    public AvatarScript m_AvatarScript;
+
 	// Use this for initialization
 	void Start () {
         m_GameManager = GameObject.Find("GameManager");
@@ -35,7 +37,7 @@ public class GameInfoScript : MonoBehaviour {
 
     public void SetGameInfo(GameInfo gi)
     {
-        m_NameText.text = gi.m_PlayerBID;
+        m_NameText.text = gi.GetOpponentName(GameManager.Instance.GetPlayerID());
         m_RoundText.text = "Round: " + gi.m_Round.ToString();
         int sa = gi.GetScoreA();
         int sb = gi.GetScoreB();
@@ -53,6 +55,8 @@ public class GameInfoScript : MonoBehaviour {
         m_ScoreBText.text = gi.GetScoreB().ToString();
         m_ScoreImage.rectTransform.anchoredPosition = m_LeftPos.anchoredPosition + (m_RightPos.anchoredPosition - m_LeftPos.anchoredPosition) * percent;
         m_SessionID = gi.m_SessionID;
+
+        m_AvatarScript.SetInfo(gi.GetOpponentAvatar(GameManager.Instance.GetPlayerID()), false);
     }
 
     

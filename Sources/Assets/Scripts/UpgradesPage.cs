@@ -25,6 +25,8 @@ public class UpgradesPage : MonoBehaviour {
 
     public Image m_CoinImage;
 
+
+
     private int m_ClassID;
     private int m_Tier;
 
@@ -181,7 +183,7 @@ public class UpgradesPage : MonoBehaviour {
             ava.m_Tier = (TIER)(tier + 1);
             ava.m_Jobs = (CLASS)(m_ClassID + 1);
             ava.m_Sex = GameManager.Instance.GetPlayerProfile().m_Sex;
-            m_AvatarScript.SetInfo(ava);
+            m_AvatarScript.SetInfo(ava, true);
         }
 
         m_Tier = tier;

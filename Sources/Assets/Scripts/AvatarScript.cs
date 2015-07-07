@@ -16,6 +16,11 @@ public class AvatarScript : MonoBehaviour {
     public Image[] m_ImageList;
     public Image m_QuestionImage;
 
+    public Image m_BackgroundImage;
+    public Sprite[] m_BackgroundSprite;
+
+    public Text m_NameText;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -26,7 +31,7 @@ public class AvatarScript : MonoBehaviour {
 	
 	}
 
-    public void SetInfo(Avatar avatar)
+    public void SetInfo(Avatar avatar, bool isMe)
     {
         for (int i = 0; i < m_ImageList.GetLength(0); i++)
         {
@@ -223,7 +228,16 @@ public class AvatarScript : MonoBehaviour {
         else
         {
             m_ImageList[m_ImageList.GetLength(0) - 1].gameObject.SetActive(true);
-        }        
+        }
+
+        if (isMe)
+        {
+            m_BackgroundImage.sprite = m_BackgroundSprite[0];
+        }
+        else
+        {
+            m_BackgroundImage.sprite = m_BackgroundSprite[1];
+        }
     }
 
     public void SetIsUnkonw()
@@ -233,5 +247,10 @@ public class AvatarScript : MonoBehaviour {
             m_ImageList[i].gameObject.SetActive(false);
         }
         m_QuestionImage.gameObject.SetActive(true);
+    }
+
+    public void ShowName(bool show)
+    {
+        m_NameText.gameObject.SetActive(false);
     }
 }

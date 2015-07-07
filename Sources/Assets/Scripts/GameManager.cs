@@ -64,9 +64,22 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        LoadPlayerProfile();
-        
+        LoadPlayerProfile();        
 	}
+
+    public void StartUpdateSessionThread()
+    {
+        StartCoroutine(UpdateSessionList());
+    }
+
+    IEnumerator UpdateSessionList()
+    {
+        while (true)
+        {
+            NetworkManager.Instance.DoGetAllSessionInfo();            
+            yield return new WaitForSeconds(5);
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -99,6 +112,17 @@ public class GameManager : MonoBehaviour {
             }
         }
         SaveSessionList();
+
+        if (gi.m_TurnType == 2 && gi.m_Challenger == GetOpponentID())
+        {
+            cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+            cs.GetComponent<UIPopup>().Show("You opponent challenged you!", 0, OnChallengeAccept, null, (int)CanvasID.CANVAS_PVP); 
+        }
+    }
+
+    public void OnChallengeAccept()
+    {
+
     }
 
     public void OnMultiPlayer()
@@ -462,7 +486,7 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
-            EndTurn();
+            EndTurn(false);
             CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
             cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
         }
@@ -479,7 +503,7 @@ public class GameManager : MonoBehaviour {
         else
         {
             ClearProgress();
-            EndTurn();
+            EndTurn(false);
             CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
             cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
         }
@@ -498,7 +522,7 @@ public class GameManager : MonoBehaviour {
 
             if (m_PVPState.m_CurrentQuestion == 5)
             {
-                EndTurn();
+                EndTurn(true);
             }
             else
             {
@@ -631,8 +655,21 @@ public class GameManager : MonoBehaviour {
     //    return m_GameList.m_GameList[m_CurrentGame].m_PieceB;
     //}
 
-    public void EndTurn()
+    public void EndTurn(bool isChallenge)
     {
+        if (isChallenge)
+        {
+            if (GetCurrentGameInfo().m_TurnType == 1)
+            {
+                GetCurrentGameInfo().m_TurnType = 2;
+            }
+            else
+            {
+                GetCurrentGameInfo().m_TurnType = 1;
+            }
+        } else {
+            GetCurrentGameInfo().m_TurnType = 1;
+        }        
         if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
             m_GameList.m_GameList[m_CurrentGame].m_Round++;
@@ -932,6 +969,18 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public string GetOpponentID()
+    {
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
+        {
+            return m_GameList.m_GameList[m_CurrentGame].m_PlayerBID;
+        }
+        else
+        {
+            return m_GameList.m_GameList[m_CurrentGame].m_PlayerAID;
+        }
+    }
+
     public void SetTrophyAcquired(int trophy)
     {
         if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
@@ -1033,11 +1082,47 @@ public class GameManager : MonoBehaviour {
     public Avatar GetMyAvatarInCurrentGame()
     {
         Avatar ava = Avatar.CreateDefaultAvatar();
-        ava.m_Tier = (TIER)GetCurrentGameInfo().m_PlayerAIDTier;
-        ava.m_Jobs = (CLASS)GetCurrentGameInfo().m_PlayerAIDJobs;
-        for (int i = 0; i < 8; i++)
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
-            ava.m_ItemList[i] = GetCurrentGameInfo().m_PlayerAIDItems[i];
+            ava.m_Tier = (TIER)GetCurrentGameInfo().m_PlayerAIDTier;
+            ava.m_Jobs = (CLASS)GetCurrentGameInfo().m_PlayerAIDJobs;
+            for (int i = 0; i < 8; i++)
+            {
+                ava.m_ItemList[i] = GetCurrentGameInfo().m_PlayerAIDItems[i];
+            }
+        }
+        else
+        {
+            ava.m_Tier = (TIER)GetCurrentGameInfo().m_PlayerBIDTier;
+            ava.m_Jobs = (CLASS)GetCurrentGameInfo().m_PlayerBIDJobs;
+            for (int i = 0; i < 8; i++)
+            {
+                ava.m_ItemList[i] = GetCurrentGameInfo().m_PlayerBIDItems[i];
+            }
+        }
+        return ava;
+    }
+
+    public Avatar GetOpponentAvatarInCurrentGame()
+    {
+        Avatar ava = Avatar.CreateDefaultAvatar();
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
+        {
+            ava.m_Tier = (TIER)GetCurrentGameInfo().m_PlayerBIDTier;
+            ava.m_Jobs = (CLASS)GetCurrentGameInfo().m_PlayerBIDJobs;
+            for (int i = 0; i < 8; i++)
+            {
+                ava.m_ItemList[i] = GetCurrentGameInfo().m_PlayerBIDItems[i];
+            }
+        }
+        else
+        {
+            ava.m_Tier = (TIER)GetCurrentGameInfo().m_PlayerAIDTier;
+            ava.m_Jobs = (CLASS)GetCurrentGameInfo().m_PlayerAIDJobs;
+            for (int i = 0; i < 8; i++)
+            {
+                ava.m_ItemList[i] = GetCurrentGameInfo().m_PlayerAIDItems[i];
+            }
         }
         return ava;
     }
@@ -1646,11 +1731,13 @@ public class GameManager : MonoBehaviour {
         var ret = JSONNode.Parse(result);
         for (int i = 0; i < ret["game_sessions"].Count; i++)
         {            
-            if (ret["game_sessions"][i]["attributes"].ToString().Length > 15) {                
+            if (ret["game_sessions"][i]["attributes"].ToString().Length > 15) {
+                Debug.Log("RECEIVED SESSION INFO");
                 GameManager.Instance.m_GameList.AddExistingGame(ret["game_sessions"][i]["attributes"].ToString());            
             }
         }
-        UpdateCurrentGameInfo();
+        //UpdateCurrentGameInfo();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN).GetComponent<UIMain>().Refresh();
     }
 
     public void UpdateCurrentGameInfo()
@@ -1681,6 +1768,23 @@ public class GameManager : MonoBehaviour {
             gi.m_PlayerBIDTier = (int)GetPlayerProfile().GetActiveAvatar().m_Tier;
             gi.m_PlayerBIDJobs = (int)GetPlayerProfile().GetActiveAvatar().m_Jobs;
             gi.m_PlayerBName = GetPlayerProfile().m_PlayerName;
+        }
+    }
+
+    public string GetPlayerID()
+    {
+        return GetPlayerProfile().m_PlayerID;
+    }
+
+    public string GetCurrentGameID()
+    {
+        if (0 < m_CurrentGame && m_CurrentGame < m_GameList.m_GameList.Count)
+        {
+            return GetCurrentGameInfo().m_SessionID;
+        }
+        else
+        {
+            return null;
         }
     }
 }

@@ -71,7 +71,7 @@ public class UIProfile : MonoBehaviour {
     public void RefreshAvatar()
     {
         PlayerProfile pl = GameManager.Instance.GetPlayerProfile();        
-        m_Avatar.SetInfo(GameManager.Instance.GetMyActiveAvatar());
+        m_Avatar.SetInfo(GameManager.Instance.GetMyActiveAvatar(), true);
 
         m_IndexText.text = (pl.m_ActiveAvatar + 1).ToString() + "/" + (pl.m_AvatarList.Count).ToString(); 
     }

@@ -100,8 +100,9 @@ public class UIQuestion : MonoBehaviour {
 
     public void SetQuestion(Question question)
     {
+        
         m_QuestionText.text = question.m_Question;
-        m_Answer0.text = question.m_Answer0;
+        m_Answer0.text = question.m_Answer0 + ". " + question.m_CorrectAnswer;
         m_Answer1.text = question.m_Answer1;
         m_Answer2.text = question.m_Answer2;
         m_Answer3.text = question.m_Answer3;

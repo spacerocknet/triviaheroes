@@ -45,6 +45,8 @@ public class UIPvP : MonoBehaviour {
         m_CategoryMap[4] = Category.CAT_SPORT;
         m_CategoryMap[5] = Category.CAT_HISTORY;
         m_CategoryMap[6] = Category.CAT_SCIENCE;
+
+        
 	}
 	
 	// Update is called once per frame
@@ -120,14 +122,16 @@ public class UIPvP : MonoBehaviour {
 
     public void SetGameInfo(GameInfo game)
     {
-        m_AvatarMe.GetComponent<AvatarScript>().SetInfo(GameManager.Instance.GetMyAvatarInCurrentGame());  
+        m_AvatarMe.GetComponent<AvatarScript>().SetInfo(GameManager.Instance.GetMyAvatarInCurrentGame(), true);
+        m_AvatarOpponent.GetComponent<AvatarScript>().SetInfo(GameManager.Instance.GetOpponentAvatarInCurrentGame(), false);
+
         m_RoundText.text = "Round " + game.m_Round.ToString();
         m_MyAvatarName.text = GameManager.Instance.GetPlayerProfile().m_PlayerName;
         m_OpponentAvatarName.text = GameManager.Instance.GetOpponentName();
         m_TrophyGroup1.SetTrophyState(GameManager.Instance.GetMyTrophyList());
         m_TrophyGroup2.SetTrophyState(GameManager.Instance.GetOpponentTrophyList());
         UpdateProgress(game.m_SpinProgressA);
-        if (game.m_CurrentTurn == 1)
+        if (game.IsMyTurn(GameManager.Instance.GetPlayerID()))
         {
             //Myturn
             m_SpinButton.interactable = true;
