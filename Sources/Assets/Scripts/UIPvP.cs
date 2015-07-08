@@ -173,7 +173,7 @@ public class UIPvP : MonoBehaviour {
 
     public void UpdateProgress(int prog)
     {
-        //Debug.Log(prog);
+        Debug.Log(prog);
         m_PivotImage.sprite = m_PivotSprite[prog];
 
         if (prog == 3)

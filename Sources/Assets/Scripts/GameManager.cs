@@ -110,19 +110,27 @@ public class GameManager : MonoBehaviour {
                 css.GetComponent<UIPopup>().Show(gi.m_PlayerUseAbility + " used " + TextManager.Instance.GetAbilityName((Ability)gi.m_LastAbility) + " ability. Undo it?", 1, uipvp.OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
                 gi.m_AbilityShowed = true;
             }
-        }
-        SaveSessionList();
+        }        
 
         if (gi.m_TurnType == 2 && gi.m_Challenger == GetOpponentID())
         {
             cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
             cs.GetComponent<UIPopup>().Show("You opponent challenged you!", 0, OnChallengeAccept, null, (int)CanvasID.CANVAS_PVP); 
         }
+
+        if (gi.m_TurnType == 1 && gi.m_Challenger == GetPlayerProfile().m_PlayerID && gi.m_ChallengeState == 2)
+        {
+            gi.m_ChallengeState = 0;
+            gi.m_Challenger = "-1";
+            UpdateChallengeResult(false);
+        }
     }
 
     public void OnChallengeAccept()
     {
-
+        GameInfo gi = GetCurrentGameInfo();
+        SetPVPState(PVPStateType.CHALLENGE, (Category)gi.m_BetTrophyA, (Category)gi.m_BetTrophyB);
+        NetworkManager.Instance.DoTrophyChallengeAccepted();
     }
 
     public void OnMultiPlayer()
@@ -210,7 +218,8 @@ public class GameManager : MonoBehaviour {
             UpdateMyInfoOnCurrentGame();
             cs.gameObject.GetComponent<UIPvP>().SetGameInfo(gi);
         }                
-        UpdateCurrentGameInfo();        
+        UpdateCurrentGameInfo();
+        SaveSessionList();
     }
 
     public void OnCategoryConfirmToPlayResult(string result)
@@ -511,35 +520,121 @@ public class GameManager : MonoBehaviour {
 
     void HandleChallengeAnswerEnded()
     {
-
+        GameInfo gi = GetCurrentGameInfo();
+        if (gi.m_ChallengeState == 0)
+        {
             SetChallengeQuestion(m_PVPState.m_CurrentQuestion, m_CurrentQuestion.m_QID, m_LastAnswerChoice);
+        }
 
-
-            if (m_IsLastAnswerCorrect)
+        if (m_IsLastAnswerCorrect)
+        {
+            AddMyChallengeScore();
+        }
+        if (m_PVPState.m_CurrentQuestion == 5)
+        {
+            if (gi.m_ChallengeState == 1)
             {
-                AddMyChallengeScore();
-            }
+                UpdateChallengeResult(true);
+            }            
+            EndTurn(true);
+        }
+        else
+        {
+            NetworkManager.Instance.DoTrophyChallangeNextQuestion();
+        }
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
+        cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());        
+    }
 
-            if (m_PVPState.m_CurrentQuestion == 5)
+    public int GetMyChallengeScore()
+    {
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
+        {
+            return m_GameList.m_GameList[m_CurrentGame].m_ChallengeScoreA;
+        }
+        else
+        {
+            return m_GameList.m_GameList[m_CurrentGame].m_ChallengeScoreB;
+        }
+    }
+
+    public int GetOpponentChallengeScore()
+    {
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
+        {
+            return m_GameList.m_GameList[m_CurrentGame].m_ChallengeScoreB;
+        }
+        else
+        {
+            return m_GameList.m_GameList[m_CurrentGame].m_ChallengeScoreA;
+        }
+    }
+
+    public void UpdateTrophyAfterChallenge(bool isWin)
+    {
+        GameInfo gi = GetCurrentGameInfo();
+        if (gi.m_PlayerAID == m_PlayerProfile.m_PlayerID)
+        {
+            if (isWin)
             {
-                EndTurn(true);
+                gi.m_PieceA[gi.m_BetTrophyB] = 1;
+                gi.m_PieceB[gi.m_BetTrophyB] = 0;
             }
             else
             {
-                NetworkManager.Instance.DoTrophyChallangeNextQuestion();
+                gi.m_PieceA[gi.m_BetTrophyA] = 0;
+                gi.m_PieceB[gi.m_BetTrophyA] = 1;
             }
+        }
+        else
+        {
+            if (isWin)
+            {
+                gi.m_PieceA[gi.m_BetTrophyA] = 0;
+                gi.m_PieceB[gi.m_BetTrophyA] = 1;
+            }
+            else
+            {
+                gi.m_PieceA[gi.m_BetTrophyB] = 1;
+                gi.m_PieceB[gi.m_BetTrophyB] = 0;
+            }
+        }
+    }
 
-            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
-            cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
-        
+    public void UpdateChallengeResult(bool updateTrophy)
+    {
+        if (GetMyChallengeScore() > GetOpponentChallengeScore())
+        {
+            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+            cs.GetComponent<UIPopup>().Show("You won the challenge.", 0, null, null, (int)CanvasID.CANVAS_PVP);
+            if (updateTrophy)
+            {
+                UpdateTrophyAfterChallenge(true);
+            }
+        }
+        else if (GetMyChallengeScore() == GetOpponentChallengeScore())
+        {
+            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+            cs.GetComponent<UIPopup>().Show("The challenge was draw.", 0, null, null, (int)CanvasID.CANVAS_PVP);
+        }
+        else
+        {
+            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+            cs.GetComponent<UIPopup>().Show("You lost the challenge.", 0, null, null, (int)CanvasID.CANVAS_PVP);
+            if (updateTrophy)
+            {
+                UpdateTrophyAfterChallenge(false);
+            }
+        }
     }
 
     public void OnFullProgress()
     {
-        m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA = 0;
-        SaveSessionList();
+        FulfillProgress();
+        
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_CROWNSELECT);
         cs.MoveInFromRight();
+
     }
 
     public void OnSelectClaim()
@@ -605,10 +700,10 @@ public class GameManager : MonoBehaviour {
     public void TrophyAcquired(Category m_Trophy)
     {
         SetTrophyAcquired((int)m_Trophy);
-        m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA = 0;        
+        ClearProgress();
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
         ChecGameCompleted();
-        SaveSessionList();
+        
     }
 
     public void ChecGameCompleted()
@@ -669,7 +764,8 @@ public class GameManager : MonoBehaviour {
             }
         } else {
             GetCurrentGameInfo().m_TurnType = 1;
-        }        
+        }   
+     
         if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
             m_GameList.m_GameList[m_CurrentGame].m_Round++;
@@ -847,12 +943,14 @@ public class GameManager : MonoBehaviour {
         if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
         {
             m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA++;
+            m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA = Mathf.Clamp(m_GameList.m_GameList[m_CurrentGame].m_SpinProgressA, 0, 3);
         }
         else
         {
             m_GameList.m_GameList[m_CurrentGame].m_SpinProgressB++;
+            m_GameList.m_GameList[m_CurrentGame].m_SpinProgressB = Mathf.Clamp(m_GameList.m_GameList[m_CurrentGame].m_SpinProgressB, 0, 3);
         }        
-        SaveSessionList();
+        
     }
 
     public void FulfillProgress()
@@ -865,7 +963,7 @@ public class GameManager : MonoBehaviour {
         {
             m_GameList.m_GameList[m_CurrentGame].m_SpinProgressB = 3;
         }    
-        SaveSessionList();
+        
     }
 
     public void ClearProgress()
@@ -878,7 +976,7 @@ public class GameManager : MonoBehaviour {
         {
             m_GameList.m_GameList[m_CurrentGame].m_SpinProgressB = 0;
         }   
-        SaveSessionList();
+        
     }
 
     public int GetMySpinProgress()
@@ -1032,28 +1130,28 @@ public class GameManager : MonoBehaviour {
         {
             gi.m_PlayerBIDAbilityUsed++;
         }
-        SaveSessionList();
+        
     }
 
     public void SetAbilityID(int id)
     {
         GameInfo gi = GetCurrentGameInfo();
         gi.m_LastAbility = id;
-        SaveSessionList();
+        
     }
 
     public void SetTrophyAcquried(int trophy)
     {
         GameInfo gi = GetCurrentGameInfo();
         gi.m_TrophyAcquired = trophy;
-        SaveSessionList();
+        
     }
 
     public void SetTrophyRemoved(int trophy)
     {
         GameInfo gi = GetCurrentGameInfo();
         gi.m_TrophyRemoved = trophy;
-        SaveSessionList();
+        
     }
 
 #endregion
@@ -1375,7 +1473,7 @@ public class GameManager : MonoBehaviour {
         SetAbilityID((int)Ability.ABILITY_SWITCH);
         SetTrophyRemoved(-1);
         SetTrophyAcquired(-1);
-        SaveSessionList();
+        
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
     }
 
@@ -1442,7 +1540,7 @@ public class GameManager : MonoBehaviour {
         SetMeUseAbility();
         SetAbilityID((int)Ability.ABILITY_CHALLENGE);
         SetTrophyRemoved(theirtrophy);
-        SaveSessionList();
+        
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
     }
 
@@ -1454,7 +1552,7 @@ public class GameManager : MonoBehaviour {
         SetAbilityID((int)Ability.ABILITY_REMOVE);
         SetTrophyAcquired(-1);
         SetTrophyRemoved(trophy);
-        SaveSessionList();
+        
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
     }
 
@@ -1467,7 +1565,7 @@ public class GameManager : MonoBehaviour {
         SetAbilityID((int)Ability.ABILITY_CLAIM);
         SetTrophyAcquired(trophy);
         SetTrophyRemoved(-1);
-        SaveSessionList();
+        
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
     }
 
@@ -1539,7 +1637,7 @@ public class GameManager : MonoBehaviour {
         {
             myTrophy[gi.m_TrophyAcquired] = 1;
         }
-        SaveSessionList();
+        
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
     }
 
@@ -1727,12 +1825,12 @@ public class GameManager : MonoBehaviour {
     }
 
     public void OnGetAllSessionInfoResult(string result)
-    {        
+    {
+        Debug.Log("SS LIST:" + result);
         var ret = JSONNode.Parse(result);
         for (int i = 0; i < ret["game_sessions"].Count; i++)
         {            
-            if (ret["game_sessions"][i]["attributes"].ToString().Length > 15) {
-                Debug.Log("RECEIVED SESSION INFO");
+            if (ret["game_sessions"][i]["attributes"].ToString().Length > 15) {                
                 GameManager.Instance.m_GameList.AddExistingGame(ret["game_sessions"][i]["attributes"].ToString());            
             }
         }
@@ -1778,7 +1876,7 @@ public class GameManager : MonoBehaviour {
 
     public string GetCurrentGameID()
     {
-        if (0 < m_CurrentGame && m_CurrentGame < m_GameList.m_GameList.Count)
+        if (0 <= m_CurrentGame && m_CurrentGame < m_GameList.m_GameList.Count)
         {
             return GetCurrentGameInfo().m_SessionID;
         }

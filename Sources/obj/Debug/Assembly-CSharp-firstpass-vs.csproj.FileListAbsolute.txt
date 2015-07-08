@@ -12,3 +12,4 @@ D:\DevSpace\TriviaHeroes\triviaheroes\Sources\Temp\bin\Debug\Unity.CecilTools.dl
 D:\DevSpace\TriviaHeroes\triviaheroes\Sources\obj\Debug\Assembly-CSharp-firstpass-vs.csprojResolveAssemblyReference.cache
 D:\DevSpace\TriviaHeroes\triviaheroes\Sources\obj\Debug\Assembly-CSharp-firstpass.dll
 D:\DevSpace\TriviaHeroes\triviaheroes\Sources\obj\Debug\Assembly-CSharp-firstpass.pdb
+D:\DevSpace\TriviaHeroes\triviaheroes\Sources\Temp\bin\Debug\Newtonsoft.Json.dll

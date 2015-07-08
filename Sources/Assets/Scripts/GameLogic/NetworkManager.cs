@@ -74,7 +74,7 @@ public class NetworkManager : MonoBehaviour {
         }
         dict.Add("os", SystemInfo.operatingSystem);
         dict.Add("model", SystemInfo.deviceModel);        
-        dict.Add("device_uuid", SystemInfo.deviceUniqueIdentifier + "10");
+        dict.Add("device_uuid", SystemInfo.deviceUniqueIdentifier + "16");
         dict.Add("type", "mobile");
         dict.Add("name", name);
         dict.Add("sex", sex.ToString());
@@ -96,7 +96,7 @@ public class NetworkManager : MonoBehaviour {
         Dictionary<string, string> dict = new Dictionary<string, string>();
         dict.Add("uid", GameManager.Instance.GetPlayerProfile().m_PlayerID);
         dict.Add("game_session_id", sessionid);
-        dict.Add("state", "1");
+        dict.Add("state", "0");
         dict.Add("attributes", sessioninfo);
         POST(SERVER_IP + "/gamesession/updategamesessionstate", dict, GameManager.Instance.OnUpdateSessionInfoResult);
     }
@@ -139,6 +139,14 @@ public class NetworkManager : MonoBehaviour {
         dict.Add("category", "Sports");
         dict.Add("num", "1");
         POST(SERVER_IP + "/quiz/request", dict, GameManager.Instance.OnTrophyChallengeSelectedResult);        
+    }
+
+    public void DoTrophyChallengeAccepted()
+    {
+        Dictionary<string, string> dict = new Dictionary<string, string>();
+        dict.Add("category", "Sports");
+        dict.Add("num", "1");
+        POST(SERVER_IP + "/quiz/request", dict, GameManager.Instance.OnTrophyChallengeSelectedResult);
     }
 
     public void DoTrophyChallangeNextQuestion()

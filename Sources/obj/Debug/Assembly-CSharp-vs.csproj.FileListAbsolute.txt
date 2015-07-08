@@ -25,3 +25,4 @@ D:\DevSpace\TriviaHeroes\triviaheroes\Sources\Temp\bin\Debug\Assembly-CSharp-fir
 D:\DevSpace\TriviaHeroes\triviaheroes\Sources\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
 D:\DevSpace\TriviaHeroes\triviaheroes\Sources\obj\Debug\Assembly-CSharp.dll
 D:\DevSpace\TriviaHeroes\triviaheroes\Sources\obj\Debug\Assembly-CSharp.pdb
+D:\DevSpace\TriviaHeroes\triviaheroes\Sources\Temp\bin\Debug\Newtonsoft.Json.dll

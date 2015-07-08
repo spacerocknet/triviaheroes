@@ -160,9 +160,7 @@ public class GameInfo
         gi.m_PlayerAIDSex = ret["m_PlayerAIDSex"].AsInt;
 
         gi.m_PlayerAName = Truncate(ret["m_PlayerAName"]);
-        gi.m_PlayerBName = Truncate(ret["m_PlayerBName"]);        
-
-        gi.m_Challenger = "-1";
+        gi.m_PlayerBName = Truncate(ret["m_PlayerBName"]);                
 
         if (join)
         {
@@ -299,9 +297,16 @@ public class GameList
         bool found = false;
         for (int i = 0; i < m_GameList.Count; i++)
         {
-            if (m_GameList[i].m_SessionID == gi.m_SessionID && (gi.m_SessionID != GameManager.Instance.GetCurrentGameID() || !gi.IsMyTurn(GameManager.Instance.GetPlayerID())))
+            if (m_GameList[i].m_SessionID == gi.m_SessionID && (gi.m_SessionID != GameManager.Instance.GetCurrentGameID() || !GameManager.Instance.GetCurrentGameInfo().IsMyTurn(GameManager.Instance.GetPlayerID())))
             {
+                Debug.Log("Updated");
                 m_GameList[i] = gi;
+                found = true;
+                break;
+            }
+            if (m_GameList[i].m_SessionID == gi.m_SessionID)
+            {
+                Debug.Log("Not update " + gi.IsMyTurn(GameManager.Instance.GetPlayerID()));
                 found = true;
                 break;
             }
