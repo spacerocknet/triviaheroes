@@ -18,7 +18,7 @@ public class UIQuestion : MonoBehaviour {
 
     float m_Timer;
     float m_ShowAnswerTimer = 0;
-    bool m_IsShowAnswer = false;
+    public bool m_IsShowAnswer = false;
     Question m_Question;
 
     public Button[] m_HelpButtons;
@@ -94,7 +94,7 @@ public class UIQuestion : MonoBehaviour {
     public void OnEndGame()
     {
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_ENDGAMECONFIRM).Show();
-        //m_IsShowAnswer = true;
+        m_IsShowAnswer = true;
         //m_ShowAnswerTimer = 0;
     }
 
@@ -136,7 +136,7 @@ public class UIQuestion : MonoBehaviour {
     public void SetPVEQuestion(Question question, int number)
     {
         m_QuestionText.text = question.m_Question;
-        m_Answer0.text = question.m_Answer0;
+        m_Answer0.text = question.m_Answer0 + ". " + question.m_CorrectAnswer;
         m_Answer1.text = question.m_Answer1;
         m_Answer2.text = question.m_Answer2;
         m_Answer3.text = question.m_Answer3;

@@ -74,7 +74,7 @@ public class NetworkManager : MonoBehaviour {
         }
         dict.Add("os", SystemInfo.operatingSystem);
         dict.Add("model", SystemInfo.deviceModel);        
-        dict.Add("device_uuid", SystemInfo.deviceUniqueIdentifier + "16");
+        dict.Add("device_uuid", SystemInfo.deviceUniqueIdentifier + "17");
         dict.Add("type", "mobile");
         dict.Add("name", name);
         dict.Add("sex", sex.ToString());
@@ -214,15 +214,20 @@ public class NetworkManager : MonoBehaviour {
 
     private IEnumerator WaitForRequest(WWW www, OnServerCallBack callback)
     {
+        float startTime = Time.time;
+       
         //Debug.Log(www.progress);
         yield return www;
 
         // check for errors
         if (www.error == null)
-        {            
-            callback(www.text);            
-        }
-        else
+        {
+            while (Time.time - startTime < 3)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+            callback(www.text);
+        } else
         {
             Debug.Log("WWW Error: " + www.error);
         }

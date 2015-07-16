@@ -25,6 +25,7 @@ public class LoadingScene : MonoBehaviour {
         //Dictionary<string, string> dict = new Dictionary<string, string>();
         //dict.Add("category", "Sports");
         //dict.Add("num", "1");        
+        Application.targetFrameRate = 30;
         m_LoadingTips.text = GameConfig.Instance.GetRandomTips();
 	}
 

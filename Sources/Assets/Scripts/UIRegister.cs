@@ -9,6 +9,8 @@ public class UIRegister : MonoBehaviour {
     public Text m_InputText;
     int m_Sex;
 
+    public GameObject m_AlertObject;
+
 	// Use this for initialization
 	void Start () {
         m_Sex = 1;
@@ -39,8 +41,15 @@ public class UIRegister : MonoBehaviour {
 
     public void OnDone()
     {
-        GameManager.Instance.SetRegisterInfo(m_InputText.text, m_Sex);        
-        NetworkManager.Instance.DoRegister(m_InputText.text, m_Sex);
+        if (m_InputText.text == "")
+        {
+            StartCoroutine(ShowAlertText());
+        }
+        else
+        {
+            GameManager.Instance.SetRegisterInfo(m_InputText.text, m_Sex);
+            NetworkManager.Instance.DoRegister(m_InputText.text, m_Sex);
+        }
     }
 
     public void OnConnectFB()
@@ -54,5 +63,12 @@ public class UIRegister : MonoBehaviour {
     {
         AsyncOperation async = Application.LoadLevelAsync("MainScene");        
         yield return async;
+    }
+
+    IEnumerator ShowAlertText()
+    {
+        m_AlertObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        m_AlertObject.SetActive(false);
     }
 }

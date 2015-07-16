@@ -24,12 +24,13 @@ public class UIEndgameConfirm : MonoBehaviour {
     public void OnYes()
     {
         GetComponent<CanvasScript>().Hide();
-        GameManager.Instance.OnEndPvEGame(true);
+        GameManager.Instance.OnEndPvEGame(true);        
     }
 
     public void OnNo()
     {
         GetComponent<CanvasScript>().Hide();
+        SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_QUESTION).GetComponent<UIQuestion>().m_IsShowAnswer = false;
     }
 
     public void OnNext()

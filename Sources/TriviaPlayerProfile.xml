@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <PlayerProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <m_PlayerID>5a64da355cd7547efb10b8157ca65c5184309b0b16:</m_PlayerID>
-  <m_PlayerName>IceEye</m_PlayerName>
+  <m_PlayerID>5a64da355cd7547efb10b8157ca65c5184309b0b17:</m_PlayerID>
+  <m_PlayerName>HELLYEAH</m_PlayerName>
   <m_Level>0</m_Level>
   <m_TotalEXP>0</m_TotalEXP>
-  <m_Lives>5</m_Lives>
+  <m_Lives>4</m_Lives>
   <m_Coin>0</m_Coin>
-  <m_Diamond>0</m_Diamond>
+  <m_Diamond>999999999</m_Diamond>
   <m_Sex>1</m_Sex>
   <m_CurrentTier>Young_Adult</m_CurrentTier>
   <m_CurrentClass>None</m_CurrentClass>
-  <m_LastTimeAddLive>2015-07-08T16:15:22.2047308+07:00</m_LastTimeAddLive>
+  <m_LastTimeAddLive>2015-07-16T15:08:08.7239927+07:00</m_LastTimeAddLive>
   <m_FriendList>
     <m_FriendList>
       <string>Mage</string>
@@ -75,15 +75,15 @@
     <int>0</int>
     <int>0</int>
     <int>0</int>
-    <int>7</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
-    <int>13</int>
     <int>0</int>
-    <int>1</int>
+    <int>0</int>
+    <int>0</int>
+    <int>0</int>
     <int>0</int>
     <int>0</int>
     <int>0</int>
@@ -119,7 +119,7 @@
   <m_ElderMatch>0</m_ElderMatch>
   <m_FirstTimeExperience>
     <boolean>true</boolean>
-    <boolean>true</boolean>
+    <boolean>false</boolean>
     <boolean>false</boolean>
     <boolean>false</boolean>
     <boolean>false</boolean>

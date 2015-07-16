@@ -173,7 +173,7 @@ public class UpgradesPage : MonoBehaviour {
 
     public void OnTierSelected(int cat, int tier)
     {
-        if (tier > (int)GameManager.Instance.GetActiveAvatar().m_Tier || tier == 4)
+        if (tier > (int)GameManager.Instance.GetActiveAvatar().m_Tier)
         {
             m_AvatarScript.SetIsUnkonw();
         }

@@ -217,7 +217,7 @@ public class UIPvP : MonoBehaviour {
         bonus = Mathf.RoundToInt((float)GameManager.Instance.GetPlayerProfile().m_PayOutBonus / 100 * reward);
         if (bonus > 0)
         {
-            m_RewardText.text = reward + " <color=#ff0000ff> + " + bonus + "</color>";
+            m_RewardText.text = reward + " <color=#fff499> + " + bonus + "</color>";
         } else{
             m_RewardText.text = reward.ToString();
         }
@@ -277,5 +277,14 @@ public class UIPvP : MonoBehaviour {
     public void OnUseAbilityConfirm()
     {
         GameManager.Instance.OnUseAbility();
+    }
+
+    public void OnShowedUp()
+    {
+        if (GameManager.Instance.GetPlayerProfile().m_FirstTimeExperience[4] == true && GameManager.Instance.GetPlayerProfile().m_FirstTimeExperience[6] == false) {
+            GameManager.Instance.GetPlayerProfile().m_FirstTimeExperience[6] = true;
+            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+            cs.GetComponent<UIPopup>().Show("Tap to activate your ability.", 0, null, null, (int)CanvasID.CANVAS_PVP); 
+        }
     }
 }

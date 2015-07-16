@@ -26,6 +26,15 @@ public class UISelectCareer : MonoBehaviour {
         "Copy an ability."
     };
 
+    private static string[] m_ClassUpgradeText = {
+        "Great choice! Medic’s have the ability to use a free claim.",
+        "Great choice! Scientist’s have the ability to undo an ability move.",
+        "Great choice! Athlete’s have the ability to use a free challenge.",
+        "Great choice! Entrepreneur’s have the ability to swap puzzle sets.",
+        "Great choice! Warrior’s have the ability to remove an opponent’s puzzle piece.",
+        "Great choice! Musician’s have the ability to copy your opponent’s ability."
+    };
+
 	// Use this for initialization
 	void Start () {
 	
@@ -109,7 +118,7 @@ public class UISelectCareer : MonoBehaviour {
                 SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_STORE).MoveOutToRight();
 
                 CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
-                cs.GetComponent<UIPopup>().Show("Great choice! " + m_ClassText[(int)m_SelectClass - 1] + " have the ability to " + m_AbilityDes[(int)m_SelectClass - 1], 0, ShowNextPopup, null, (int)CanvasID.CANVAS_PVP);
+                cs.GetComponent<UIPopup>().Show(m_ClassUpgradeText[(int)m_SelectClass - 1], 0, ShowNextPopup, null, (int)CanvasID.CANVAS_PVP);
             }
             else
             {

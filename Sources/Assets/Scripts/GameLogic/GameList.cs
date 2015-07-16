@@ -298,15 +298,13 @@ public class GameList
         for (int i = 0; i < m_GameList.Count; i++)
         {
             if (m_GameList[i].m_SessionID == gi.m_SessionID && (gi.m_SessionID != GameManager.Instance.GetCurrentGameID() || !GameManager.Instance.GetCurrentGameInfo().IsMyTurn(GameManager.Instance.GetPlayerID())))
-            {
-                Debug.Log("Updated");
+            {                
                 m_GameList[i] = gi;
                 found = true;
                 break;
             }
             if (m_GameList[i].m_SessionID == gi.m_SessionID)
-            {
-                Debug.Log("Not update " + gi.IsMyTurn(GameManager.Instance.GetPlayerID()));
+            {                
                 found = true;
                 break;
             }

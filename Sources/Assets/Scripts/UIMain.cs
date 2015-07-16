@@ -58,11 +58,16 @@ public class UIMain : MonoBehaviour {
     public void OnNewGame()
     {
         //Debug.Log("On New Game");
-        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME);
-        cs.MoveInFromRight();
-
-        //cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN);
-        //cs.MoveOutToLeft();
+        if (GameManager.Instance.GetPlayerProfile().m_Lives > 0)
+        {
+            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME);
+            cs.MoveInFromRight();
+        }
+        else
+        {
+            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_OUTLIVES);
+            cs.Show();
+        }
     }
 
     public void OnYourTurn()

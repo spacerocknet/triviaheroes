@@ -60,24 +60,19 @@ public class AvatarScript : MonoBehaviour {
             case CLASS.Medicial:
                 job = "_D";
                 break;
-            case CLASS.Scientist:
-                Debug.Log("Scientist");
+            case CLASS.Scientist:                
                 job = "_S";
                 break;
-            case CLASS.Athlete:
-                Debug.Log("Athlete");
+            case CLASS.Athlete:                
                 job = "_A";
                 break;
-            case CLASS.Enterpreneur:
-                Debug.Log("Athlete");
+            case CLASS.Enterpreneur:                
                 job = "_E";
                 break;
-            case CLASS.Warrior:
-                Debug.Log("Warrior");
+            case CLASS.Warrior:                
                 job = "_W";
                 break;
-            case CLASS.Musician:
-                Debug.Log("Warrior");
+            case CLASS.Musician:                
                 job = "_M";
                 break;
             default:

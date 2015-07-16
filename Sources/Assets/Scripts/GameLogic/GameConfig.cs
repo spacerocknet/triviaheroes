@@ -19,16 +19,21 @@ public class GameConfig {
                                     };
     static List<long> m_EXPToNextLevel = new List<long>();
 
+    List<List<int>> m_ItemCost;
     List<List<int>> m_AvatarUpgradeCost;
 
 
     private static GameConfig m_sInstance = null;
+
+    //private static int m_StartGem = 50;
+    private static int m_StartGem = 999999999;
 
     private GameConfig()
     {
         m_sInstance = this;
         LoadExpTable();
         LoadUpgradeCostTable();
+        LoadItemCost();
     }
 
     public static GameConfig Instance
@@ -92,6 +97,28 @@ public class GameConfig {
         }
     }
 
+    public void LoadItemCost()
+    {
+        TextAsset txt = (TextAsset)Resources.Load("ItemCost", typeof(TextAsset));
+
+        string[] linesInFile = txt.text.Split('\n');
+
+        m_ItemCost = new List<List<int>>();
+        for (int i = 0; i < linesInFile.GetLength(0); i++)
+        {
+
+            string line = linesInFile[i];
+            //Debug.Log(line);
+            string[] numbers = line.Split(' ');
+            List<int> l = new List<int>();
+            for (int j = 0; j < numbers.GetLength(0); j++)
+            {
+                l.Add(int.Parse(numbers[j]));
+            }
+            m_ItemCost.Add(l);
+        }
+    }
+
     public int GetNumberOfLevel()
     {
         return m_EXPToNextLevel.Count;
@@ -113,8 +140,18 @@ public class GameConfig {
         return m_AvatarUpgradeCost[tier][ava];
     }
 
+    public int GetItemPrice(int type, int id)
+    {
+        return m_ItemCost[type][id - 1];
+    }
+
     public float GetExchangeRate()
     {
         return 27.7114286f;
+    }
+
+    public int GetStartGem()
+    {
+        return m_StartGem;
     }
 }

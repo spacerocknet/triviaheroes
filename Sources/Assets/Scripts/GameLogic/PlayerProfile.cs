@@ -76,7 +76,7 @@ public class PlayerProfile{
         m_TotalEXP = 0;
         m_Lives = 5;
         m_Coin = 0;
-        m_Diamond = 0;
+        m_Diamond = GameConfig.Instance.GetStartGem();
         m_Sex = sex;
         m_LastTimeAddLive = DateTime.Now;
         
@@ -223,5 +223,15 @@ public class PlayerProfile{
     
     public Avatar GetActiveAvatar() {
         return m_AvatarList[m_ActiveAvatar];
+    }
+
+    public void AddCoin(int amount)
+    {
+        m_Coin += amount;
+        if (m_Coin < 0)
+        {
+            m_Coin = 0;
+        }
+        Save();
     }
 }

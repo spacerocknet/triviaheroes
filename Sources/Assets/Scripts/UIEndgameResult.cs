@@ -62,7 +62,7 @@ public class UIEndgameResult : MonoBehaviour {
             {
                 if (bonus > 0)
                 {
-                    m_RewardText.text = reward + " <color=#ff0000ff> + " + bonus + "</color>";
+                    m_RewardText.text = reward + " <color=#fff499> + " + bonus + "</color>";
                 }
                 else
                 {

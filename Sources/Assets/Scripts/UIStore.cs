@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Advertisements;
 
 public class UIStore : MonoBehaviour {
 
@@ -9,7 +10,11 @@ public class UIStore : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+	    if (Advertisement.isSupported) {
+            Advertisement.Initialize ("55499");
+        } else {
+            Debug.Log("Platform not supported");
+        }
 	}
 	
 	// Update is called once per frame
@@ -41,9 +46,22 @@ public class UIStore : MonoBehaviour {
 
     public void OnWatchVideo()
     {
-        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
-        cs.GetComponent<UIPopup>().Show("Watch Video successfull. " + 15 + " diamond added to your account", 0, null, null, (int)CanvasID.CANVAS_STORE);                                               
-        GameManager.Instance.AddDiamond(15);
+        Advertisement.Show(null, new ShowOptions
+        {
+            resultCallback = result =>
+            {
+                Debug.Log(result.ToString());
+                if (result.ToString() == "Finished")
+                {
+                    CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+                    cs.GetComponent<UIPopup>().Show("Watch Video successfull. " + 15 + " diamond added to your account", 0, null, null, (int)CanvasID.CANVAS_STORE);
+                    GameManager.Instance.AddDiamond(15);
+                }
+            }
+        });
+        //CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+        //cs.GetComponent<UIPopup>().Show("Watch Video successfull. " + 15 + " diamond added to your account", 0, null, null, (int)CanvasID.CANVAS_STORE);
+        //GameManager.Instance.AddDiamond(15);
     }
 
     public void OnExchange()

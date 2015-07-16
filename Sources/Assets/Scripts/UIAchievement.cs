@@ -70,7 +70,7 @@ public class UIAchievement : MonoBehaviour {
             if (GameManager.Instance.GetPlayerProfile().m_AchievementBonusReceived[m_ID] < 1)
             {
                 GameManager.Instance.GetPlayerProfile().m_AchievementBonusReceived[m_ID] = 1;
-                reward += 1;
+                reward += 10;
             }            
         }
         if (m_Achievement.m_Counter >= m_Achievement.m_Requirement[1])
@@ -78,7 +78,7 @@ public class UIAchievement : MonoBehaviour {
             if (GameManager.Instance.GetPlayerProfile().m_AchievementBonusReceived[m_ID] < 2)
             {
                 GameManager.Instance.GetPlayerProfile().m_AchievementBonusReceived[m_ID] = 2;
-                reward += 2;
+                reward += 20;
             }
         }
         if (m_Achievement.m_Counter >= m_Achievement.m_Requirement[2])
@@ -86,7 +86,7 @@ public class UIAchievement : MonoBehaviour {
             if (GameManager.Instance.GetPlayerProfile().m_AchievementBonusReceived[m_ID] < 3)
             {
                 GameManager.Instance.GetPlayerProfile().m_AchievementBonusReceived[m_ID] = 3;
-                reward += 3;
+                reward += 30;
             }
         }
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);

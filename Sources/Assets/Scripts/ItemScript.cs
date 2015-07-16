@@ -8,6 +8,8 @@ public class ItemScript : MonoBehaviour {
     public Button m_BuyButton;
     private int m_Type;
     private int m_ID;
+    private int m_Price;
+    public Text m_PriceText;
 
 	// Use this for initialization
 	void Start () {
@@ -21,11 +23,10 @@ public class ItemScript : MonoBehaviour {
 
     public void SetInfo(int type, int id, bool isShop, bool canBuy)
     {
+        m_Price = GameConfig.Instance.GetItemPrice(type, id);        
         m_Type = type;
         m_ID = id;
-
         PlayerProfile profile = GameManager.Instance.GetPlayerProfile();
-
         if (profile == null)
         {
             return;
@@ -116,7 +117,7 @@ public class ItemScript : MonoBehaviour {
             else
             {
                 m_BuyButton.interactable = true;
-                m_BuyButton.transform.FindChild("Text").GetComponent<Text>().text = "$0.99";
+                m_BuyButton.transform.FindChild("Text").GetComponent<Text>().text = GameConfig.Instance.GetItemPrice(type, id).ToString();
             }
         }
         else
@@ -126,17 +127,23 @@ public class ItemScript : MonoBehaviour {
     }
 
     public void OnBuy()
-    {
-        Debug.Log("Buy: " + m_Type + " " + m_ID);
-
+    {        
         PlayerProfile pl = GameManager.Instance.GetPlayerProfile();
-
-        pl.m_ItemCat.Add(m_Type);
-        pl.m_ItemID.Add(m_ID);
-
-        pl.Save();
-
-        m_BuyButton.interactable = false;
-        m_BuyButton.transform.FindChild("Text").GetComponent<Text>().text = "Owned";
+        if (pl.m_Coin > m_Price)
+        {
+            pl.m_ItemCat.Add(m_Type);
+            pl.m_ItemID.Add(m_ID);
+            pl.AddCoin(-m_Price);
+            pl.Save();
+            m_BuyButton.interactable = false;
+            m_BuyButton.transform.FindChild("Text").GetComponent<Text>().text = "Owned";
+        }
+        else
+        {
+            string s = "Insufficient coin.";
+            CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+            cs.GetComponent<UIPopup>().Show(s, 0, null, null, (int)CanvasID.CANVAS_PVP); 
+        }
+        
     }
 }

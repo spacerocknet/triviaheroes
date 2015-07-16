@@ -499,7 +499,7 @@ public class GameManager : MonoBehaviour {
             CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
             cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
         }
-        
+        SubtractLivesAndShowPopup();
     }
 
     void HandleTrophyAnswerEnded()
@@ -1184,6 +1184,7 @@ public class GameManager : MonoBehaviour {
         {
             ava.m_Tier = (TIER)GetCurrentGameInfo().m_PlayerAIDTier;
             ava.m_Jobs = (CLASS)GetCurrentGameInfo().m_PlayerAIDJobs;
+            ava.m_Sex = GetCurrentGameInfo().m_PlayerAIDSex;
             for (int i = 0; i < 8; i++)
             {
                 ava.m_ItemList[i] = GetCurrentGameInfo().m_PlayerAIDItems[i];
@@ -1193,6 +1194,7 @@ public class GameManager : MonoBehaviour {
         {
             ava.m_Tier = (TIER)GetCurrentGameInfo().m_PlayerBIDTier;
             ava.m_Jobs = (CLASS)GetCurrentGameInfo().m_PlayerBIDJobs;
+            ava.m_Sex = GetCurrentGameInfo().m_PlayerBIDSex;
             for (int i = 0; i < 8; i++)
             {
                 ava.m_ItemList[i] = GetCurrentGameInfo().m_PlayerBIDItems[i];
@@ -1770,7 +1772,7 @@ public class GameManager : MonoBehaviour {
 
     public void CheckFirstUpgrade()
     {
-        if (GetPlayerProfile().m_FirstTimeExperience[2] == false && GetPlayerProfile().m_Coin >= 0)
+        if (GetPlayerProfile().m_FirstTimeExperience[2] == false && GetPlayerProfile().m_Coin >= 200)
         {
             GameManager.Instance.ShowHelpUpgrade(true);
         }
@@ -1778,7 +1780,7 @@ public class GameManager : MonoBehaviour {
 
     public void CheckFirstAdultUpgrade()
     {
-        if (GetPlayerProfile().m_FirstTimeExperience[3] == false && GetPlayerProfile().m_Coin >= 0 && GetActiveAvatar().m_Tier == TIER.Young_Adult)
+        if (GetPlayerProfile().m_FirstTimeExperience[3] == false && GetPlayerProfile().m_Coin >= 900 && GetActiveAvatar().m_Tier == TIER.Young_Adult)
         {
             GameManager.Instance.ShowHelpAdultUpgrade(true);
         }
@@ -1786,7 +1788,7 @@ public class GameManager : MonoBehaviour {
 
     public void CheckFirstReborn()
     {
-        if (GetPlayerProfile().m_FirstTimeExperience[5] == false && GetPlayerProfile().m_Coin >= 0 && GetActiveAvatar().m_Tier == TIER.Elder && GetPlayerProfile().m_ElderMatch > 0)
+        if (GetPlayerProfile().m_FirstTimeExperience[5] == false && GetPlayerProfile().m_Coin >= 500 && GetActiveAvatar().m_Tier == TIER.Elder && GetPlayerProfile().m_ElderMatch > 0)
         {
             GameManager.Instance.ShowHelpUpgrade(true);
         }
@@ -1884,6 +1886,13 @@ public class GameManager : MonoBehaviour {
         {
             return null;
         }
+    }
+
+    public void SubtractLivesAndShowPopup()
+    {
+        m_PlayerProfile.SubtractLives();
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+        cs.GetComponent<UIPopup>().Show("You lost one live", 0, null, null, (int)CanvasID.CANVAS_MAIN); 
     }
 }
 
