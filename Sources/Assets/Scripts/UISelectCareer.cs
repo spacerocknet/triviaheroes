@@ -118,7 +118,7 @@ public class UISelectCareer : MonoBehaviour {
                 SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_STORE).MoveOutToRight();
 
                 CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
-                cs.GetComponent<UIPopup>().Show(m_ClassUpgradeText[(int)m_SelectClass - 1], 0, ShowNextPopup, null, (int)CanvasID.CANVAS_PVP);
+                cs.GetComponent<UIPopup>().Show(m_ClassUpgradeText[(int)m_SelectClass - 1], 0, null, null, (int)CanvasID.CANVAS_PVP);
             }
             else
             {

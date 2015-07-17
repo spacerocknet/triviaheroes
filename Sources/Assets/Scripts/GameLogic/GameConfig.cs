@@ -26,7 +26,7 @@ public class GameConfig {
     private static GameConfig m_sInstance = null;
 
     //private static int m_StartGem = 50;
-    private static int m_StartGem = 999999999;
+    private static int m_StartGem = 999999;
 
     private GameConfig()
     {

@@ -11,7 +11,14 @@ public class UIStore : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	    if (Advertisement.isSupported) {
-            Advertisement.Initialize ("55499");
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                Advertisement.Initialize("55499");
+            }
+            else if (Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                Advertisement.Initialize("55499");
+            }
         } else {
             Debug.Log("Platform not supported");
         }

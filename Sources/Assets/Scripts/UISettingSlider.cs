@@ -69,4 +69,28 @@ public class UISettingSlider : MonoBehaviour {
     {
         m_AlertImage.gameObject.SetActive(value);
     }
+
+    public void OnFeedBack()
+    {
+        SendEmail();
+    }
+
+    public void OnFAQ()
+    {
+        Application.OpenURL("http://spacerock.net/triviaheroes/faq");
+    }
+
+    void SendEmail()
+    {
+        string email = "support@spacerock.net";
+        string subject = MyEscapeURL("Trivia Heroes – user feedback");
+        string body = MyEscapeURL("MSG\r\n\r\n\r\nUser ID: " + GameManager.Instance.GetPlayerProfile().m_PlayerName + "\r\nDevice ID: " + SystemInfo.deviceUniqueIdentifier + "\r\nOS version: " + SystemInfo.operatingSystem);
+
+        Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
+    }
+
+    string MyEscapeURL(string url)
+    {
+        return WWW.EscapeURL(url).Replace("+", "%20");
+    }
 }

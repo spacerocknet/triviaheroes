@@ -74,7 +74,7 @@ public class NetworkManager : MonoBehaviour {
         }
         dict.Add("os", SystemInfo.operatingSystem);
         dict.Add("model", SystemInfo.deviceModel);        
-        dict.Add("device_uuid", SystemInfo.deviceUniqueIdentifier + "17");
+        dict.Add("device_uuid", SystemInfo.deviceUniqueIdentifier + "19");
         dict.Add("type", "mobile");
         dict.Add("name", name);
         dict.Add("sex", sex.ToString());
@@ -222,7 +222,7 @@ public class NetworkManager : MonoBehaviour {
         // check for errors
         if (www.error == null)
         {
-            while (Time.time - startTime < 3)
+            while (Time.time - startTime < 1)
             {
                 yield return new WaitForEndOfFrame();
             }

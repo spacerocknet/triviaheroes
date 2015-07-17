@@ -97,7 +97,7 @@ public class PlayerProfile{
             m_PVEBoostUsed.Add(false);
         }
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 7; i++)
         {
             m_FirstTimeExperience.Add(false);
         }

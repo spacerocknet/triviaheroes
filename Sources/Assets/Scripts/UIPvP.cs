@@ -34,6 +34,8 @@ public class UIPvP : MonoBehaviour {
     public GameObject m_AvatarOpponent;
     public Text m_RewardText;
     public Text m_AbilityLeftText;
+    public Text m_ResultText;
+    public Image m_CoinImage;
 	// Use this for initialization
 	void Start () {
         m_Rect = m_Board.GetComponent<RectTransform>();
@@ -152,6 +154,18 @@ public class UIPvP : MonoBehaviour {
         if (game.m_IsCompleted)
         {
             m_ResultPanel.SetActive(true);
+            if (GameManager.Instance.GetMyNumberOfTrophy() < GameManager.Instance.GetOpponentNumberOfTrophy())
+            {
+                m_ResultText.text = "YOU LOSE";
+                m_CoinImage.gameObject.SetActive(false);
+                m_RewardText.text = "";
+            }
+            else
+            {
+                m_ResultText.text = "YOU WIN";
+                m_CoinImage.gameObject.SetActive(true);
+                m_RewardText.text = "";
+            }
         }
         else
         {
@@ -209,17 +223,26 @@ public class UIPvP : MonoBehaviour {
         Spin();
     }
 
-    public void ShowResult()
-    {        
-        m_ResultPanel.SetActive(true);
-        int reward = 200;
-        int bonus = 0;
-        bonus = Mathf.RoundToInt((float)GameManager.Instance.GetPlayerProfile().m_PayOutBonus / 100 * reward);
-        if (bonus > 0)
+    public void ShowResult(bool iswin)
+    {
+        if (iswin)
         {
-            m_RewardText.text = reward + " <color=#fff499> + " + bonus + "</color>";
-        } else{
-            m_RewardText.text = reward.ToString();
+            m_ResultPanel.SetActive(true);
+            int reward = 200;
+            int bonus = 0;
+            bonus = Mathf.RoundToInt((float)GameManager.Instance.GetPlayerProfile().m_PayOutBonus / 100 * reward);
+            if (bonus > 0)
+            {
+                m_RewardText.text = reward + " <color=#fff499> + " + bonus + "</color>";
+            }
+            else
+            {
+                m_RewardText.text = reward.ToString();
+            }
+        }
+        else
+        {
+             m_ResultPanel.SetActive(true);            
         }
     }
 
@@ -279,7 +302,7 @@ public class UIPvP : MonoBehaviour {
         GameManager.Instance.OnUseAbility();
     }
 
-    public void OnShowedUp()
+    public void OnShowUp()
     {
         if (GameManager.Instance.GetPlayerProfile().m_FirstTimeExperience[4] == true && GameManager.Instance.GetPlayerProfile().m_FirstTimeExperience[6] == false) {
             GameManager.Instance.GetPlayerProfile().m_FirstTimeExperience[6] = true;

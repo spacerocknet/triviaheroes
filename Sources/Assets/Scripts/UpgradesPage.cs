@@ -85,6 +85,8 @@ public class UpgradesPage : MonoBehaviour {
         "Musician"
     };
 
+    int m_UpgradeCost;
+
 	// Use this for initialization
 	void Start () {
         m_TierPageView.SetItemCallBack(OnTierSelected, 0);
@@ -141,18 +143,27 @@ public class UpgradesPage : MonoBehaviour {
 
     public void OnUpgrade()
     {
-        if (m_Tier == 4)
+        if (GameManager.Instance.GetPlayerProfile().m_Coin > m_UpgradeCost)
         {
-            SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTCAREER).GetComponent<UISelectCareer>().Show();
-        } else if (m_Tier < 10)
-        {
-            GameManager.Instance.UpgradeTier((CLASS)(m_ClassID + 1));
+            if (m_Tier == 4)
+            {
+                SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_SELECTCAREER).GetComponent<UISelectCareer>().Show();
+            }
+            else if (m_Tier < 10)
+            {
+                GameManager.Instance.UpgradeTier((CLASS)(m_ClassID + 1));
+            }
+            else
+            {
+                GameManager.Instance.GetPlayerProfile().AddNewAvatar();
+            }
+            Refresh();
         }
         else
         {
-            GameManager.Instance.GetPlayerProfile().AddNewAvatar();
+            CanvasScript css = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+            css.GetComponent<UIPopup>().Show("Insufficient coin, do you want to exchange diamond?", 0, GameManager.Instance.ShowExchangePopup, null, (int)CanvasID.CANVAS_STORE);
         }
-        Refresh();
     }
 
     public void OnNextClass()
@@ -173,7 +184,7 @@ public class UpgradesPage : MonoBehaviour {
 
     public void OnTierSelected(int cat, int tier)
     {
-        if (tier > (int)GameManager.Instance.GetActiveAvatar().m_Tier)
+        if (tier > (int)GameManager.Instance.GetActiveAvatar().m_Tier  - 1)
         {
             m_AvatarScript.SetIsUnkonw();
         }
@@ -212,25 +223,20 @@ public class UpgradesPage : MonoBehaviour {
                 m_Title.text = m_TierText[tier];
                 m_AbilityText.text = "";
             }
-            //m_BackButton.gameObject.SetActive(true);
-            //m_NextButton.gameObject.SetActive(true);
         }
         else
         {
             m_Description.text = m_TierDescription[tier];
             m_Title.text = m_TierText[tier];
             m_AbilityText.text = "";
-            //m_ClassID = 0;
-            //m_BackButton.gameObject.SetActive(false);
-            //m_NextButton.gameObject.SetActive(false);
         }
 
-        int cost = 500;
+        m_UpgradeCost = 500;
         Avatar avatar = GameManager.Instance.GetActiveAvatar();
         if (m_Tier < 10)
         {
             m_UpgradeCostText.text = GameConfig.Instance.GetUpgradeCost(m_Tier, avatar.m_ID).ToString();
-            cost = GameConfig.Instance.GetUpgradeCost(m_Tier, avatar.m_ID);
+            m_UpgradeCost = GameConfig.Instance.GetUpgradeCost(m_Tier, avatar.m_ID);
         }
         else
         {
@@ -240,7 +246,7 @@ public class UpgradesPage : MonoBehaviour {
         {
             m_UpgradeButton.interactable = true;
             m_UpgradeButton.gameObject.SetActive(true);
-            if (GameManager.Instance.GetPlayerProfile().m_Coin > cost)
+            if (GameManager.Instance.GetPlayerProfile().m_Coin > m_UpgradeCost)
             {
                 m_CoinImage.color = Color.white;
             }

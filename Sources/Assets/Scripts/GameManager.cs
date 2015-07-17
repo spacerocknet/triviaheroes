@@ -97,17 +97,24 @@ public class GameManager : MonoBehaviour {
         GameInfo gi = GetCurrentGameInfo();
         if (gi.m_PlayerUseAbility != m_PlayerProfile.m_PlayerID && gi.m_AbilityShowed == false && gi.m_LastAbility != -1)
         {
-            if (GetActiveAbility() != Ability.ABILITY_UNDO)
+            if (GetActiveAbility() != Ability.ABILITY_UNDO && GetActiveAbility() != Ability.ABILITY_COPY)
             {
                 CanvasScript css = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
                 css.GetComponent<UIPopup>().Show(gi.m_PlayerUseAbility + " used " + TextManager.Instance.GetAbilityName((Ability)gi.m_LastAbility) + " ability.", 0, null, null, (int)CanvasID.CANVAS_PVP);
                 gi.m_AbilityShowed = true;
             }
-            else
+            else if (GetActiveAbility() != Ability.ABILITY_UNDO)
             {
                 CanvasScript css = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
                 UIPvP uipvp = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).GetComponent<UIPvP>();
                 css.GetComponent<UIPopup>().Show(gi.m_PlayerUseAbility + " used " + TextManager.Instance.GetAbilityName((Ability)gi.m_LastAbility) + " ability. Undo it?", 1, uipvp.OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
+                gi.m_AbilityShowed = true;
+            }
+            else if (GetActiveAbility() != Ability.ABILITY_COPY)
+            {
+                CanvasScript css = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+                UIPvP uipvp = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).GetComponent<UIPvP>();
+                css.GetComponent<UIPopup>().Show(gi.m_PlayerUseAbility + " used " + TextManager.Instance.GetAbilityName((Ability)gi.m_LastAbility) + " ability. Copy it?", 1, uipvp.OnUseAbilityConfirm, null, (int)CanvasID.CANVAS_PVP);
                 gi.m_AbilityShowed = true;
             }
         }        
@@ -183,8 +190,7 @@ public class GameManager : MonoBehaviour {
     {
         var ret = JSONNode.Parse(result);
         if (ret["result"].AsBool)
-        {
-            //Debug.Log("Register Successful");
+        {            
             m_PlayerProfile = new PlayerProfile(ret["name"], ret["sex"].AsInt, ret["uid"]);
             Application.LoadLevel("MainScene");
             m_PlayerProfile.Save();
@@ -192,7 +198,6 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
-            //Debug.Log("Register Unsuccessful");
         }        
     }
 
@@ -498,8 +503,9 @@ public class GameManager : MonoBehaviour {
             EndTurn(false);
             CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP);
             cs.gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
+            SubtractLivesAndShowPopup();
         }
-        SubtractLivesAndShowPopup();
+        
     }
 
     void HandleTrophyAnswerEnded()
@@ -711,15 +717,20 @@ public class GameManager : MonoBehaviour {
         if (GetMyNumberOfTrophy() == 6)
         {
             m_GameList.m_GameList[m_CurrentGame].m_IsCompleted = true;
-            SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).GetComponent<UIPvP>().ShowResult();
-
+            SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).GetComponent<UIPvP>().ShowResult(true);
             int reward = 200;
             int bonus = 0;
             bonus = Mathf.RoundToInt((float)GameManager.Instance.GetPlayerProfile().m_PayOutBonus / 100 * reward);
             AddCoin(reward + bonus);            
-
             AchievementList.Instance.OnAction(Achievement_Action.WIN_MULTI);
+            SaveSessionList();
+        } else if (GetOpponentNumberOfTrophy() == 6)
+        {
+            m_GameList.m_GameList[m_CurrentGame].m_IsCompleted = true;
+            SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).GetComponent<UIPvP>().ShowResult(false);
+            SaveSessionList();
         }
+        
     }
 
     public int GetGameIndexByID(string sessionid) {
@@ -1118,6 +1129,33 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public int GetOpponentNumberOfTrophy()
+    {
+        int count = 0;
+        if (m_GameList.m_GameList[m_CurrentGame].m_PlayerAID == m_PlayerProfile.m_PlayerID)
+        {
+            for (int i = 0; i < m_GameList.m_GameList[m_CurrentGame].m_PieceA.Count; i++)
+            {
+                if (m_GameList.m_GameList[m_CurrentGame].m_PieceB[i] == 1)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+        else
+        {
+            for (int i = 0; i < m_GameList.m_GameList[m_CurrentGame].m_PieceB.Count; i++)
+            {
+                if (m_GameList.m_GameList[m_CurrentGame].m_PieceA[i] == 1)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+    }
+
     public void SetMeUseAbility()
     {
         GameInfo gi = GetCurrentGameInfo();
@@ -1474,9 +1512,9 @@ public class GameManager : MonoBehaviour {
         SetMeUseAbility();
         SetAbilityID((int)Ability.ABILITY_SWITCH);
         SetTrophyRemoved(-1);
-        SetTrophyAcquired(-1);
-        
+        SetTrophyAcquired(-1);        
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
+        EndTurn(false);
     }
 
     public bool CanSwitch()
@@ -1542,20 +1580,21 @@ public class GameManager : MonoBehaviour {
         SetMeUseAbility();
         SetAbilityID((int)Ability.ABILITY_CHALLENGE);
         SetTrophyRemoved(theirtrophy);
-        
+        ChecGameCompleted();
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
+        EndTurn(false);        
     }
 
     public void OnAbilityRemovedSelected(int trophy)
     {
-        GetOpponentTrophyList()[trophy] = 0;
-        
+        GetOpponentTrophyList()[trophy] = 0;        
         SetMeUseAbility();
         SetAbilityID((int)Ability.ABILITY_REMOVE);
         SetTrophyAcquired(-1);
-        SetTrophyRemoved(trophy);
-        
+        SetTrophyRemoved(trophy);        
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
+        ChecGameCompleted();
+        EndTurn(false);
     }
 
     public void OnAbilityClaimSelected(int trophy)
@@ -1566,9 +1605,10 @@ public class GameManager : MonoBehaviour {
         SetMeUseAbility();
         SetAbilityID((int)Ability.ABILITY_CLAIM);
         SetTrophyAcquired(trophy);
-        SetTrophyRemoved(-1);
-        
+        SetTrophyRemoved(-1);        
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
+        ChecGameCompleted();
+        EndTurn(false);
     }
 
     public bool CanCopy()
@@ -1630,7 +1670,6 @@ public class GameManager : MonoBehaviour {
         GameInfo gi = GetCurrentGameInfo();
         List<int> oppTrophy = GetOpponentTrophyList();
         List<int> myTrophy = GetMyTrophyList();
-
         if (gi.m_TrophyAcquired != -1)
         {
             oppTrophy[gi.m_TrophyAcquired] = 0;
@@ -1639,7 +1678,7 @@ public class GameManager : MonoBehaviour {
         {
             myTrophy[gi.m_TrophyAcquired] = 1;
         }
-        
+        EndTurn(false);        
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_PVP).gameObject.GetComponent<UIPvP>().SetGameInfo(GetCurrentGameInfo());
     }
 
@@ -1892,7 +1931,14 @@ public class GameManager : MonoBehaviour {
     {
         m_PlayerProfile.SubtractLives();
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
-        cs.GetComponent<UIPopup>().Show("You lost one live", 0, null, null, (int)CanvasID.CANVAS_MAIN); 
+        cs.GetComponent<UIPopup>().Show("You lost one live", 0, null, null, (int)CanvasID.CANVAS_PVP); 
+    }
+
+    public void ShowExchangePopup()
+    {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_EXCHANGE);
+        cs.GetComponent<UIExchange>().SetInfo(GameManager.Instance.GetPlayerProfile().m_Diamond, GameConfig.Instance.GetExchangeRate());
+        cs.Show(); 
     }
 }
 

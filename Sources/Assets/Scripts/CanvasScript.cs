@@ -66,6 +66,7 @@ public class CanvasScript : MonoBehaviour {
                         SceneManager.Instance.GetCanvasByID((CanvasID)m_NextID).SetActive(true);
                     }
                 }
+                SendMessage("OnShowUp");
             }
         }
         
@@ -131,6 +132,7 @@ public class CanvasScript : MonoBehaviour {
         m_NextID = cid;
         rt.position = m_RootPos.position;
         gameObject.SetActive(true);
+        SendMessage("OnShowUp");
     }
 
     public void Hide()
