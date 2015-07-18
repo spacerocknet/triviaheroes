@@ -786,7 +786,7 @@ public class GameManager : MonoBehaviour {
         {
             m_GameList.m_GameList[m_CurrentGame].m_ChallengeState++;
         }
-        Debug.Log("End turn");
+        Debug.Log("END TURN");
         m_GameList.m_GameList[m_CurrentGame].m_CurrentTurn = 3 - m_GameList.m_GameList[m_CurrentGame].m_CurrentTurn;
         
 

@@ -74,7 +74,7 @@ public class NetworkManager : MonoBehaviour {
         }
         dict.Add("os", SystemInfo.operatingSystem);
         dict.Add("model", SystemInfo.deviceModel);        
-        dict.Add("device_uuid", SystemInfo.deviceUniqueIdentifier + "19");
+        dict.Add("device_uuid", SystemInfo.deviceUniqueIdentifier + "21");
         dict.Add("type", "mobile");
         dict.Add("name", name);
         dict.Add("sex", sex.ToString());

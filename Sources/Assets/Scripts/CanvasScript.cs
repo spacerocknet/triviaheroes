@@ -66,7 +66,14 @@ public class CanvasScript : MonoBehaviour {
                         SceneManager.Instance.GetCanvasByID((CanvasID)m_NextID).SetActive(true);
                     }
                 }
-                SendMessage("OnShowUp");
+                //try
+                //{
+                //    SendMessage("OnShowUp");
+                //}
+                //catch (System.Exception e)
+                //{
+                //    Debug.Log("Exception: " + e.Message);
+                //}
             }
         }
         
