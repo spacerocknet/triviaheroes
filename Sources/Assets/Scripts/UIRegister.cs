@@ -54,8 +54,16 @@ public class UIRegister : MonoBehaviour {
 
     public void OnConnectFB()
     {
-        NetworkManager.Instance.DoRegister("FBPlayer", 0);
+        //NetworkManager.Instance.DoRegister("FBPlayer", 0);
         //StartCoroutine("LoadNextScene");
+        FaceBookManager.Instance.LoginFacebook(FBRegister);
+    }
+
+    public void FBRegister()
+    {
+        Debug.Log("Regiser with fbname: " + FaceBookManager.Instance.GetFBUserName());
+        GameManager.Instance.SetRegisterInfo(FaceBookManager.Instance.GetFBUserName(), m_Sex);
+        NetworkManager.Instance.DoRegister(FaceBookManager.Instance.GetFBUserName(), 0);
     }
 
 
