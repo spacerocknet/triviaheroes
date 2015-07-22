@@ -36,13 +36,8 @@ public class UIOutLives : MonoBehaviour {
 
     public void OnRequest() 
     {
-        //GetComponent<CanvasScript>().Hide();
-        //for (int i = 0; i < 5; i++)
-        //{
-        //    GameManager.Instance.GetPlayerProfile().AddLives();
-        //    GameManager.Instance.GetPlayerProfile().Save();
-        //}
         FaceBookManager.Instance.SendFriendRequest();
+        GetComponent<CanvasScript>().Hide();
     }
 
     public void OnBuy()
@@ -53,5 +48,10 @@ public class UIOutLives : MonoBehaviour {
             GameManager.Instance.GetPlayerProfile().AddLives();
             GameManager.Instance.GetPlayerProfile().Save();
         }
+    }
+
+    public void OnHide()
+    {
+        GetComponent<CanvasScript>().Hide();
     }
 }

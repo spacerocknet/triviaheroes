@@ -37,11 +37,11 @@ public class UIMain : MonoBehaviour {
         GameManager.Instance.StartUpdateSessionThread();
 
         if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
-        {
+        {            
             FaceBookManager.Instance.CheckRequest();
         }
         else
-        {
+        {            
             FaceBookManager.Instance.LoginFacebook(FaceBookManager.Instance.CheckRequest);
         }
 	}

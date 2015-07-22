@@ -131,12 +131,13 @@ public class CanvasScript : MonoBehaviour {
         m_MoveTime = 0;
     }
 
-    public void Show(int cid = -1)
+    public void Show(int cid = -1) {
         m_NextID = cid;
         rt.position = m_RootPos.position;
         gameObject.SetActive(true);
-        SendMessage("OnShowUp");
-        gameObject.SetActive(true);    }
+        
+        gameObject.SetActive(true);    
+    }
 
     public void Hide()
     {

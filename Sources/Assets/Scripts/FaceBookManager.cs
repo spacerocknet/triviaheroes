@@ -71,6 +71,7 @@ public class FaceBookManager : MonoBehaviour {
 
     public void LoginFacebook(OnFaceBookLogined callback)
     {
+        Debug.Log("LOGIN");
         m_LoginCallback = callback;
         if (!FB.IsLoggedIn)
         {
@@ -103,7 +104,7 @@ public class FaceBookManager : MonoBehaviour {
     {
         if (FB.IsLoggedIn)
         {
-            
+            CheckRequest();
         }
         else
         {
@@ -253,6 +254,18 @@ public class FaceBookManager : MonoBehaviour {
         for (int i = 0; i < m_AskRequestList.Count; i++)
         {
             FB.API("/" + m_AskRequestList[i].requestID, Facebook.HttpMethod.DELETE, DeleteCallBack);            
+        }
+    }
+
+    public void DeleteRequest(string requestid)
+    {
+        for (int i = 0; i < m_SentRequestList.Count; i++)
+        {
+            if (m_SentRequestList[i].requestID == requestid)
+            {
+                FB.API("/" + m_SentRequestList[i].requestID, Facebook.HttpMethod.DELETE, DeleteCallBack);
+                return;
+            }
         }
     }
 

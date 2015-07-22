@@ -6,11 +6,13 @@ using System.Collections.Generic;
 public class UIInbox : MonoBehaviour {
 
     public GameObject m_FriendRequestPrefab;
-    public GameObject m_Panel;    
+    public GameObject m_Panel;
+    List<GameObject> m_ObjectList;
+    List<string> m_IDList;
 
 	// Use this for initialization
 	void Start () {
-	
+        m_ObjectList = new List<GameObject>();
 	}
 	
 	// Update is called once per frame
@@ -20,13 +22,15 @@ public class UIInbox : MonoBehaviour {
 
     public void Refresh() 
     {
+        m_IDList = new List<string>();
+
         List<Image> imgList = new List<Image>();
         List<string> urlList = new List<string>();
 
         List<Request> requestList = FaceBookManager.Instance.GetSentRequestList();
 
         int num = requestList.Count;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < num; i++)
         {
             GameObject go = (GameObject)GameObject.Instantiate(m_FriendRequestPrefab);
             go.transform.SetParent(m_Panel.transform);
@@ -37,6 +41,12 @@ public class UIInbox : MonoBehaviour {
             go.transform.FindChild("Name").GetComponent<Text>().text = requestList[i].friendName;
             imgList.Add(go.transform.FindChild("Avatar").GetComponent<Image>());
             urlList.Add("http://graph.facebook.com/" + requestList[i].friendID + "/picture?type=square");
+
+            string z;
+            z = requestList[i].requestID;
+            go.transform.FindChild("ButtonAccept").GetComponent<Button>().onClick.AddListener(() => OnAccept(z));
+            m_IDList.Add(z);
+            m_ObjectList.Add(go);
         }
         m_Panel.GetComponent<RectTransform>().sizeDelta = new Vector2(m_Panel.GetComponent<RectTransform>().sizeDelta.x, num * 180);
         StartCoroutine(LoadAvatar(imgList, urlList));
@@ -55,6 +65,43 @@ public class UIInbox : MonoBehaviour {
 
     public void OnSendLives()
     {
-        FaceBookManager.Instance.SendLivesToFriend();
+        FaceBookManager.Instance.SendLivesToFriend();        
+    }
+
+    public void OnAccept(string requestid)
+    {
+        GameManager.Instance.GetPlayerProfile().RestoreFullLives();
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_POPUP);
+        cs.GetComponent<UIPopup>().Show("You have full lives now.", 0, null, null, (int)CanvasID.CANVAS_INBOX); 
+
+        int index = -1;
+        for (int i = 0; i < m_IDList.Count; i++)
+        {
+            if (m_IDList[i] == requestid)
+            {
+                index = i;
+                break;
+            }
+        }
+
+        if (index == -1)
+        {
+            return;
+        }
+
+        for (int i = m_ObjectList.Count - 1; i > index; i--)
+        {
+            m_ObjectList[i].transform.position = m_ObjectList[i - 1].transform.position;
+        }
+        GameObject.Destroy(m_ObjectList[index]);
+        m_IDList.RemoveAt(index);
+        m_ObjectList.RemoveAt(index);
+
+        FaceBookManager.Instance.DeleteRequest(requestid);
+    }
+
+    public void OnBack()
+    {
+        GetComponent<CanvasScript>().Hide();
     }
 }

@@ -173,6 +173,13 @@ public class PlayerProfile{
         return exp;
     }
 
+    public void RestoreFullLives()
+    {
+        m_LastTimeAddLive = DateTime.Now;
+        m_Lives = 5;
+        Save();
+    }
+
     public void AddLives()
     {        
         m_LastTimeAddLive = DateTime.Now;        
