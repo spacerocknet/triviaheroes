@@ -142,7 +142,14 @@ public class GameConfig {
 
     public int GetItemPrice(int type, int id)
     {
-        return m_ItemCost[type][id - 1];
+        if (type >= 0 && type < m_ItemCost.Count && id >= 1 && id <= m_ItemCost[type].Count)
+        {
+            return m_ItemCost[type][id - 1];
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public float GetExchangeRate()

@@ -93,4 +93,11 @@ public class UISettingSlider : MonoBehaviour {
     {
         return WWW.EscapeURL(url).Replace("+", "%20");
     }
+
+    public void OnFacebook()
+    {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_INBOX);
+        cs.Show();
+        cs.GetComponent<UIInbox>().Refresh();
+    }
 }

@@ -10,7 +10,7 @@ public class UIOutLives : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        RefreshFriendList();
+        //RefreshFriendList();
 	}
 	
 	// Update is called once per frame
@@ -36,12 +36,13 @@ public class UIOutLives : MonoBehaviour {
 
     public void OnRequest() 
     {
-        GetComponent<CanvasScript>().Hide();
-        for (int i = 0; i < 5; i++)
-        {
-            GameManager.Instance.GetPlayerProfile().AddLives();
-            GameManager.Instance.GetPlayerProfile().Save();
-        }
+        //GetComponent<CanvasScript>().Hide();
+        //for (int i = 0; i < 5; i++)
+        //{
+        //    GameManager.Instance.GetPlayerProfile().AddLives();
+        //    GameManager.Instance.GetPlayerProfile().Save();
+        //}
+        FaceBookManager.Instance.SendFriendRequest();
     }
 
     public void OnBuy()
