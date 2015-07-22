@@ -721,7 +721,8 @@ public class GameManager : MonoBehaviour {
             int reward = 200;
             int bonus = 0;
             bonus = Mathf.RoundToInt((float)GameManager.Instance.GetPlayerProfile().m_PayOutBonus / 100 * reward);
-            AddCoin(reward + bonus);            
+            AddCoin(reward + bonus);
+            AddExp(4);
             AchievementList.Instance.OnAction(Achievement_Action.WIN_MULTI);
             SaveSessionList();
         } else if (GetOpponentNumberOfTrophy() == 6)
@@ -1809,6 +1810,12 @@ public class GameManager : MonoBehaviour {
         CheckFirstReborn();
     }
 
+    public void AddExp(int amount)
+    {
+        m_PlayerProfile.m_TotalEXP += amount;
+        m_PlayerProfile.Save();        
+    }
+
     public void CheckFirstUpgrade()
     {
         if (GetPlayerProfile().m_FirstTimeExperience[2] == false && GetPlayerProfile().m_Coin >= 200)
@@ -1867,8 +1874,9 @@ public class GameManager : MonoBehaviour {
 
     public void OnGetAllSessionInfoResult(string result)
     {
-        Debug.Log("SS LIST:" + result);
         var ret = JSONNode.Parse(result);
+        Debug.Log("SS COUNT: " + ret["game_sessions"].Count);
+        Debug.Log("SS LIST:" + result);        
         for (int i = 0; i < ret["game_sessions"].Count; i++)
         {            
             if (ret["game_sessions"][i]["attributes"].ToString().Length > 15) {                

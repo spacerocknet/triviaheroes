@@ -88,7 +88,7 @@ public class FaceBookManager : MonoBehaviour {
 
     private void FBLogin()
     {
-        FB.Login("user_about_me, user_relationships, user_birthday, user_location, user_friends", FBLoginCallback);
+        FB.Login("user_about_me, user_relationships, user_birthday", FBLoginCallback);
     }
 
     private void FBLoginCallback(FBResult result)

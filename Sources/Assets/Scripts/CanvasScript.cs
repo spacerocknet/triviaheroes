@@ -139,7 +139,7 @@ public class CanvasScript : MonoBehaviour {
         m_NextID = cid;
         rt.position = m_RootPos.position;
         gameObject.SetActive(true);
-        SendMessage("OnShowUp");
+        //SendMessage("OnShowUp");
     }
 
     public void Hide()

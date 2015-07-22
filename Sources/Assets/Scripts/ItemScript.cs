@@ -23,6 +23,7 @@ public class ItemScript : MonoBehaviour {
 
     public void SetInfo(int type, int id, bool isShop, bool canBuy)
     {
+        
         m_Price = GameConfig.Instance.GetItemPrice(type, id);        
         m_Type = type;
         m_ID = id;
