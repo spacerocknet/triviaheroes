@@ -103,8 +103,7 @@ public class NetworkManager : MonoBehaviour {
 
     public void DoGetAllSessionInfo()
     {
-        Dictionary<string, string> dict = new Dictionary<string, string>();
-        Debug.Log(GameManager.Instance.GetPlayerProfile().m_PlayerID);
+        Dictionary<string, string> dict = new Dictionary<string, string>();        
         dict.Add("uid", GameManager.Instance.GetPlayerProfile().m_PlayerID);
         POST(SERVER_IP + "/gamesession/getgamesessions", dict, GameManager.Instance.OnGetAllSessionInfoResult);
     }
@@ -199,15 +198,12 @@ public class NetworkManager : MonoBehaviour {
                 jsonString = jsonString + "\"" + kvp.Key + "\":" + kvp.Value + ",";
             }
         }
-
         jsonString = jsonString.Substring(0, jsonString.Length - 1);
-        jsonString = jsonString + "}";
-        Debug.Log(jsonString);
+        jsonString = jsonString + "}";        
         Dictionary<string, string> header = new Dictionary<string, string>();
         header.Add("Content-Type", "Application/json");
-        header.Add("Content-Length", jsonString.Length.ToString());
+        header.Add("Content-Length", encoding.GetBytes(jsonString).GetLength(0).ToString());
         WWW www = new WWW(url, encoding.GetBytes(jsonString), header);
-
         StartCoroutine(WaitForRequest(www, callback));
         return www;
     }

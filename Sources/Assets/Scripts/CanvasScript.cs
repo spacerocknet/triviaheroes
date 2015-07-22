@@ -50,7 +50,6 @@ public class CanvasScript : MonoBehaviour {
                 {
                     ////Debug.Log("FAK");
                     rt.position = rt.position - new Vector3(1000, 0, 0);
-
                 }
 
                 if (endPos.Equals(m_RootPos.position))
@@ -133,14 +132,11 @@ public class CanvasScript : MonoBehaviour {
     }
 
     public void Show(int cid = -1)
-    {
-        Debug.Log("Show: " + gameObject.name);
-        //SetActive(true);
         m_NextID = cid;
         rt.position = m_RootPos.position;
         gameObject.SetActive(true);
-        //SendMessage("OnShowUp");
-    }
+        SendMessage("OnShowUp");
+        gameObject.SetActive(true);    }
 
     public void Hide()
     {

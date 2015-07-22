@@ -1875,8 +1875,7 @@ public class GameManager : MonoBehaviour {
     public void OnGetAllSessionInfoResult(string result)
     {
         var ret = JSONNode.Parse(result);
-        Debug.Log("SS COUNT: " + ret["game_sessions"].Count);
-        Debug.Log("SS LIST:" + result);        
+
         for (int i = 0; i < ret["game_sessions"].Count; i++)
         {            
             if (ret["game_sessions"][i]["attributes"].ToString().Length > 15) {                
@@ -1947,6 +1946,13 @@ public class GameManager : MonoBehaviour {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_EXCHANGE);
         cs.GetComponent<UIExchange>().SetInfo(GameManager.Instance.GetPlayerProfile().m_Diamond, GameConfig.Instance.GetExchangeRate());
         cs.Show(); 
+    }
+
+    public void ShowRequestPopup()
+    {
+        CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_FRIENDREQUEST);
+        cs.Show();
+        cs.GetComponent<UIFriendRequest>().SetInfo(FaceBookManager.Instance.GetRequestList());        
     }
 }
 

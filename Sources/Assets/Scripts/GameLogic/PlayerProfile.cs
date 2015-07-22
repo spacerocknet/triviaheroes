@@ -174,8 +174,7 @@ public class PlayerProfile{
     }
 
     public void AddLives()
-    {
-        Debug.Log("ADD LIVES");
+    {        
         m_LastTimeAddLive = DateTime.Now;        
         m_Lives++;
         m_Lives = Mathf.Clamp(m_Lives, 0, 5);
@@ -183,8 +182,7 @@ public class PlayerProfile{
     }
 
     public void SubtractLives()
-    {
-        Debug.Log("SUBTRACT LIVES");
+    {        
         if (m_Lives == 5)
         {
             m_LastTimeAddLive = DateTime.Now;

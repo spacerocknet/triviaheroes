@@ -34,7 +34,16 @@ public class UIMain : MonoBehaviour {
         m_CurrentTab = 1;
         RefreshInfo();
         Refresh();
-        GameManager.Instance.StartUpdateSessionThread();                
+        GameManager.Instance.StartUpdateSessionThread();
+
+        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            FaceBookManager.Instance.CheckRequest();
+        }
+        else
+        {
+            FaceBookManager.Instance.LoginFacebook(FaceBookManager.Instance.CheckRequest);
+        }
 	}
 	
 	// Update is called once per frame
@@ -58,7 +67,7 @@ public class UIMain : MonoBehaviour {
     public void OnNewGame()
     {
         //Debug.Log("On New Game");
-        if (GameManager.Instance.GetPlayerProfile().m_Lives > 0)
+        if (GameManager.Instance.GetPlayerProfile().m_Lives > 0 && false)
         {
             CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME);
             cs.MoveInFromRight();
