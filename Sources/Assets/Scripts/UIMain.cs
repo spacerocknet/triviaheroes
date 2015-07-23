@@ -67,7 +67,7 @@ public class UIMain : MonoBehaviour {
     public void OnNewGame()
     {
         //Debug.Log("On New Game");
-        if (GameManager.Instance.GetPlayerProfile().m_Lives > 0 && false)
+        if (GameManager.Instance.GetPlayerProfile().m_Lives > 0)
         {
             CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_NEWGAME);
             cs.MoveInFromRight();

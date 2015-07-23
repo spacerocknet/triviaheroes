@@ -35,6 +35,9 @@ public class UIFriendRequest : MonoBehaviour {
             go.transform.FindChild("Name").GetComponent<Text>().text = requestList[i].friendName;
             imgList.Add(go.transform.FindChild("Avatar").GetComponent<Image>());
             urlList.Add("http://graph.facebook.com/" + requestList[i].friendID + "/picture?type=square");
+
+            go.transform.FindChild("ButtonAccept").gameObject.SetActive(false);
+            go.transform.FindChild("Description").GetComponent<Text>().text = "Need your help!!";
         }
         m_Panel.GetComponent<RectTransform>().sizeDelta = new Vector2(m_Panel.GetComponent<RectTransform>().sizeDelta.x, num * 180);
         StartCoroutine(LoadAvatar(imgList, urlList));
