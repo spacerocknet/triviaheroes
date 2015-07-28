@@ -290,14 +290,19 @@ public class GameList
         
         return gi;
     }
+    
 
     public GameInfo AddExistingGame(string sessioninfo, bool join = false)
     {
         GameInfo gi = GameInfo.FromJsonString(sessioninfo, join);
+        if (GameManager.Instance.UpdateMyInfoIfMissing(gi))
+        {
+            GameManager.Instance.UpdateSpecificSession(gi);
+        }
         bool found = false;
         for (int i = 0; i < m_GameList.Count; i++)
         {
-            if (m_GameList[i].m_SessionID == gi.m_SessionID && (gi.m_SessionID != GameManager.Instance.GetCurrentGameID() || !GameManager.Instance.GetCurrentGameInfo().IsMyTurn(GameManager.Instance.GetPlayerID())))
+            if (m_GameList[i].m_SessionID == gi.m_SessionID && gi.IsMyTurn(GameManager.Instance.GetPlayerID()) && !m_GameList[i].IsMyTurn(GameManager.Instance.GetPlayerID()))
             {                
                 m_GameList[i] = gi;
                 found = true;

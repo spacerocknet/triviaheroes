@@ -214,7 +214,8 @@ public class GameManager : MonoBehaviour {
             GameInfo gi = GameManager.Instance.m_GameList.AddNewGame(ret["gameSessionId"], ret["uid1"], ret["uid2"]);
             m_CurrentGame = GameManager.Instance.m_GameList.m_GameList.Count - 1;
             UpdateMyInfoOnCurrentGame();
-            cs.gameObject.GetComponent<UIPvP>().SetGameInfo(gi);            
+            cs.gameObject.GetComponent<UIPvP>().SetGameInfo(gi);
+            SaveSessionList();
         }
         else
         {
@@ -222,9 +223,7 @@ public class GameManager : MonoBehaviour {
             m_CurrentGame = GameManager.Instance.m_GameList.m_GameList.Count - 1;
             UpdateMyInfoOnCurrentGame();
             cs.gameObject.GetComponent<UIPvP>().SetGameInfo(gi);
-        }                
-        UpdateCurrentGameInfo();
-        SaveSessionList();
+        }                                
     }
 
     public void OnCategoryConfirmToPlayResult(string result)
@@ -746,7 +745,7 @@ public class GameManager : MonoBehaviour {
 
     public void SaveSessionList()
     {
-        //m_GameList.Save();
+        
         UpdateCurrentGameInfo();
     }
 
@@ -1869,20 +1868,21 @@ public class GameManager : MonoBehaviour {
 
     public void OnUpdateSessionInfoResult(string result)
     {
-        Debug.Log(result);
+        Debug.Log("Update SS info: " + result);
     }
 
     public void OnGetAllSessionInfoResult(string result)
     {
         var ret = JSONNode.Parse(result);
-
+        Debug.Log("SS Count: " + ret["game_sessions"].Count);
         for (int i = 0; i < ret["game_sessions"].Count; i++)
-        {            
+        {
+            Debug.Log(ret["game_sessions"][i]["attributes"].ToString());
             if (ret["game_sessions"][i]["attributes"].ToString().Length > 15) {                
                 GameManager.Instance.m_GameList.AddExistingGame(ret["game_sessions"][i]["attributes"].ToString());            
             }
         }
-        //UpdateCurrentGameInfo();
+        
         SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_MAIN).GetComponent<UIMain>().Refresh();
     }
 
@@ -1953,6 +1953,37 @@ public class GameManager : MonoBehaviour {
         CanvasScript cs = SceneManager.Instance.GetCanvasByID(CanvasID.CANVAS_FRIENDREQUEST);
         cs.Show();
         cs.GetComponent<UIFriendRequest>().SetInfo(FaceBookManager.Instance.GetRequestList());        
+    }
+
+    public bool UpdateMyInfoIfMissing(GameInfo gi)
+    {
+        if (gi.m_PlayerAID != "null" && gi.m_PlayerAID != m_PlayerProfile.m_PlayerID && gi.m_PlayerBID == "null")
+        {
+            gi.m_PlayerBID = m_PlayerProfile.m_PlayerID;
+            gi.m_PlayerBIDSex = GetPlayerProfile().m_Sex;
+            gi.m_PlayerBIDTier = (int)GetPlayerProfile().GetActiveAvatar().m_Tier;
+            gi.m_PlayerBIDJobs = (int)GetPlayerProfile().GetActiveAvatar().m_Jobs;
+            gi.m_PlayerBName = GetPlayerProfile().m_PlayerName;
+            return true;
+        } else
+            if (gi.m_PlayerBID != "null" && gi.m_PlayerBID != m_PlayerProfile.m_PlayerID && gi.m_PlayerAID != "null")
+        {
+            gi.m_PlayerAID = m_PlayerProfile.m_PlayerID;
+            gi.m_PlayerAIDSex = GetPlayerProfile().m_Sex;
+            gi.m_PlayerAIDTier = (int)GetPlayerProfile().GetActiveAvatar().m_Tier;
+            gi.m_PlayerAIDJobs = (int)GetPlayerProfile().GetActiveAvatar().m_Jobs;
+            gi.m_PlayerAName = GetPlayerProfile().m_PlayerName;
+            return true;
+        }
+        return false;
+    }
+
+    public void UpdateSpecificSession(GameInfo gi)
+    {
+        string s = gi.ToJsonString();
+        s = s.Replace("[", "\"[");
+        s = s.Replace("]", "]\"");
+        NetworkManager.Instance.DoUpdateSessionInfo(gi.m_SessionID, s);
     }
 }
 
